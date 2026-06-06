@@ -22,7 +22,7 @@ Currently, technical documentation is either:
 
 ### 2.3 Desired State (To-Be)
 A modular, pipeline-based system (UDE) that:
-1. Automatically parses predicts structure from code (via Doxygen XML).
+1. Automatically parses structure from code (via Doxygen XML).
 2. Generates clean, SEO-optimized, highly aesthetic documentation.
 3. Integrates seamlessly into modern static hosting providers (GitHub/GitLab Pages).
 4. Employs independent pipelines for project, operational, and reference docs.
