@@ -1,47 +1,41 @@
 ---
 sidebar_position: 1
+slug: /
 ---
 
-# Tutorial Intro
+# Universal Document Engine — Project Specifications
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Welcome to the **Universal Document Engine (UDE)** specifications and architectural blueprint portal. This workspace contains the complete development lifecycle documentation, following the **Docs-as-Code** paradigm.
 
-## Getting Started
+## 🧭 Navigation Portal
 
-Get started by **creating a new site**.
+Select one of the specialized documents from the sidebar or click below to explore the specifications:
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
-
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
+```mermaid
+graph TD
+    A[Welcome & Intro] --> B[1. Business Requirements - BRD]
+    B --> C[2. Software Requirements - SRS]
+    C --> D[3. Software Design - SDD]
+    
+    style A fill:#4f46e5,stroke:#312e81,stroke-width:2px,color:#fff
+    style B fill:#0ea5e9,stroke:#1e3a8a,stroke-width:2px,color:#fff
+    style C fill:#06b6d4,stroke:#083344,stroke-width:2px,color:#fff
+    style D fill:#10b981,stroke:#064e3b,stroke-width:2px,color:#fff
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+### 📋 Section Directory
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+* **[1. Business Requirements Document (BRD)](/brd/)**
+  * Describes the business context, pain points (Legacy Doxygen HTML, desynchronization), and the overarching objective of UDE.
+  * Contains core business goals: `REQ-BUS-01` through `REQ-BUS-04`.
+* **[2. Software Requirements Specification (SRS)](/srs/)**
+  * Detailing full functional specifications for parsing (XML Ingestion, Entity Extraction) and rendering modules (Hugo and structured AI RAG).
+  * Outlines system performance, test coverage, and architectural modularity NFRs.
+* **[3. Software Design Document (SDD)](/sdd/)**
+  * Outlines the pipeline-driven design decoupling the parsing frontends from template-driven markdown backends.
+  * Maps intermediate representation (IR) schemas and dataclass models.
 
-## Start your site
+---
 
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+> [!NOTE]
+> All changes to these specifications are strictly revision-controlled and must undergo Peer Review through Pull Requests (PR) as defined in the [.rules.md](file:///D:/My%20repositories/Pipeline/.antigravitycli/.rules.md) and [requirements_style.md](file:///D:/My%20repositories/Pipeline/.antigravitycli/styles/requirements_style.md).
