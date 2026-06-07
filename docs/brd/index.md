@@ -71,12 +71,17 @@ A modular, pipeline-based system (UDE) that:
 
 ## 3. High-Level Business Requirements (Traceability Core)
 * **`REQ-BUS-01` (Extensible Multi-Language Input)**: The engine must support multi-language parsing (with **C++, C#, Java, and Python** as the initial base set) utilizing a decoupled frontend architecture. 
+  * *Target Release*: v1.0 (MVP) (Doxygen XML baseline); Future Phase (v2.0+) (direct AST code parsing via tree-sitter/Clang)
   * *Version 1 Baseline*: Ingest Doxygen-generated XML outputs as the baseline source of code structures and docstrings.
   * *Future Phases*: Expand ingestion via pluggable modules supporting alternative XML schemas (e.g., Doc-o-matic) and direct AST/code parsing (via `tree-sitter`, `Clang` AST, and regex) to ensure complete compatibility with modern, evolving compiler standards.
 * **`REQ-BUS-02` (Multi-Format Rendering Engine)**: The engine must support rendering its language-agnostic Intermediate Representation (IR) into multiple configurable target formats including, but not limited to, **HTML, Markdown (generic and optimized for SSGs like Hugo or VitePress), RAG JSON, and structured XML** to fulfill diverse publishing requirements.
+  * *Target Release*: v1.0 (MVP)
 * **`REQ-BUS-03` (Git Integrity & Storage Optimization)**: Automated API Reference generation must run "on-the-fly" in CI/CD without polluting Git repositories with compiled Markdown/HTML, except for necessary inputs like translation caches and manual override database files. To minimize repository size, storage footprint, and git network bandwidth, all intermediate data and cache files stored in Git (such as translation caches and Intermediate Representation databases) must be persisted in a compressed file format (specifically Gzip-compressed JSON `.json.gz`), transparently handled by the engine.
+  * *Target Release*: v1.0 (MVP) (Gzip compression for IR databases); Future Phase (v2.0+) (compression for translation caches)
 * **`REQ-BUS-04` (RAG Optimization)**: The engine must support exporting structured, metadata-rich JSON files specifically optimized to feed enterprise AI semantic search engines and developer chat-bots.
+  * *Target Release*: v1.0 (MVP)
 * **`REQ-BUS-05` (AI-Powered Enrichment & Push-Gate Control)**: The engine must support identifying undocumented or sparsely documented public API elements during code ingestion (excluding elements marked with ignore tags like `\cond` or `DOC-IGNORE`). The base language for all docstrings and primary documentation is strictly **English**. It must run on a secure server-side gate (CI/CD check or server hook) and support four configurable execution modes, strictly separating read-only gate-validation from write-enabled code modification:
+  * *Target Release*: v1.0 (MVP)
   * **Reject Mode (`reject-undocumented`)**: The core orchestrator runs in read-only mode, performs a documentation coverage audit against the defined gate threshold, and strictly blocks the push/merge of undocumented code (exiting with an error code) without invoking live LLM APIs.
   * **Allow/Warn Mode (`allow-undocumented`)**: The core orchestrator generates detailed warnings and coverage audits in English but permits the push/merge.
   * **Auto-Document Mode (`auto-document`)**: If undocumented code is detected, the pipeline triggers an independent, write-enabled enrichment tool (`ude-enrich` or subcommand `ude document`). This tool requests English docstrings from the secure LLM and writes them back to the source codebase in a hands-free manner.
@@ -84,6 +89,7 @@ A modular, pipeline-based system (UDE) that:
   * *Context-Rich Ingestion*: To ensure high documentation fidelity, the `ude-enrich` tool must extract and transmit both the **entity declaration (signature)** and the **entity definition (implementation body)** to the LLM, giving the AI full semantic context of the business logic, state mutations, and raised exceptions, while writing back only the generated docstrings.
   * *Offline Local Execution*: Local execution of the core UDE orchestrator by developers must operate offline by default, utilizing local caches or mock placeholders without invoking live AI API requests to safeguard operational budgets.
 * **`REQ-BUS-06` (Zero-Effort Localization & Asynchronous Translation Governance)**: The documentation system must support high-quality multi-language generation with zero developer translation overhead, employing English as the source and an **incremental translation cache** for other target languages, supporting **human override schemas** (committed to Git) for manual quality control.
+  * *Target Release*: Future Phase (v2.0+) (DEFERRED - OUT OF SCOPE FOR V1.0)
   * *XLIFF Industry Standard Integration*: The Translation Manager must have the ability to export the source English documentation together with any AI-proposed draft translations in standard **XLIFF (`.xlf`)** format. This package can be sent to external translators and subsequently imported back, seamlessly updating the translation cache with professional-grade localized segments.
   * *Asynchronous Verification*: Because human translation verification is asynchronous and can take a long time, the translation review cycle must be fully decoupled from developer velocity:
     1. Developers push and verify code in English without being blocked by translation audits.
@@ -92,11 +98,14 @@ A modular, pipeline-based system (UDE) that:
     4. Until verified, the rendering system falls back to the source English or displays the target language with an explicit "AI-translated draft" badge, depending on project configuration.
   * *Write Gating*: Write access to update the remote translation cache database remains strictly restricted to authorized Translation Manager accounts/roles via CI/CD secrets and Git `CODEOWNERS`.
 * **`REQ-BUS-07` (Build & Execution Reporting)**: The engine must generate comprehensive performance, file, and API token usage/cost metrics after every compilation run to track operational footprint.
+  * *Target Release*: v1.0 (MVP) (performance and token cost metrics); Future Phase (v2.0+) (translation cache efficiency metrics)
 * **`REQ-BUS-08` (Documentation Coverage Audit)**: The engine must quantify the documentation status of all public API entities, providing detailed coverage metrics and CI/CD quality gate enforcement.
+  * *Target Release*: v1.0 (MVP)
 * **`REQ-BUS-09` (Seamless Pipeline Automation)**: The system must be fully automatible inside standard containerized and serverless CI/CD environments (GitHub Actions, GitLab CI, Jenkins, etc.), removing any requirements for interactive steps or manual intervention during standard compilation runs.
+  * *Target Release*: v1.0 (MVP)
 
 ---
 
 ## 4. Scope and Constraints
-* **In-Scope**: Multi-source parsing (Doxygen XML, Doc-o-matic XML, direct source files via tree-sitter/Clang/regex) for C++, C#, Java, Python; Intermediate Representation (IR) mapping; Multi-format rendering (HTML, Markdown, RAG JSON, XML); Enterprise-compliant secure cloud translation; Hands-free CI/CD pipeline automation; Execution and coverage reporting.
-* **Out-of-Scope**: Writing proprietary code-compilers, direct hosting/DNS management, implementing custom web search crawlers from scratch.
+* **In-Scope**: Multi-source parsing (Doxygen XML baseline); Intermediate Representation (IR) mapping; Multi-format rendering (HTML, Markdown, RAG JSON, XML); Hands-free CI/CD pipeline automation; Execution and coverage reporting.
+* **Out-of-Scope**: Writing proprietary code-compilers, direct hosting/DNS management, implementing custom web search crawlers from scratch, enterprise cloud translation and multilingual localization features (deferred to Future Phase v2.0+).
