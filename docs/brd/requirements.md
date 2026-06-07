@@ -1,0 +1,27 @@
+---
+sidebar_position: 3
+---
+
+# 3. High-Level Business Requirements
+
+:::info Document Version Information
+* **Current Document Version**: `0.1`
+* **Status**: `Requirements Gathering & Draft Specifications`
+* **Date**: June 7, 2026
+:::
+
+The core high-level business requirements form the traceability baseline for the system:
+
+* **`REQ-BUS-01` (Extensible Multi-Language Input)**: The engine must support multi-language parsing (with **C++, C#, Java, and Python** as the initial base set) utilizing a decoupled frontend architecture.
+* **`REQ-BUS-02` (Multi-Format Rendering Engine)**: The engine must support rendering its language-agnostic Intermediate Representation (IR) into multiple configurable target formats including, but not limited to, **HTML, Markdown (generic and optimized for SSGs like Hugo or VitePress), RAG JSON, and structured XML** to fulfill diverse publishing requirements.
+* **`REQ-BUS-03` (Git Integrity & Storage Optimization)**: Automated API Reference generation must run "on-the-fly" in CI/CD without polluting Git repositories with compiled Markdown/HTML, except for necessary inputs like translation caches and manual override database files. To minimize repository size, storage footprint, and git network bandwidth, all intermediate data and cache files stored in Git (such as translation caches and Intermediate Representation databases) must be persisted in a compressed file format (specifically Gzip-compressed JSON `.json.gz`), transparently handled by the engine.
+* **`REQ-BUS-04` (RAG Optimization)**: The engine must support exporting structured, metadata-rich JSON files specifically optimized to feed enterprise AI semantic search engines and developer chat-bots.
+* **`REQ-BUS-05` (AI-Powered Enrichment & Push-Gate Control)**: The engine must support identifying undocumented or sparsely documented public API elements during code ingestion (excluding elements marked with ignore tags like `\cond` or `DOC-IGNORE`). The base language for all docstrings and primary documentation is strictly **English**. It must run on a secure server-side gate (CI/CD check or server hook) and support four configurable execution modes, strictly separating read-only gate-validation from write-enabled code modification:
+  * **Reject Mode (`reject-undocumented`)**: The core orchestrator runs in read-only mode, performs a documentation coverage audit against the defined gate threshold, and strictly blocks the push/merge of undocumented code (exiting with an error code) without invoking live LLM APIs.
+  * **Allow/Warn Mode (`allow-undocumented`)**: The core orchestrator generates detailed warnings and coverage audits in English but permits the push/merge.
+  * **Auto-Document Mode (`auto-document`)**: If undocumented code is detected, the pipeline triggers an independent, write-enabled enrichment tool (`ude-enrich` or subcommand `ude document`). This tool requests English docstrings from the secure LLM and writes them back to the source codebase in a hands-free manner.
+  * **Verify-Document Mode (`verify-document`)**: If undocumented code is detected, the pipeline triggers the `ude-enrich` tool to generate draft AI docstrings in English and inject them as non-blocking proposals (e.g., Pull Request Suggestions or dedicated draft branches), blocking merge completion until a developer reviews and approves them.
+* **`REQ-BUS-06` (Zero-Effort Localization & Asynchronous Translation Governance)**: The documentation system must support high-quality multi-language generation with zero developer translation overhead, employing English as the source and an **incremental translation cache** for other target languages, supporting **human override schemas** (committed to Git) for manual quality control.
+* **`REQ-BUS-07` (Build & Execution Reporting)**: The engine must generate comprehensive performance, file, and API token usage/cost metrics after every compilation run to track operational footprint.
+* **`REQ-BUS-08` (Documentation Coverage Audit)**: The engine must quantify the documentation status of all public API entities, providing detailed coverage metrics and CI/CD quality gate enforcement.
+* **`REQ-BUS-09` (Seamless Pipeline Automation)**: The system must be fully automatible inside standard containerized and serverless CI/CD environments (GitHub Actions, GitLab CI, Jenkins, etc.), removing any requirements for interactive steps or manual intervention during standard compilation runs.

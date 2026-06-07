@@ -7,6 +7,12 @@ slug: /
 
 Welcome to the **Universal Document Engine (UDE)** specifications and architectural blueprint portal. This workspace contains the complete development lifecycle documentation, following the **Docs-as-Code** paradigm.
 
+:::info Document Version Information
+* **Current Document Version**: `0.1`
+* **Status**: `Requirements Gathering & Draft Specifications` (сбор требований)
+* **Date**: June 7, 2026
+:::
+
 ## 🧭 Navigation Portal
 
 Select one of the specialized documents from the sidebar or click below to explore the specifications:
@@ -16,24 +22,29 @@ graph TD
     A[Welcome & Intro] --> B[1. Business Requirements - BRD]
     B --> C[2. Software Requirements - SRS]
     C --> D[3. Software Design - SDD]
+    D --> E[4. Release Planning & Roadmap]
     
     style A fill:#4f46e5,stroke:#312e81,stroke-width:2px,color:#fff
     style B fill:#0ea5e9,stroke:#1e3a8a,stroke-width:2px,color:#fff
     style C fill:#06b6d4,stroke:#083344,stroke-width:2px,color:#fff
     style D fill:#10b981,stroke:#064e3b,stroke-width:2px,color:#fff
+    style E fill:#8b5cf6,stroke:#5b21b6,stroke-width:2px,color:#fff
 ```
 
 ### 📋 Section Directory
 
 * **[1. Business Requirements Document (BRD)](/docs/brd/)**
-  * Describes the business context, pain points (Legacy Doxygen HTML, desynchronization), and the overarching objective of UDE.
-  * Contains core business goals: `REQ-BUS-01` through `REQ-BUS-04`.
+  * Describes the business context, goals, and key motivations behind UDE.
+  * **Sections**: [Introduction & Objectives](/docs/brd/), [Business Context & Pain Points](/docs/brd/context), [Business Requirements](/docs/brd/requirements), [Scope & Constraints](/docs/brd/scope).
 * **[2. Software Requirements Specification (SRS)](/docs/srs/)**
-  * Detailing full functional specifications for parsing (XML Ingestion, Entity Extraction) and rendering modules (Hugo and structured AI RAG).
-  * Outlines system performance, test coverage, and architectural modularity NFRs.
+  * Specifying detailed functional and non-functional requirements for the pipeline engine.
+  * **Sections**: [Introduction & System Overview](/docs/srs/), [Functional Requirements](/docs/srs/functional), [Non-Functional Requirements](/docs/srs/non_functional).
 * **[3. Software Design Document (SDD)](/docs/sdd/)**
-  * Outlines the pipeline-driven design decoupling the parsing frontends from template-driven markdown backends.
-  * Maps intermediate representation (IR) schemas and dataclass models.
+  * Outlines the pipeline-driven architecture and intermediate representation formats.
+  * **Sections**: [Introduction & Paradigm](/docs/sdd/), [Architectural Design](/docs/sdd/architecture), [Data Model (IR)](/docs/sdd/data_model).
+* **[4. Release Planning & Roadmap](/docs/roadmap/)**
+  * Details how the business and system requirements map to specific release cycles.
+  * **Sections**: [Document Version History](/docs/roadmap/), [MVP (v1.0) Release Plan](/docs/roadmap/mvp_v1), [Future Releases (v2.0+)](/docs/roadmap/future_v2).
 
 ---
 
