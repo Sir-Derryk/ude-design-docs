@@ -11,32 +11,29 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: 'Modular Ingestion',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Built with decoupled frontend parsers that ingest structured AST trees and Doxygen XML representations to extract rich semantic models.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Docs-as-Code',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Enables seamless version control, regression tracking, and peer reviews of project specifications including BRD, SRS, and SDD.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Decoupled Performance',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        A normalization layer translates source representations into clean Intermediate Representation (IR) schemas, optimized for SSG and RAG AI workflows.
       </>
     ),
   },
