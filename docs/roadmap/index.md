@@ -35,5 +35,5 @@ gantt
     Advanced AST Parsers          : 2026-07-21, 2026-08-05
 ```
 
-1. **[MVP (v1.0) Release Plan](/docs/roadmap/mvp_v1)**: Focuses on core parsing, AST extraction, CommonMark rendering, push-gating, and complete local execution.
-2. **[Future Releases (v2.0+)](/docs/roadmap/future_v2)**: Introduces AI translation workflows, asynchronous translation lifecycle status databases, XLIFF import/export subcommands, and tree-sitter direct code parsers.
+1. **[MVP (v1.0) Release Plan](./mvp_v1.md)**: Focuses on core parsing, AST extraction, CommonMark rendering, push-gating, and complete local execution.
+2. **[Future Releases (v2.0+)](./future_v2.md)**: Introduces AI translation workflows, asynchronous translation lifecycle status databases, XLIFF import/export subcommands, and tree-sitter direct code parsers.

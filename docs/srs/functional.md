@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Functional Requirements (Traceability Core)
 
-:::info Document Version Information
+:::info[Document Version Information]
 * **Current Document Version**: `0.1`
 * **Status**: `Requirements Gathering & Draft Specifications`
 * **Date**: June 7, 2026

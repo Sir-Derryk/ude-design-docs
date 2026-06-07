@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 3. Software Design (SDD) — Introduction
 
-:::info Document Version Information
+:::info[Document Version Information]
 * **Current Document Version**: `0.1`
 * **Status**: `Requirements Gathering & Draft Specifications`
 * **Date**: June 7, 2026

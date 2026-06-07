@@ -46,10 +46,15 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/Sir-Derryk/ude-design-docs/tree/main/',
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: '0.1 (Requirements)',
+              path: '0.1',
+            },
+          },
         },
         blog: false,
         theme: {
@@ -79,6 +84,10 @@ const config: Config = {
           label: 'Specifications',
         },
         {
+          type: 'docsVersionDropdown',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/Sir-Derryk/ude-design-docs',
           label: 'GitHub',
           position: 'right',
@@ -93,7 +102,7 @@ const config: Config = {
           items: [
             {
               label: 'Specifications',
-              to: '/docs',
+              to: '/docs/0.1',
             },
           ],
         },
