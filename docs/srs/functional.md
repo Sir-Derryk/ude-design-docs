@@ -18,6 +18,14 @@ sidebar_position: 2
   * *Future Phases (v2.0+)*: Subsequent parser plugins must be developed to directly parse raw code files on a per-language basis using advanced technologies (including `libclang` AST, `tree-sitter` AST parsers, and custom regular expressions) to enrich the catalog.
   * *Traces to*: `REQ-BUS-01`
 
+* **`REQ-FUN-19` (C++ Export Macro Filtering)**:
+  * *Version 1 (Baseline / MVP)*: The parsing module must automatically identify and strip compiler linkage/export macros (such as `NWDBEXPORT`, `MAPEXPORT`, `FACETMODELER_EXPORT`, etc.) from C++ class, structure, and method declarations during entity extraction, preventing them from polluting the name fields of the Intermediate Representation (IR).
+  * *Traces to*: `REQ-BUS-01`
+
+* **`REQ-FUN-20` (SWIG Wrapper Internal Exclusions)**:
+  * *Version 1 (Baseline / MVP)*: When processing SWIG-generated C#, Java, or Python source files, the parsing module must support an option to automatically exclude low-level plumbing methods, fields, and constructors (including `swigCPtr`, `swigCMemOwn`, `Dispose()`, `getCPtr()`, class delegates, and SwigDirector callbacks) if `exclude_swig_internals` is set to `true` in `output.json`. This ensures that only the actual public API surface is documented and audited by the Quality Gate.
+  * *Traces to*: `REQ-BUS-01`, `REQ-BUS-08`
+
 * **`REQ-FUN-14` (Comment Markup Normalization)**:
   * *Version 1 (Baseline / MVP)*: The parsing module must normalize raw extracted comment blocks and docstrings (supporting various formats such as Doxygen, Javadoc, Google docstring style, and Doc-o-matic) into a unified **CommonMark Markdown** representation within the Intermediate Representation (IR). This normalization process must parse specific tags (e.g., `\param`, `@return`, etc.) into structured schema elements, leaving only standardized Markdown in prose fields, thereby completely decoupling output templates and renderers from input-level comment markup styles.
   * *Traces to*: `REQ-BUS-01`
