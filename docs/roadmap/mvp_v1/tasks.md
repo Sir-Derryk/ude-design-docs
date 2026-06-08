@@ -2,88 +2,219 @@
 sidebar_position: 2
 ---
 
-# MVP Development Tasks (TDD Approach)
+# MVP Development Tasks (TDD Specification)
 
-This document outlines the detailed development tasks required to build the **Universal Document Engine (UDE) MVP v1.0**. 
+This document specifies the exact, step-by-step development tasks required to build the **Universal Document Engine (UDE) MVP v1.0**.
 
-In alignment with our engineering standards, we strictly follow the **Test-Driven Development (TDD)** methodology: **Red (write failing test) ➡️ Green (write minimal code to pass test) ➡️ Refactor (clean up code while keeping test green)**.
-
----
-
-## 🛠️ Task Group 1: Testing & CI/CD Infrastructure (TDD Base)
-
-*   **`TSK-INF-01` (Dependency & Testing Harness Initialization)**:
-    *   *TDD Step*: Write a simple verification test asserting that the testing harness runs, can import a dummy python module, and outputs test coverage metrics.
-    *   *Implementation*: Initialize the Python project using **Poetry** (or pip/venv). Install and configure `pytest`, `pytest-cov`, `pydantic>=2.0`, `jinja2`, and `lxml`.
-*   **`TSK-INF-02` (Mock XML Asset Ingestion Harness)**:
-    *   *TDD Step*: Write a failing test asserting that a mock-loader helper class can locate and load a sample mock Doxygen XML file from `tests/assets/` directory.
-    *   *Implementation*: Create a directory structure for unit tests and populate `tests/assets/` with minimal valid Doxygen XML snippets (representing sample C++, C#, Java, and Python declarations).
+In alignment with our engineering standards, we strictly follow the **Test-Driven Development (TDD)** methodology. For every single task, development must proceed through the following lifecycle:
+1. **RED Phase**: Write failing unit tests checking the specified interfaces, inputs, and validation criteria.
+2. **GREEN Phase**: Implement the minimal functional code required to make the tests pass.
+3. **REFACTOR Phase**: Clean up, optimize, and modularize the implementation while ensuring the test suite remains 100% green.
 
 ---
 
-## 💾 Task Group 2: Intermediate Representation (IR) Schema & Storage (TDD)
+## 🛠️ Task Group 1: Testing & CI/CD Infrastructure
 
-*   **`TSK-DAT-01` (Pydantic Model Schema Validation)**:
-    *   *TDD Step*: Write failing unit tests that assert Pydantic validation behavior:
-        1. Assert that a valid representation object (containing namespace, class, method, parameters, and comments) is successfully instantiated without errors.
-        2. Assert that missing or typed-mismatched fields throw a validation exception (`ValidationError`).
-    *   *Implementation*: Define the Intermediate Representation (IR) schemas in Python using **Pydantic v2** models (`ProjectCatalog`, `NamespaceEntity`, `ClassEntity`, `MethodEntity`, `ParameterField`).
-*   **`TSK-DAT-02` (Gzip Storage & Transparent Compression)**:
-    *   *TDD Step*: Write failing unit tests for checking Gzip transparent file I/O operations (`REQ-FUN-11`):
-        1. Assert that a test catalog dictionary serialized into Gzip output results in a binary file with the extension `.json.gz`.
-        2. Assert that reading back the Gzip file accurately restores the original Pydantic model with byte-for-byte fidelity.
-    *   *Implementation*: Write a transparent Gzip serialization/deserialization utility using Python's native `gzip` and `json` modules.
+### `TSK-INF-01` (Dependency & Testing Harness Initialization)
+*   **Part 1: Implementation Guide**:
+    *   Initialize a Python project within the `engine/` submodule directory using the **Poetry** package manager.
+    *   Create a standard `pyproject.toml` file.
+    *   Add production dependencies: `pydantic>=2.0`, `jinja2`, `lxml` (or use standard `xml.etree` where safe).
+    *   Add development dependencies: `pytest`, `pytest-cov`, `black`, `mypy`.
+    *   Set up the basic directory structure: `universal_document_engine/` (source code root) and `tests/` (testing suite root).
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_harness.py` asserting that `universal_document_engine` is importable and that `universal_document_engine.__version__` matches `"0.1.0"`. Run `poetry run pytest` (or `pytest`) to verify it fails due to the missing module.
+    *   *TDD Green Phase*: Create `universal_document_engine/__init__.py` declaring `__version__ = "0.1.0"`.
+    *   *Verification Command*:
+        ```bash
+        pytest --cov=universal_document_engine tests/
+        ```
+    *   *Expected Result*: Tests pass with 100% coverage on `__init__.py`.
 
----
-
-## 🔌 Task Group 3: Modular Interfaces & Doxygen Ingestion (TDD)
-
-*   **`TSK-PAR-01` (Abstract Module & Interface Design)**:
-    *   *TDD Step*: Write failing tests asserting that attempting to directly instantiate `BaseParser` or `BaseRenderer` raises a `TypeError` (since they must be abstract), and that inheriting classes must implement `.parse()` and `.render()` methods.
-    *   *Implementation*: Define abstract base classes (`BaseParser`, `BaseRenderer`) and custom exception hierarchies (`UdeException`, `ParserError`, `RendererError`) using the native `abc` module (`REQ-NFN-02`).
-*   **`TSK-PAR-02` (Doxygen XML Ingestion & Extractors)**:
-    *   *TDD Step*: Write failing unit tests for `DoxygenXmlParser` feeding various mock XML snippets (`REQ-FUN-02`):
-        1. Feed C++ namespace and class XML, and assert that fields match expected types.
-        2. Feed C# automatic properties, Java package hierarchies, and Python class functions.
-    *   *Implementation*: Implement `DoxygenXmlParser` inheriting from `BaseParser` using the high-performance `lxml` parser library (falling back to native `xml.etree` where appropriate).
-
----
-
-## 📝 Task Group 4: Docstring Normalization & Ignore Filters (TDD)
-
-*   **`TSK-NML-01` (Comment Markup Normalizer)**:
-    *   *TDD Step*: Write failing unit tests for the `CommentNormalizer` class (`REQ-FUN-14`):
-        1. Input a Javadoc comment block containing `@param value Description` and `@return int` and assert that the normalizer parses parameter metadata into structured fields and converts the remainder into raw CommonMark Markdown.
-        2. Input a Google-style docstring block and assert equivalent CommonMark extraction.
-    *   *Implementation*: Build regex-based parsing rules within the normalizer class to strip and isolate Javadoc and Doxygen-style decorators, mapping them to CommonMark.
-*   **`TSK-NML-02` (Ignore Tags & Range Exclusion Filters)**:
-    *   *TDD Step*: Write failing unit tests for range boundary checks (`REQ-FUN-13`):
-        1. Feed an XML catalog containing a class block bounded by `DOM-IGNORE-BEGIN` and `DOM-IGNORE-END` comments, and assert that the parser completely omits this class from the final output IR.
-        2. Feed a compound containing `@cond` / `@endcond` and `@internal` tags, and assert structural exclusions.
-    *   *Implementation*: Implement pre-filtering logic in the XML parser to identify and skip block elements located within ignore ranges.
+### `TSK-INF-02` (Mock XML Asset Ingestion Harness)
+*   **Part 1: Implementation Guide**:
+    *   Create a testing asset manager helper class `MockAssetLoader` in `tests/utils.py`.
+    *   Set up a mock asset directory: `tests/assets/doxygen/`.
+    *   Create mock XML files:
+        *   `index.xml`: Structure mapping a project namespaces catalog.
+        *   `class_definition.xml`: Mock XML representing a C++ class with fields and public methods.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write a unit test `tests/test_assets.py` trying to instantiate `MockAssetLoader().load_xml("index.xml")` and asserting that it returns an XML string. Verify it fails because `tests/utils.py` does not exist.
+    *   *TDD Green Phase*: Implement `MockAssetLoader` in `tests/utils.py` using standard file I/O to read from `tests/assets/doxygen/`.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_assets.py
+        ```
+    *   *Expected Result*: Green assertions confirming that mock files are correctly located and loaded as string/binary.
 
 ---
 
-## 🎨 Task Group 5: Template-Based Rendering Engine (TDD)
+## 💾 Task Group 2: Intermediate Representation (IR) Schema & Storage
 
-*   **`TSK-RND-01` (Jinja2 Markdown Compilation & Hugo Layouts)**:
-    *   *TDD Step*: Write failing unit tests for `HugoMarkdownRenderer` (`REQ-FUN-03`):
-        1. Instantiate a test renderer passing a mock Pydantic catalog, and assert that the resulting markdown complies with standard CommonMark syntax.
-        2. Assert that the generated page contains YAML front-matter blocks with correct parameters (`title`, `sidebar_position`).
-    *   *Implementation*: Create Jinja2-based template layouts for Hugo markdown outputs and write a renderer class (`HugoMarkdownRenderer`) that compiles the IR via Jinja2 into the target file structures.
-*   **`TSK-RND-02` (Direct Static HTML Compilation)**:
-    *   *TDD Step*: Write failing unit tests asserting that Direct HTML rendering compiles structural elements into beautiful, localized static HTML files without missing structural links.
-    *   *Implementation*: Define standalone HTML layouts in Jinja2 and write a renderer class (`HtmlRenderer`) to generate local static site bundles.
+### `TSK-DAT-01` (Pydantic Model Schema Validation)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/models.py`.
+    *   Define the core Pydantic v2 schemas for representing the AST data catalog:
+        *   `ProjectCatalog`: Root catalog holding list of namespaces.
+        *   `NamespaceEntity`: Represents namespaces, packages, or module structures.
+        *   `ClassEntity`: Represents classes, interfaces, or structs. Holds name, namespace, docstring, methods, and fields.
+        *   `MethodEntity`: Represents functions, member methods, constructors. Holds name, signature, parameters, return type, and normalized docstring.
+        *   `ParameterField`: Holds name, type, and description.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_models.py` declaring a complete mock `ProjectCatalog` payload with nested types, and asserting that instantiation succeeds. Write another test passing invalid datatypes (e.g., an integer for `fully_qualified_name`) and assert that a `ValidationError` is raised. Verify tests fail due to missing classes.
+    *   *TDD Green Phase*: Create the Pydantic classes inheriting from `pydantic.BaseModel` in `universal_document_engine/models.py` with strict type annotations.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_models.py
+        ```
+    *   *Expected Result*: Success on valid schemas and correct exceptions thrown on validation boundary violations.
+
+### `TSK-DAT-02` (Gzip Storage & Transparent Compression)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/storage.py`.
+    *   Implement saving and loading helper functions:
+        *   `save_compressed_ir(catalog: ProjectCatalog, file_path: str)`: Serializes the Pydantic catalog into JSON, compresses it using the native `gzip` algorithm, and writes it to disk with `.json.gz` extension.
+        *   `load_compressed_ir(file_path: str) -> ProjectCatalog`: Reads a compressed file, decompresses on-the-fly, parses the JSON back into the typed `ProjectCatalog` schema.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_storage.py` asserting that a sample catalog is written to `tests/scratch/temp_ir.json.gz`, that the file on disk is binary/compressed, and that reading it back restores an identical `ProjectCatalog` object.
+    *   *TDD Green Phase*: Implement `save_compressed_ir` and `load_compressed_ir` using standard Python modules `gzip` and `json`.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_storage.py
+        ```
+    *   *Expected Result*: Successful compression and decompression with 100% data fidelity.
 
 ---
 
-## 🚀 Task Group 6: Automation & Integration Gates (TDD Finish)
+## 🔌 Task Group 3: Modular Interfaces & Doxygen Ingestion
 
-*   **`TSK-CLI-01` (Non-Interactive CLI Core)**:
-    *   *TDD Step*: Write failing unit tests simulating CLI argument parsing (`REQ-FUN-07`):
-        1. Pass valid arguments (`--input <dir> --format html --output <dir>`) and assert that the parser compiles successfully and exits with code 0.
-        2. Pass invalid format values or missing parameters and assert that the CLI raises a parser exception and exits with code 1.
-    *   *Implementation*: Build a robust CLI entrypoint using the native `argparse` module, supporting configurations via command line flags and environment variables.
-*   **`TSK-CLI-02` (End-to-End Pipeline & Coverage Verification)**:
-    *   *TDD Step*: Create an end-to-end integration test that boots up the pipeline, parses an actual complex folder of mock XML files, compiles them through Gzip compression, renders them to both HTML and Hugo formats, and asserts structural completeness.
-    *   *Implementation*: Finalize the integration testing suite, run tests with coverage reporting, and optimize/refactor code until the unit test coverage is strictly `>= 90%` (`REQ-NFN-03`).
+### `TSK-PAR-01` (Abstract Module & Interface Design)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/interfaces.py`.
+    *   Define `BaseParser` and `BaseRenderer` as Abstract Base Classes (ABCs) using Python's `abc` module.
+    *   `BaseParser` must enforce an abstract method `.parse(self, input_path: str) -> ProjectCatalog`.
+    *   `BaseRenderer` must enforce an abstract method `.render(self, catalog: ProjectCatalog, output_path: str)`.
+    *   Define custom exceptions: `UdeException`, `ParserError`, `RendererError`.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_interfaces.py` asserting that trying to instantiate `BaseParser()` or `BaseRenderer()` throws `TypeError`. Assert that a dummy parser class that inherits from `BaseParser` but lacks a `.parse()` implementation fails to instantiate.
+    *   *TDD Green Phase*: Implement abstract contracts and custom exceptions in `universal_document_engine/interfaces.py`.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_interfaces.py
+        ```
+    *   *Expected Result*: Interface safety checks pass, guaranteeing modular safety.
+
+### `TSK-PAR-02` (Doxygen XML Ingestion & Extractors)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/parsers/doxygen.py` inheriting from `BaseParser`.
+    *   Implement parsing of the root Doxygen XML catalog (`index.xml`) to extract the list of compound files.
+    *   Parse compound files to extract classes, namespaces, methods, fields, and docstring comments for **C++, C#, Java, and Python** to the unified IR schema.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_doxygen_parser.py` asserting that feeding a mock C++ namespace compound XML returns a `ProjectCatalog` populated with C++ classes, method signatures, parameters, and access scopes. Run pytest and ensure it fails/raises exceptions.
+    *   *TDD Green Phase*: Implement `DoxygenXmlParser` using Python's `lxml` or `xml.etree` libraries, traversing XML structures and mapping tags (e.g. `<compounddef>`, `<memberdef>`) to IR fields.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_doxygen_parser.py
+        ```
+    *   *Expected Result*: Accurate extraction of language-specific API structural metadata into unified schemas.
+
+---
+
+## 📝 Task Group 4: Docstring Normalization & Ignore Filters
+
+### `TSK-NML-01` (Comment Markup Normalizer)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/normalizer.py`.
+    *   Implement `CommentNormalizer` to parse docstrings:
+        *   Convert different comment style markers (e.g., Javadoc `@param`, Doxygen `\param`, `@return`, `\return`) into structured schemas.
+        *   Strips markers and transforms the rest of the text into standard **CommonMark Markdown**.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_normalizer.py` passing a Javadoc string containing `@param count Number of objects` and `@return boolean` and assert that parameter names and descriptions are correctly isolated and mapped to metadata fields, leaving only clean Markdown prose in the description field.
+    *   *TDD Green Phase*: Implement the normalizer using regular expression substitution patterns and metadata dictionary builders.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_normalizer.py
+        ```
+    *   *Expected Result*: Docstrings are decoupled from style, generating uniform CommonMark output.
+
+### `TSK-NML-02` (Ignore Tags & Range Exclusion Filters)
+*   **Part 1: Implementation Guide**:
+    *   Extend `DoxygenXmlParser` to handle exclusion comments (`REQ-FUN-13`):
+        *   Identify range exclusions: Skip all XML elements and code blocks situated between `DOM-IGNORE-BEGIN` and `DOM-IGNORE-END` comments.
+        *   Identify conditional exclusions: Skip elements bounded by `\cond`/`@cond` and `\endcond`/`@endcond`.
+        *   Identify internal exclusions: Skip elements containing `\internal` or `@internal` tags.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_exclusions.py` feeding a Doxygen XML string where one class contains the `\internal` tag and another class is placed between `DOM-IGNORE-BEGIN` and `DOM-IGNORE-END` comments. Assert that the resulting parsed `ProjectCatalog` contains zero reference to these classes.
+    *   *TDD Green Phase*: Implement filter checks within the parser loops that skip compound parsing when exclusion tags or active range flags are encountered.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_exclusions.py
+        ```
+    *   *Expected Result*: Strict execution of exclusion policies, ensuring zero unapproved data leaks.
+
+---
+
+## 🎨 Task Group 5: Template-Based Rendering Engine
+
+### `TSK-RND-01` (Jinja2 Markdown Compilation & Hugo Layouts)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/renderers/hugo_markdown.py` inheriting from `BaseRenderer`.
+    *   Configure a Jinja2 template loader to locate layout templates (e.g., Markdown layouts with front-matter blocks).
+    *   Serialize `ProjectCatalog` elements, injecting YAML/TOML metadata front-matter (such as `title`, `sidebar_position`) at the top of each page file (`REQ-FUN-04`).
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_hugo_renderer.py` instantiating `HugoMarkdownRenderer`, passing a valid catalog, and asserting that the written markdown starts with a valid YAML header containing correct keys and that the compiled body utilizes correct headings.
+    *   *TDD Green Phase*: Implement `HugoMarkdownRenderer` using standard `jinja2.Environment` compiler structures.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_hugo_renderer.py
+        ```
+    *   *Expected Result*: Standardized and beautiful Hugo-compatible Markdown generated on disk.
+
+### `TSK-RND-02` (Direct Static HTML Compilation)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/renderers/static_html.py` inheriting from `BaseRenderer`.
+    *   Write standalone HTML/CSS templates in Jinja2.
+    *   Compile the intermediate representation catalog directly into an organized structure of local static HTML files (`REQ-FUN-03`).
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_html_renderer.py` asserting that rendering a mock catalog results in static HTML pages containing correct navigation headers, class detail links, and valid DOM elements.
+    *   *TDD Green Phase*: Implement `HtmlRenderer` compiling catalog objects directly to HTML layouts via Jinja2.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_html_renderer.py
+        ```
+    *   *Expected Result*: Compilation of direct offline-viewable static HTML pages.
+
+---
+
+## 🚀 Task Group 6: Automation & Integration Gates
+
+### `TSK-CLI-01` (Non-Interactive CLI Core)
+*   **Part 1: Implementation Guide**:
+    *   Create `universal_document_engine/cli.py` containing the main entry point logic.
+    *   Configure `argparse` to parse:
+        *   `--input <dir>` (Doxygen XML directory).
+        *   `--format <html|markdown>` (output rendering format).
+        *   `--output <dir>` (directory for compiled files).
+    *   Ensure that any execution error catches standard exceptions, prints short diagnostics to stderr, and exits with code **`1`**, while successful completion exits with code **`0`** (`REQ-FUN-07`).
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_cli.py` simulating standard sysargv inputs. Assert that passing invalid parameters raises a `SystemExit` exception with code `1` or `2`, and valid arguments exit with `0`.
+    *   *TDD Green Phase*: Implement arguments parsing and pipeline orchestration in `cli.py`.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_cli.py
+        ```
+    *   *Expected Result*: Clean non-interactive automation compatibility with exit status validation.
+
+### `TSK-CLI-02` (End-to-End Pipeline & Coverage Verification)
+*   **Part 1: Implementation Guide**:
+    *   Create a complete end-to-end integration test file `tests/test_integration_pipeline.py`.
+    *   Load all mock files from `tests/assets/doxygen/`, run the parser, write Gzip files, reload, compile to Hugo Markdown and HTML layouts, and verify structural files on disk.
+    *   Refactor and optimize test files across the engine until the aggregate test coverage reaches `>= 90%` (`REQ-NFN-03`).
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_integration_pipeline.py` executing the entire pipeline flow and asserting compiled HTML structures. Run pytest-cov to check current coverage.
+    *   *TDD Green Phase*: Refactor parser helper routines, handle edge cases, and add coverage tests.
+    *   *Verification Command*:
+        ```bash
+        pytest --cov=universal_document_engine tests/
+        ```
+    *   *Expected Result*: Complete green status across all E2E integration suites, and aggregate coverage calculated strictly **`>= 90%`**.
