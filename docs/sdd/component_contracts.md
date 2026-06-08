@@ -12,7 +12,7 @@ sidebar_position: 4
 
 This document defines the strict Python interfaces and class contracts for the core components of the Universal Document Engine (UDE) to ensure loose coupling and modular extensibility.
 
-## 1. Exception Hierarchy
+## Exception Hierarchy
 
 All custom errors in UDE inherit from a unified base exception to enable robust CLI error reporting.
 
@@ -34,7 +34,7 @@ class RendererError(UdeError):
     pass
 ```
 
-## 2. Parser Interface
+## Parser Interface
 
 The Parser component is responsible for reading static source analysis files (e.g., Doxygen XML) and returning a fully populated and validated `ProjectCatalog`.
 
@@ -85,7 +85,7 @@ class BaseParser(ABC):
 
 ---
 
-## 3. Renderer Interface
+## Renderer Interface
 
 The Renderer component accepts a validated `ProjectCatalog` IR and converts it into physical documentation files using **Jinja2** templates.
 
@@ -118,14 +118,14 @@ class BaseRenderer(ABC):
 
 ### Concrete Implementations
 
-#### 1. `HugoMarkdownRenderer`
+#### `HugoMarkdownRenderer`
 * **Inherits from**: `BaseRenderer`
 * **Key Tasks**: 
   - Compiles the hierarchy into markdown files structured for Hugo (e.g., namespace and class folders with `_index.md` files).
   - Automatically injects configurable Front-Matter YAML blocks (e.g., `title`, `draft`, `sidebar_position`).
   - Processes method and class lists into clean Markdown tables.
 
-#### 2. `HtmlRenderer`
+#### `HtmlRenderer`
 * **Inherits from**: `BaseRenderer`
 * **Key Tasks**:
   - Compiles the entire model into a single-page or multi-page static HTML portal.

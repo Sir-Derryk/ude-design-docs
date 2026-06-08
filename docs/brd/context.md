@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 2. Business Context & Pain Points
+# Business Context & Pain Points
 
 :::info[Document Version Information]
 * **Current Document Version**: `0.1`
@@ -10,12 +10,12 @@ sidebar_position: 2
 * **Date**: June 7, 2026
 :::
 
-## 2.1 Current State (As-Is)
+## Current State (As-Is)
 Currently, technical documentation is either:
 * Generated as archaic, uncustomizable, and visually outdated HTML files (e.g., standard Doxygen HTML).
 * Manually copied, edited, and maintained in disconnected wiki systems (e.g., Confluence), leading to rapid desynchronization between code and documentation.
 
-## 2.2 Pain Points (Key Motivators)
+## Pain Points (Key Motivators)
 The development and maintenance of API and technical documentation using legacy documentation systems (such as Doxygen HTML, Sphinx, or MkDocs) suffer from several critical shortcomings, categorized as follows:
 
 ### A. UI/UX and Aesthetic Constraints
@@ -49,7 +49,7 @@ The development and maintenance of API and technical documentation using legacy 
 * **No Native JSON RAG Exporter**: Lack of a dedicated, high-density JSON export format specifically optimized for Retrieval-Augmented Generation (RAG) pipelines.
 * **Coarse-Grained Context Retrieval**: Standard layouts cannot easily be chunked at the logical block level (e.g., individual method signatures), resulting in bloated or incomplete context injection in AI assistants.
 
-## 2.3 Desired State (To-Be)
+## Desired State (To-Be)
 A modular, pipeline-based system (UDE) that:
 1. Automatically parses structure from code (via Doxygen XML).
 2. Generates clean, SEO-optimized, highly aesthetic documentation.

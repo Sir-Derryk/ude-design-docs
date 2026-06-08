@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# 3. High-Level Business Requirements
+# High-Level Business Requirements
 
 :::info[Document Version Information]
 * **Current Document Version**: `0.1`

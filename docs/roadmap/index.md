@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 4. Release Planning & Document History
+# Release Planning & Document History
 
 This section details how the business and software requirements of the **Universal Document Engine (UDE)** are distributed across developmental release milestones, and tracks the version history of this specification document.
 

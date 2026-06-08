@@ -12,7 +12,7 @@ sidebar_position: 5
 
 The Universal Document Engine provides a modular Command Line Interface (CLI) called `ude` to execute pipelines locally and offline.
 
-## 1. Command Structure
+## Command Structure
 
 The CLI is structured into high-level orchestrators and low-level utility commands.
 
@@ -23,7 +23,7 @@ ude
 └── render              # Lower-level renderer: ingests compressed IR (.json.gz) and outputs docs
 ```
 
-### 1.1 `ude compile`
+### `ude compile`
 Executes the full pipeline: ingests raw analysis data, validates IR, and renders pages in a single step.
 
 * **Arguments**:
@@ -32,7 +32,7 @@ Executes the full pipeline: ingests raw analysis data, validates IR, and renders
   * `--output, -o`: Target output directory (overrides config).
   * `--format, -f`: Output format: `hugo` or `html` (overrides config).
 
-### 1.2 `ude parse`
+### `ude parse`
 Performs the frontend ingestion phase only, saving the validated IR to a compressed file.
 
 * **Arguments**:
@@ -40,7 +40,7 @@ Performs the frontend ingestion phase only, saving the validated IR to a compres
   * `--input, -i`: Path to raw input files (overrides config).
   * `--output, -o`: Path to the target compressed IR file (default: `./ude_ir.json.gz`).
 
-### 1.3 `ude render`
+### `ude render`
 Performs the backend rendering phase only, reading the compressed IR.
 
 * **Arguments**:
@@ -50,7 +50,7 @@ Performs the backend rendering phase only, reading the compressed IR.
 
 ---
 
-## 2. Configuration File (`ude.toml`)
+## Configuration File (`ude.toml`)
 
 Users can control the pipeline execution using a standard `ude.toml` configuration file in their repository root:
 
@@ -73,7 +73,7 @@ templates_dir = "templates"
 
 ---
 
-## 3. Storage and Gzip Compression (IR)
+## Storage and Gzip Compression (IR)
 
 To prevent cluttering Git commits and bloating repository storage, the IR intermediate file is aggressively compressed:
 1. When `ude parse` finishes, the memory model `ProjectCatalog.model_dump_json()` is serialized to UTF-8.
@@ -83,7 +83,7 @@ To prevent cluttering Git commits and bloating repository storage, the IR interm
 
 ---
 
-## 4. Exit Codes
+## Exit Codes
 
 To integrate cleanly with CI/CD pipelines, the CLI returns standardized exit codes:
 * `0`: Pipeline completed successfully.

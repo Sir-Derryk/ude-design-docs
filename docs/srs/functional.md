@@ -10,18 +10,21 @@ sidebar_position: 2
 * **Date**: June 7, 2026
 :::
 
-## 2.1 Extensible Parsing Module
+## Extensible Parsing Module
 * **`REQ-FUN-01` (Multi-Source Ingestion Phasing)**: 
   * *Version 1 (Baseline / MVP)*: The engine must ingest Doxygen-generated XML files (`index.xml` and compound files) as its primary input format to build the documentation catalog.
   * *Future Phases (v2.0+)*: The parser architecture must be loosely coupled, enabling subsequent ingestion of other XML sources (e.g., Doc-o-matic XML) or direct raw code files via pluggable frontends without modifying the core pipeline.
   * *Traces to*: `REQ-BUS-01`
 * **`REQ-FUN-02` (Multi-Language API Entity Extraction)**:
-  * *Version 1 (Baseline / MVP)*: The engine must parse and extract structural API elements from the Doxygen XML output for **C++, C#, Java, and Python**, mapping them to a unified, language-agnostic Intermediate Representation (IR). Extracted entities must include namespaces, classes, structures, methods, member functions, fields, parameters, return types, access scopes (public/protected), and associated docstrings/comment blocks.
-  * *Comment Markup Normalization*: The parsing module must normalize raw extracted comment blocks and docstrings (supporting various formats such as Doxygen, Javadoc, Google docstring style, and Doc-o-matic) into a unified **CommonMark Markdown** representation within the Intermediate Representation (IR). This normalization process must parse specific tags (e.g., `\param`, `@return`, etc.) into structured schema elements, leaving only standardized Markdown in prose fields, thereby completely decoupling output templates and renderers from input-level comment markup styles.
+  * *Version 1 (Baseline / MVP)*: The engine must parse and extract structural API elements from the Doxygen XML output for **C++, C#, Java, and Python**, mapping them to a unified, language-agnostic Intermediate Representation (IR). Extracted entities must include namespaces, classes, structures, methods, member functions, fields, parameters, return types, access scopes (public/protected), and associated comment blocks.
   * *Future Phases (v2.0+)*: Subsequent parser plugins must be developed to directly parse raw code files on a per-language basis using advanced technologies (including `libclang` AST, `tree-sitter` AST parsers, and custom regular expressions) to enrich the catalog.
   * *Traces to*: `REQ-BUS-01`
 
-## 2.2 Multi-Format Formatting & Output Module
+* **`REQ-FUN-14` (Comment Markup Normalization)**:
+  * *Version 1 (Baseline / MVP)*: The parsing module must normalize raw extracted comment blocks and docstrings (supporting various formats such as Doxygen, Javadoc, Google docstring style, and Doc-o-matic) into a unified **CommonMark Markdown** representation within the Intermediate Representation (IR). This normalization process must parse specific tags (e.g., `\param`, `@return`, etc.) into structured schema elements, leaving only standardized Markdown in prose fields, thereby completely decoupling output templates and renderers from input-level comment markup styles.
+  * *Traces to*: `REQ-BUS-01`
+
+## Multi-Format Formatting & Output Module
 * **`REQ-FUN-03` (Multi-Format Rendering)**: The engine must support rendering the extracted Intermediate Representation (IR) into a configurable choice of target formats, supporting **HTML, Markdown (generic or SSG-tailored), XML, and RAG JSON**.
   * *Traces to*: `REQ-BUS-02`
 * **`REQ-FUN-04` (Metadata Configuration)**: For page-based outputs (such as Markdown or HTML), the engine must allow customized metadata/front-matter layout injections (e.g. YAML/TOML blocks with title, order, and parent keys) via templates.
@@ -37,26 +40,42 @@ sidebar_position: 2
     5. `dependencies`: A list of fully qualified names of related entities or call references to allow external systems to reconstruct code dependency graphs.
   * *Traces to*: `REQ-BUS-04`
 
-## 2.3 Localization & Enrichment Module
-* **`REQ-FUN-06` (AI-Powered Translation & Asynchronous Lifecycle)**: 
+## Localization & Enrichment Module
+* **`REQ-FUN-06` (AI Translation Lifecycle & States)**: 
   * *Target Release*: Future Phase (v2.0+)
   * *Translation Lifecycle Statuses*: Each translation entry in the cache database must support a state metadata flag: `draft` (default for AI-generated translations) or `verified` (marked after Translation Manager manual review/override or XLIFF import).
-  * *Decoupled Non-Blocking Workflow*: The translation review cycle must be decoupled from code integration. Standard development builds must render `draft` translations (optionally displaying a configurable "AI-translated draft" warning banner) or fall back to the source English language, ensuring developer velocity is not impacted by manual localization checks.
   * *Translation Pipeline Triggers*: The translation generator module must execute strictly upon commits or merges into the primary production branch (**`master`**). Standard feature-branch builds are restricted from making live translation API calls and must execute in secure Read-Only mode.
+  * *Traces to*: `REQ-BUS-06`
+
+* **`REQ-FUN-18` (Asynchronous Non-Blocking Translation CLI)**:
+  * *Target Release*: Future Phase (v2.0+)
+  * *Decoupled Non-Blocking Workflow*: The translation review cycle must be decoupled from code integration. Standard development builds must render `draft` translations (optionally displaying a configurable "AI-translated draft" warning banner) or fall back to the source English language, ensuring developer velocity is not impacted by manual localization checks.
   * *Access Control Modes*: The CLI must support a `--read-only-cache` flag (active by default for general CI/CD builds) to parse and render using existing translation files without making writes, and a `--write-cache` flag (restricted to authorized Translation Manager sessions in CI/CD) to safely commit updates and state promotion (from `draft` to `verified`) to the translation database.
   * *Traces to*: `REQ-BUS-06`
-* **`REQ-FUN-08` (Server-Side Push-Gate Verification & Gate Exclusions)**: 
+* **`REQ-FUN-08` (Server-Side Push-Gate Enforcement Modes)**: 
+  * *Target Release*: Future Phase (v2.0+)
+  * *Server-Side Modes*: Under `--push-gate-mode`, the gate enforces policies (`reject`, `allow`, `auto-document`, `verify-document`).
+  * *Traces to*: `REQ-BUS-08`
+
+* **`REQ-FUN-15` (Quality Gate Scope & Completeness Criteria)**:
   * *Target Release*: Future Phase (v2.0+)
   * *Quality Gate Scope*: The Quality Gate calculates documentation coverage over all public (`public`) and protected (`protected`) API entities (including classes, interfaces, methods, functions, properties, fields, enums, structs, constants, constructors, etc.) within the scope of code ingestion.
-  * *Automatic Exclusions*: The following elements are automatically excluded from the Quality Gate denominator:
-    1. Overridden methods that are explicitly inherited without structural changes from base classes or external system libraries (e.g., `Equals`, `GetHashCode`, `ToString` in Java/C#, or `__str__`, `__repr__` in Python).
-    2. Trivial property getters and setters (e.g., automatic properties `get; set;` in C#) containing no custom user logic.
   * *Documentation Completeness Criteria*: An entity is classified as fully "documented" if and only if:
     1. It has a non-empty, meaningful prose description in its docstring.
     2. If the entity is a method or function containing parameters or a return value, every single parameter and the return value must also have non-empty, associated descriptions in the docstring schema.
-  * *Server-Side Modes*: Under `--push-gate-mode`, the gate enforces policies (`reject`, `allow`, `auto-document`, `verify-document`).
-  * *Offline Local Execution*: When executed outside a CI/CD environment (detected via environment variables or explicitly passed CLI flags), UDE must enforce an offline-by-default execution policy, utilizing local cache databases or mock placeholders instead of billing live LLM APIs.
+  * *Traces to*: `REQ-BUS-08`
+
+* **`REQ-FUN-16` (Quality Gate Automatic Exclusions)**:
+  * *Target Release*: Future Phase (v2.0+)
+  * *Automatic Exclusions*: The following elements are automatically excluded from the Quality Gate denominator:
+    1. Overridden methods that are explicitly inherited without structural changes from base classes or external system libraries (e.g., `Equals`, `GetHashCode`, `ToString` in Java/C#, or `__str__`, `__repr__` in Python).
+    2. Trivial property getters and setters (e.g., automatic properties `get; set;` in C#) containing no custom user logic.
   * *Traces to*: `REQ-BUS-05`, `REQ-BUS-08`
+
+* **`REQ-FUN-17` (Offline Local Gate Fallbacks)**:
+  * *Target Release*: Future Phase (v2.0+)
+  * *Offline Local Execution*: When executed outside a CI/CD environment (detected via environment variables or explicitly passed CLI flags), UDE must enforce an offline-by-default execution policy, utilizing local cache databases or mock placeholders instead of billing live LLM APIs.
+  * *Traces to*: `REQ-BUS-05`
 
 * **`REQ-FUN-12` (Standalone Coverage Reporting Command)**:
   * *Target Release*: Future Phase (v2.0+)

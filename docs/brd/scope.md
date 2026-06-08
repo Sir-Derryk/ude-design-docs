@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# 4. Scope and Constraints
+# Scope and Constraints
 
 :::info[Document Version Information]
 * **Current Document Version**: `0.1`
@@ -10,7 +10,7 @@ sidebar_position: 4
 * **Date**: June 7, 2026
 :::
 
-## 4.1 In-Scope
+## In-Scope
 * Multi-source parsing (Doxygen XML baseline).
 * Intermediate Representation (IR) mapping and normalization.
 * Multi-format rendering (HTML, Markdown, RAG JSON, XML).
@@ -19,7 +19,7 @@ sidebar_position: 4
 * Execution cost and coverage reporting.
 * Gzip-transparent file compression for Git storage optimization.
 
-## 4.2 Out-of-Scope
+## Out-of-Scope
 * Writing proprietary code-compilers or complete parser frontends from scratch (for MVP).
 * Direct hosting, web-server or DNS administration.
 * Implementing custom web search crawlers from scratch.

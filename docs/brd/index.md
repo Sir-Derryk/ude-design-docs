@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 1. Business Requirements (BRD) — Introduction
+# Business Requirements (BRD) — Introduction
 
 :::info[Document Version Information]
 * **Current Document Version**: `0.1`
@@ -10,10 +10,10 @@ sidebar_position: 1
 * **Date**: June 7, 2026
 :::
 
-## 1.1 Document Purpose
+## Document Purpose
 This document defines the high-level business requirements, scope, and objectives for the **Universal Document Engine (UDE)**. It serves as the primary agreement between stakeholders and the development team.
 
-## 1.2 Business Objectives
+## Business Objectives
 The primary objective of UDE is to automate and streamline the generation of modern, high-aesthetic, and high-performance developer portals and API references. It separates raw code from user-facing manuals while keeping them structurally aligned in production.
 
 To ensure business viability, UDE must meet the following measurable success criteria:

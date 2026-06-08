@@ -8,19 +8,19 @@ The **MVP (v1.0)** of the Universal Document Engine (UDE) focuses on building a 
 
 ## Scope of MVP (v1.0)
 
-### 1. Ingestion, Ignore Tags & Core Extraction
+### Ingestion, Ignore Tags & Core Extraction
 * **Doxygen XML Parsing**: Full support for ingesting Doxygen-generated `index.xml` and parsing compound XML documents.
 * **Supported Languages**: Multi-language extraction of API structures from C++, C#, Java, and Python.
 * **CommonMark Normalization**: Normalizing various comment styles (Javadoc, Google, etc.) into structured CommonMark Markdown.
 * **Ignore Tags (`REQ-FUN-13`)**: The parser strictly respects code block range exclusions (`DOM-IGNORE-BEGIN`/`DOM-IGNORE-END`), conditional directives (`\cond`/`\endcond`), and internal modifiers (`\internal`) to completely omit these blocks from the Intermediate Representation (IR).
 * **Pydantic Validation**: Utilizing Pydantic v2 to validate and serialize Intermediate Representation (IR) files in memory.
 
-### 2. Multi-Format Rendering
+### Multi-Format Rendering
 * **Jinja2 Templates**: Leveraging Jinja2 for custom, flexible rendering.
 * **Hugo Markdown**: Generating structured markdown files tailored for the Hugo SSG, including customizable YAML/TOML front-matter metadata layout injections.
 * **Static HTML**: Direct compilation of the IR into local static HTML documentation pages.
 
-### 3. Git Hygiene & Optimization
+### Git Hygiene & Optimization
 * **IR Database Compression**: Transparent compression/decompression of IR databases using the Gzip algorithm (`.json.gz`).
 * **On-the-Fly Compilation**: Ensure zero compiled documentation files are checked into Git by rendering dynamically in CI/CD.
 

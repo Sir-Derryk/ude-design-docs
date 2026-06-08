@@ -46,8 +46,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl:
-            'https://github.com/Sir-Derryk/ude-design-docs/tree/main/',
           lastVersion: 'current',
           versions: {
             current: {
