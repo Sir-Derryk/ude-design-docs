@@ -7,34 +7,83 @@ sidebar_position: 3
 :::info[Document Version Information]
 * **Current Document Version**: `0.1`
 * **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
+* **Date**: June 8, 2026
 :::
 
-The core data structure (IR) will be defined using standard Python `dataclasses` (enforcing PEP 8 styling) and structured using **Pydantic v2**:
+The core data structure (IR) is defined using **Pydantic v2** models to guarantee fast, typed validation, serialization, and transparent compression:
 
 ```python
-from dataclasses import dataclass, field
-from typing import List, Optional
+from enum import Enum
+from typing import List, Optional, Dict
+from pydantic import BaseModel, Field
 
-@dataclass
-class ParameterModel:
+class AccessModifier(str, Enum):
+    PUBLIC = "public"
+    PROTECTED = "protected"
+    PRIVATE = "private"
+
+class EntityModel(BaseModel):
+    name: str
+    fully_qualified_name: str
+    description: str = ""  # Normalized CommonMark Markdown
+    access: AccessModifier = AccessModifier.PUBLIC
+    file_path: str = ""
+    line_range: Optional[Dict[str, int]] = None  # {"start": 12, "end": 45}
+    is_ignored: bool = False  # Set to True if within DOM-IGNORE, \cond, or marked \internal
+    
+    # Reserved for future RAG phases (defaults to empty/None in MVP)
+    signature_hash: Optional[str] = None
+    dependencies: List[str] = Field(default_factory=list)
+
+class ParameterModel(BaseModel):
     name: str
     type_name: str
-    description: str
+    description: str = ""
 
-@dataclass
-class MethodModel:
-    name: str
+class MethodModel(EntityModel):
     return_type: str
-    parameters: List[ParameterModel] = field(default_factory=list)
-    description: str = ""
-    access: str = "public"  # public, protected, private
+    parameters: List[ParameterModel] = Field(default_factory=list)
+    is_override: bool = False  # Excluded from coverage calculations if True
 
-@dataclass
-class ClassModel:
+class EnumMemberModel(BaseModel):
     name: str
-    namespace: str
-    methods: List[MethodModel] = field(default_factory=list)
+    value: Optional[str] = None
     description: str = ""
-    file_path: str = ""
+
+class EnumModel(EntityModel):
+    members: List[EnumMemberModel] = Field(default_factory=list)
+
+class VariableModel(EntityModel):
+    type_name: str
+    is_static: bool = False
+    is_trivial_property: bool = False  # Excluded from coverage calculations if True
+
+class ConstantModel(EntityModel):
+    type_name: str
+    value: Optional[str] = None
+
+class TypeAliasModel(EntityModel):
+    target_type: str
+
+class ClassModel(EntityModel):
+    entity_type: str = "class"  # "class", "interface", "struct"
+    base_classes: List[str] = Field(default_factory=list)
+    methods: List[MethodModel] = Field(default_factory=list)
+    variables: List[VariableModel] = Field(default_factory=list)
+    constants: List[ConstantModel] = Field(default_factory=list)
+    enums: List[EnumModel] = Field(default_factory=list)
+    type_aliases: List[TypeAliasModel] = Field(default_factory=list)
+
+class NamespaceModel(EntityModel):
+    classes: List[ClassModel] = Field(default_factory=list)
+    methods: List[MethodModel] = Field(default_factory=list)  # Global functions
+    variables: List[VariableModel] = Field(default_factory=list)  # Global variables
+    constants: List[ConstantModel] = Field(default_factory=list)  # Global constants
+    enums: List[EnumModel] = Field(default_factory=list)  # Global enums
+    type_aliases: List[TypeAliasModel] = Field(default_factory=list)  # Global type aliases
+
+class ProjectCatalog(BaseModel):
+    project_name: str
+    version: str
+    namespaces: List[NamespaceModel] = Field(default_factory=list)
 ```

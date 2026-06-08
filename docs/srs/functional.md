@@ -27,6 +27,7 @@ sidebar_position: 2
 * **`REQ-FUN-04` (Metadata Configuration)**: For page-based outputs (such as Markdown or HTML), the engine must allow customized metadata/front-matter layout injections (e.g. YAML/TOML blocks with title, order, and parent keys) via templates.
   * *Traces to*: `REQ-BUS-02`
 * **`REQ-FUN-05` (Hierarchical RAG Export Specification)**: The engine must support exporting a semantic, highly structured JSON dataset (`--format json_rag`) in a single JSON file. This format must strictly adhere to the following specifications:
+  * *Target Release*: Future Phase (v2.0+)
   * *Hierarchical Structure*: The export must represent the complete code hierarchy as a tree structure (e.g., Module/Namespace -> Class/Interface/Struct -> Methods/Properties/Fields/Constants).
   * *Metadata Requirements*: Each entity in the tree must contain the following metadata fields:
     1. `entity_type`: The structural type of the entity (e.g., `namespace`, `class`, `interface`, `method`, `function`, `field`, `constant`, `enum`, `struct`).
@@ -45,6 +46,7 @@ sidebar_position: 2
   * *Access Control Modes*: The CLI must support a `--read-only-cache` flag (active by default for general CI/CD builds) to parse and render using existing translation files without making writes, and a `--write-cache` flag (restricted to authorized Translation Manager sessions in CI/CD) to safely commit updates and state promotion (from `draft` to `verified`) to the translation database.
   * *Traces to*: `REQ-BUS-06`
 * **`REQ-FUN-08` (Server-Side Push-Gate Verification & Gate Exclusions)**: 
+  * *Target Release*: Future Phase (v2.0+)
   * *Quality Gate Scope*: The Quality Gate calculates documentation coverage over all public (`public`) and protected (`protected`) API entities (including classes, interfaces, methods, functions, properties, fields, enums, structs, constants, constructors, etc.) within the scope of code ingestion.
   * *Automatic Exclusions*: The following elements are automatically excluded from the Quality Gate denominator:
     1. Overridden methods that are explicitly inherited without structural changes from base classes or external system libraries (e.g., `Equals`, `GetHashCode`, `ToString` in Java/C#, or `__str__`, `__repr__` in Python).
@@ -57,6 +59,7 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-05`, `REQ-BUS-08`
 
 * **`REQ-FUN-12` (Standalone Coverage Reporting Command)**:
+  * *Target Release*: Future Phase (v2.0+)
   * *Independent CLI Execution*: The UDE CLI must support a dedicated, standalone subcommand (e.g., `ude coverage`) to audit documentation coverage and output reports. This command must be fully executable independently of the main documentation compilation and rendering workflow.
   * *Reporting Formats*: The coverage command must generate structural reports detailing:
     1. Total audited entities, total documented entities, and the aggregate coverage percentage.
@@ -72,6 +75,7 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-05`, `REQ-BUS-08`
 
 * **`REQ-FUN-09` (Context-Rich Source Ingestion & Decoupled Tooling)**: The `ude-enrich` module/script must extract both the **declaration (signature)** and the **definition (implementation body/block)** for any undocumented code entity. When sending a prompt to the LLM for English docstring generation, this tool must construct a composite payload containing both the declaration and the full implementation body as context, ensuring that the generated docstrings accurately reflect the internal logic, thrown exceptions, and side-effects of the code. The tool must write back only the resulting docstrings to the source code or output documentation without altering any functional logic.
+  * *Target Release*: Future Phase (v2.0+)
   * *Traces to*: `REQ-BUS-05`
 
 * **`REQ-FUN-10` (XLIFF Export and Import CLI Commands)**: The UDE CLI must support standard subcommands for exporting and importing localization files in XML Localisation Interchange File Format (XLIFF, `.xlf` format, version 1.2 or 2.0) to enable integration with professional translators:
