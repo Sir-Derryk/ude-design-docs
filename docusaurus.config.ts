@@ -49,6 +49,10 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
+              label: '0.2 (MVP Planning)',
+              path: '0.2',
+            },
+            '0.1': {
               label: '0.1 (Requirements)',
               path: '0.1',
             },
