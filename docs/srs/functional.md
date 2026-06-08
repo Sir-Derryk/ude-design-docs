@@ -26,7 +26,14 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-02`
 * **`REQ-FUN-04` (Metadata Configuration)**: For page-based outputs (such as Markdown or HTML), the engine must allow customized metadata/front-matter layout injections (e.g. YAML/TOML blocks with title, order, and parent keys) via templates.
   * *Traces to*: `REQ-BUS-02`
-* **`REQ-FUN-05` (Structured RAG Export)**: The engine must support exporting a semantic JSON dataset (`--format json_rag`) containing fully mapped code hierarchies and semantic descriptions, optimized for vector database ingestion.
+* **`REQ-FUN-05` (Hierarchical RAG Export Specification)**: The engine must support exporting a semantic, highly structured JSON dataset (`--format json_rag`) in a single JSON file. This format must strictly adhere to the following specifications:
+  * *Hierarchical Structure*: The export must represent the complete code hierarchy as a tree structure (e.g., Module/Namespace -> Class/Interface/Struct -> Methods/Properties/Fields/Constants).
+  * *Metadata Requirements*: Each entity in the tree must contain the following metadata fields:
+    1. `entity_type`: The structural type of the entity (e.g., `namespace`, `class`, `interface`, `method`, `function`, `field`, `constant`, `enum`, `struct`).
+    2. `fully_qualified_name`: The unique, fully qualified name of the entity within the codebase (e.g., `Namespace.ClassName.MethodName`).
+    3. `line_range`: The physical range of lines occupied by the entity in the source file, represented as an object or string (e.g., `120-145` or `{"start": 120, "end": 145}`).
+    4. `signature_hash`: A cryptographic or deterministic hash of the entity's signature/declaration to enable change-tracking and incremental indexing.
+    5. `dependencies`: A list of fully qualified names of related entities or call references to allow external systems to reconstruct code dependency graphs.
   * *Traces to*: `REQ-BUS-04`
 
 ## 2.3 Localization & Enrichment Module
@@ -37,14 +44,32 @@ sidebar_position: 2
   * *Translation Pipeline Triggers*: The translation generator module must execute strictly upon commits or merges into the primary production branch (**`master`**). Standard feature-branch builds are restricted from making live translation API calls and must execute in secure Read-Only mode.
   * *Access Control Modes*: The CLI must support a `--read-only-cache` flag (active by default for general CI/CD builds) to parse and render using existing translation files without making writes, and a `--write-cache` flag (restricted to authorized Translation Manager sessions in CI/CD) to safely commit updates and state promotion (from `draft` to `verified`) to the translation database.
   * *Traces to*: `REQ-BUS-06`
-
-* **`REQ-FUN-08` (Server-Side Push-Gate Verification Modes & Decoupled Enrichment)**: The UDE CLI and its dedicated enrichment script must manage public API entities (not marked with ignore tags) that are undocumented in English. The main UDE orchestrator must support a `--push-gate-mode` flag accepting one of four values, executing the corresponding verification policy:
-  1. `reject`: The orchestrator runs in read-only mode, performs a documentation coverage audit, exits with error code `1` and prints a detailed report of undocumented entities if coverage falls below the defined threshold, blocking the server-side push/merge check. No code modifications or LLM API calls are executed.
-  2. `allow` (default): The orchestrator exits with code `0`, outputting warning logs and a coverage audit report without blocking the pipeline.
-  3. `auto-document`: If the orchestrator detects undocumented entities, the pipeline triggers a separate write-enabled tool/subcommand (`ude-enrich` or `ude document`). This tool requests docstrings in English from the secure LLM, rewrites the source files with the generated docstrings, and exits with code `0`, enabling automated, decoupled git commits back to the branch.
-  4. `verify-document`: If the orchestrator detects undocumented entities, the pipeline triggers the `ude-enrich` tool to request docstrings in English from the secure LLM and generate a PR change-request structure (e.g., standard Git diff or PR Suggestion payloads) in a separate branch, exiting with code `2` (blocked/pending human review), preventing merge completion until those draft docstrings are committed/approved by a developer.
+* **`REQ-FUN-08` (Server-Side Push-Gate Verification & Gate Exclusions)**: 
+  * *Quality Gate Scope*: The Quality Gate calculates documentation coverage over all public (`public`) and protected (`protected`) API entities (including classes, interfaces, methods, functions, properties, fields, enums, structs, constants, constructors, etc.) within the scope of code ingestion.
+  * *Automatic Exclusions*: The following elements are automatically excluded from the Quality Gate denominator:
+    1. Overridden methods that are explicitly inherited without structural changes from base classes or external system libraries (e.g., `Equals`, `GetHashCode`, `ToString` in Java/C#, or `__str__`, `__repr__` in Python).
+    2. Trivial property getters and setters (e.g., automatic properties `get; set;` in C#) containing no custom user logic.
+  * *Documentation Completeness Criteria*: An entity is classified as fully "documented" if and only if:
+    1. It has a non-empty, meaningful prose description in its docstring.
+    2. If the entity is a method or function containing parameters or a return value, every single parameter and the return value must also have non-empty, associated descriptions in the docstring schema.
+  * *Server-Side Modes*: Under `--push-gate-mode`, the gate enforces policies (`reject`, `allow`, `auto-document`, `verify-document`).
   * *Offline Local Execution*: When executed outside a CI/CD environment (detected via environment variables or explicitly passed CLI flags), UDE must enforce an offline-by-default execution policy, utilizing local cache databases or mock placeholders instead of billing live LLM APIs.
-  * *Traces to*: `REQ-BUS-05`
+  * *Traces to*: `REQ-BUS-05`, `REQ-BUS-08`
+
+* **`REQ-FUN-12` (Standalone Coverage Reporting Command)**:
+  * *Independent CLI Execution*: The UDE CLI must support a dedicated, standalone subcommand (e.g., `ude coverage`) to audit documentation coverage and output reports. This command must be fully executable independently of the main documentation compilation and rendering workflow.
+  * *Reporting Formats*: The coverage command must generate structural reports detailing:
+    1. Total audited entities, total documented entities, and the aggregate coverage percentage.
+    2. A comprehensive list of specific undocumented or partially documented entities (with file names and line numbers).
+    3. Outputs in multiple formats, including human-readable CLI terminal prints, detailed Markdown summaries, and structured JSON for integration with external dashboards.
+  * *Traces to*: `REQ-BUS-08`
+
+* **`REQ-FUN-13` (Ignore Tags & Range Boundaries)**:
+  * *Structural Exclusions*: The parser, quality gate, and coverage modules must completely ignore any code blocks or entities demarcated by the following tags:
+    1. **Block Range Exclusions**: All code and entities situated between `DOM-IGNORE-BEGIN` and `DOM-IGNORE-END` comments.
+    2. **Conditional Block Exclusions**: All code and entities situated between `\cond` (or `@cond`) and `\endcond` (or `@endcond`) directives.
+    3. **Internal Tag Exclusions**: Any entity containing or marked with the `\internal` (or `@internal`) tag.
+  * *Traces to*: `REQ-BUS-05`, `REQ-BUS-08`
 
 * **`REQ-FUN-09` (Context-Rich Source Ingestion & Decoupled Tooling)**: The `ude-enrich` module/script must extract both the **declaration (signature)** and the **definition (implementation body/block)** for any undocumented code entity. When sending a prompt to the LLM for English docstring generation, this tool must construct a composite payload containing both the declaration and the full implementation body as context, ensuring that the generated docstrings accurately reflect the internal logic, thrown exceptions, and side-effects of the code. The tool must write back only the resulting docstrings to the source code or output documentation without altering any functional logic.
   * *Traces to*: `REQ-BUS-05`
