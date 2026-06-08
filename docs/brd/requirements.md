@@ -4,12 +4,6 @@ sidebar_position: 3
 
 # High-Level Business Requirements
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 The core high-level business requirements form the traceability baseline for the system:
 
 * **`REQ-BUS-01` (Extensible Multi-Language Input)**: The engine must support multi-language parsing (with **C++, C#, Java, and Python** as the initial base set) utilizing a decoupled frontend architecture.

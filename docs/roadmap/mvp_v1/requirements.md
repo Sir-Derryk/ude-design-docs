@@ -12,7 +12,7 @@ This document specifies the exact scope of requirements included in the **MVP (v
 
 ### 1. Ingestion, Ignore Tags & Core Extraction
 *   **Doxygen XML Ingestion**: Ingest and parse Doxygen-generated `index.xml` and compound files (`REQ-FUN-01`).
-*   **Supported Languages**: Map structural entities (classes, methods, fields, parameters, constants, enums) for **C++, C#, Java, and Python** to a unified, language-agnostic Intermediate Representation (IR) (`REQ-FUN-02`).
+*   **Supported Languages**: Map structural entities (namespaces, classes, structures, methods, fields, parameters, constants, enums, type aliases) for **C++, C#, Java, and Python** to a unified, language-agnostic Intermediate Representation (IR) (`REQ-FUN-02`). Specifically for real-world C++, the parser must handle double-colon scopes (`::`), constructors/destructors (`~`), and renderers must escape angle brackets (`< >`) of template specializations to avoid breaking Docusaurus compilation.
 *   **CommonMark Normalization**: Standardize comments and docstrings (Javadoc, Google, etc.) into structured CommonMark Markdown prose and fields (`REQ-FUN-14`).
 *   **Ignore Tags**: Parse and strictly respect comment-level block range exclusions (`DOM-IGNORE-BEGIN`/`DOM-IGNORE-END`), directives (`\cond`/`\endcond`), and internal modifiers (`\internal`), ensuring matching code segments are completely omitted from the Intermediate Representation (`REQ-FUN-13`).
 *   **Pydantic Validation**: Utilize Pydantic v2 to serialize and validate the generated Intermediate Representation (IR) catalog in memory (`REQ-NFN-04`).

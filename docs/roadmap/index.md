@@ -12,8 +12,10 @@ We track the revisions of these specifications using a structured versioning sch
 
 | Doc Version | Date | Phase Description | Lead Author | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Antigravity AI** | **Approved (Current)** |
+| **`0.2`** | **2026-06-08** | **MVP Work Planning & TDD Task Specifications** | **Antigravity AI** | **Approved (Current)** |
+| **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Antigravity AI** | **Approved (Superceded)** |
 
+* **Version 0.2 Scope**: Granular scheduling of 12 TDD tasks across 5 weeks, creating Russian-language executable `.antigravitycli/tasks/` instructions for agents, and updating Docusaurus navigation layouts.
 * **Version 0.1 Scope**: Gathering high-level business goals (BRD), defining system functional/non-functional constraints (SRS), drafting the pipeline design (SDD), and mapping out the implementation schedule.
 
 ---
@@ -27,12 +29,13 @@ gantt
     title UDE Roadmap Phasing
     dateFormat  YYYY-MM-DD
     section MVP (v1.0)
-    Core Parser & IR Schema       :active, 2026-06-08, 2026-06-18
-    Jinja2 Markdown Renderers     :active, 2026-06-19, 2026-06-25
-    Push-Gate Verification & CLI  :active, 2026-06-26, 2026-07-02
+    Infra, Storage & Parsing (W1-2) :active, 2026-06-08, 2026-06-21
+    Normalization & Ignore Tags (W3):active, 2026-06-22, 2026-06-28
+    Jinja2 Markdown & HTML (W4)     :active, 2026-06-29, 2026-07-05
+    CLI Automation & E2E (W5)       :active, 2026-07-06, 2026-07-12
     section Future Releases (v2.0+)
-    Localization & AI Translate  : 2026-07-03, 2026-07-20
-    Advanced AST Parsers          : 2026-07-21, 2026-08-05
+    Localization & AI Translate     : 2026-07-13, 2026-07-30
+    Advanced AST Parsers            : 2026-07-31, 2026-08-15
 ```
 
 1. **[MVP (v1.0) Release Plan](./mvp_v1/requirements.md)**: Focuses on core parsing, AST extraction, CommonMark rendering, push-gating, and complete local execution.

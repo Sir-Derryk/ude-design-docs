@@ -4,12 +4,6 @@ sidebar_position: 4
 
 # Scope and Constraints
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 ## In-Scope
 * Multi-source parsing (Doxygen XML baseline).
 * Intermediate Representation (IR) mapping and normalization.

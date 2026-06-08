@@ -4,12 +4,6 @@ sidebar_position: 2
 
 # Architectural Design
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 The architectural design decoupling parsing frontends from rendering backends is outlined below:
 
 ```mermaid

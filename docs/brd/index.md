@@ -4,12 +4,6 @@ sidebar_position: 1
 
 # Business Requirements (BRD) — Introduction
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 ## Document Purpose
 This document defines the high-level business requirements, scope, and objectives for the **Universal Document Engine (UDE)**. It serves as the primary agreement between stakeholders and the development team.
 

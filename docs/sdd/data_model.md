@@ -4,12 +4,6 @@ sidebar_position: 3
 
 # Data Model (Intermediate Representation)
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 8, 2026
-:::
-
 The core data structure (IR) is defined using **Pydantic v2** models to guarantee fast, typed validation, serialization, and transparent compression:
 
 ```python

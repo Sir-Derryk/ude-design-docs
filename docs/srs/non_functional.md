@@ -4,12 +4,6 @@ sidebar_position: 3
 
 # Non-Functional Requirements (NFR)
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 * **`REQ-NFN-01` (Execution Performance)**: The parser and renderer must process and output documentation for up to 1,000 API classes in less than 5 seconds on a standard GitHub Actions runner.
 * **`REQ-NFN-02` (Modularity)**: The system must define rigid abstract base classes (`BaseParser`, `BaseRenderer`) allowing independent plugins to be loaded at runtime via dynamic Python imports.
 * **`REQ-NFN-03` (Test Coverage)**: All critical core modules, especially XML element extractors and IR converters, must maintain at least 90% unit test coverage.

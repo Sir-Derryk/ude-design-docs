@@ -4,12 +4,6 @@ sidebar_position: 4
 
 # Component Contracts (Class Interfaces)
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Draft Specifications`
-* **Date**: June 8, 2026
-:::
-
 This document defines the strict Python interfaces and class contracts for the core components of the Universal Document Engine (UDE) to ensure loose coupling and modular extensibility.
 
 ## Exception Hierarchy

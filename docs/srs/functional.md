@@ -4,12 +4,6 @@ sidebar_position: 2
 
 # Functional Requirements (Traceability Core)
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 ## Extensible Parsing Module
 * **`REQ-FUN-01` (Multi-Source Ingestion Phasing)**: 
   * *Version 1 (Baseline / MVP)*: The engine must ingest Doxygen-generated XML files (`index.xml` and compound files) as its primary input format to build the documentation catalog.
@@ -17,6 +11,10 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-01`
 * **`REQ-FUN-02` (Multi-Language API Entity Extraction)**:
   * *Version 1 (Baseline / MVP)*: The engine must parse and extract structural API elements from the Doxygen XML output for **C++, C#, Java, and Python**, mapping them to a unified, language-agnostic Intermediate Representation (IR). Extracted entities must include namespaces, classes, structures, methods, member functions, fields, parameters, return types, access scopes (public/protected), and associated comment blocks.
+  * *Real-World C++ Parsing Constraints (MVP)*: Based on real-world C++ project XML characteristics, the parsing and rendering pipelines must satisfy the following specifications:
+    1. **Namespace & Class Nesting**: Handle double-colon (`::`) delimiters to correctly resolve hierarchical namespaces and nested scopes (e.g., `OdGiContextForNwDatabase::DatabaseHolder` or `OdNwObjectContainer::iterator`).
+    2. **Template Parameters & Escaping**: Correctly identify template-specialized compound and member names containing angle brackets (e.g., `NwExchangeTraits< NwExchangeType::kNw2Ifc >`). All template bracket sequences must be automatically escaped in rendering modules (e.g., as `\<` and `\>`) to prevent breakage in HTML DOM interpreters or Docusaurus/VitePress Markdown parsers.
+    3. **Constructors, Destructors & Typedefs**: Gracefully identify C++ constructors and destructors (including prefix `~`) as having no return type, and parse typedefs/type-aliases to ensure no loss of vital API information.
   * *Future Phases (v2.0+)*: Subsequent parser plugins must be developed to directly parse raw code files on a per-language basis using advanced technologies (including `libclang` AST, `tree-sitter` AST parsers, and custom regular expressions) to enrich the catalog.
   * *Traces to*: `REQ-BUS-01`
 

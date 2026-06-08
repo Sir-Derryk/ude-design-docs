@@ -4,12 +4,6 @@ sidebar_position: 1
 
 # Software Requirements (SRS) — Introduction
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 ## Document Purpose
 This document specifies the complete functional and non-functional requirements for the **Universal Document Engine (UDE)**.
 

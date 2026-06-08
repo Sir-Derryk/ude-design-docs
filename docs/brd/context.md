@@ -4,12 +4,6 @@ sidebar_position: 2
 
 # Business Context & Pain Points
 
-:::info[Document Version Information]
-* **Current Document Version**: `0.1`
-* **Status**: `Requirements Gathering & Draft Specifications`
-* **Date**: June 7, 2026
-:::
-
 ## Current State (As-Is)
 Currently, technical documentation is either:
 * Generated as archaic, uncustomizable, and visually outdated HTML files (e.g., standard Doxygen HTML).
