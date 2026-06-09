@@ -22,7 +22,7 @@ The registry contains aggregated results of the audits conducted on each develop
 | **`TSK-PAR-01`** | `REQ-NFN-02` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-PAR-02`** | `REQ-FUN-02`, `REQ-FUN-19`, `REQ-FUN-20` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Completed | 🟢 Verified |
 | **`TSK-COL-01`** | `REQ-FUN-01`, `REQ-FUN-22` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Completed | 🟢 Verified |
-| **`TSK-NML-01`** | `REQ-FUN-14` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
+| **`TSK-NML-01`** | `REQ-FUN-14` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-NML-02`** | `REQ-FUN-13` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
 | **`TSK-RND-01`** | `REQ-FUN-03`, `REQ-FUN-04` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
 | **`TSK-RND-02`** | `REQ-FUN-03` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
@@ -40,5 +40,5 @@ The registry contains aggregated results of the audits conducted on each develop
 ## 📈 Code Quality Summary Metrics (Quality Gates)
 
 *   **Current Overall Test Coverage (pytest-cov)**: `100%` (Target Threshold: `>= 90%`).
-*   **Number of Fully Verified Tasks**: `6 / 15` (Target Threshold: `15 / 15`).
+*   **Number of Fully Verified Tasks**: `9 / 15` (Target Threshold: `15 / 15`).
 *   **Security Incidents (Path Violation/Guard Rails)**: `0` detected.
