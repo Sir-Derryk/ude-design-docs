@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # MVP Requirements Scope
 
-This document specifies the exact scope of requirements included in the **MVP (v1.0)** baseline of the Universal Document Engine (UDE). The focus is on establishing a robust, 100% offline, local API documentation compiler.
+This document specifies the exact scope of requirements included in the **MVP (v1.0)** baseline of the Universal Documentation Engine (UDE). The focus is on establishing a robust, 100% offline, local API documentation compiler.
 
 ---
 
@@ -47,6 +47,16 @@ The MVP baseline includes the following subset of requirements from the SRS and 
 | **`REQ-FUN-07`** | Functional | Non-interactive CLI flags & codes | `REQ-BUS-09` |
 | **`REQ-FUN-11`** | Functional | Gzip IR compression (`.json.gz`) | `REQ-BUS-03` |
 | **`REQ-FUN-13`** | Functional | Ignore Tags & Range Boundaries | `REQ-BUS-08` |
+| **`REQ-FUN-19`** | Functional | C++ compiler export macro filtering | `REQ-BUS-01` |
+| **`REQ-FUN-20`** | Functional | SWIG wrapper low-level internal exclusions | `REQ-BUS-01`, `REQ-BUS-08` |
+| **`REQ-FUN-22`** | Functional | Automated collector temporary directory cleanup | `REQ-BUS-03` |
+| **`REQ-FUN-23`** | Functional | Environment pre-flight & dependency checks | `REQ-BUS-09` |
+| **`REQ-FUN-24`** | Functional | Multi-project pipeline fault tolerance policies | `REQ-BUS-09` |
+| **`REQ-FUN-25`** | Functional | Centralized logging & Doxygen stderr capture | `REQ-BUS-09` |
+| **`REQ-FUN-26`** | Functional | Level-1 incremental parsing cache | `REQ-BUS-03`, `REQ-BUS-09` |
+| **`REQ-FUN-27`** | Functional | Level-2 incremental rendering cache | `REQ-BUS-03`, `REQ-BUS-09` |
+| **`REQ-FUN-28`** | Functional | Target folder metadata and cache isolation | `REQ-BUS-03` |
+| **`REQ-FUN-29`** | Functional | Portable configuration relative path resolution | `REQ-BUS-09` |
 | **`REQ-NFN-01`** | Non-Functional | Execution performance (< 5s for 1000 classes) | - |
 | **`REQ-NFN-02`** | Non-Functional | Modularity via abstract base classes (`BaseParser`, `BaseRenderer`) | - |
 | **`REQ-NFN-03`** | Non-Functional | Maintain at least 90% unit test coverage | - |

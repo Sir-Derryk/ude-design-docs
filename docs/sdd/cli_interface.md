@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Command Line Interface (CLI)
 
-The Universal Document Engine provides a modular Command Line Interface (CLI) called `ude` to execute pipelines locally and offline.
+The Universal Documentation Engine provides a modular Command Line Interface (CLI) called `ude` to execute pipelines locally and offline.
 
 ## Command Structure
 
@@ -74,7 +74,7 @@ To configure system-wide behaviors that apply across all products and outputs, U
 
 ## Hierarchical JSON Configuration & Centralized Automation
 
-To support multi-product, multi-language, and multi-format compilation pipelines, the Universal Document Engine utilizes a decentralized, hierarchical JSON configuration structure located under the root `ude/` folder, orchestrated by a single centralized batch script inside `engine/`.
+To support multi-product, multi-language, and multi-format compilation pipelines, the Universal Documentation Engine utilizes a decentralized, hierarchical JSON configuration structure located under the root `ude/` folder, orchestrated by a single centralized batch script inside `engine/`.
 
 ### Directory Structure
 
@@ -110,7 +110,7 @@ chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 echo ============================================================
-echo   ODA UDE: Multi-Target Documentation Generation Pipeline
+echo   UDE: Multi-Target Documentation Generation Pipeline
 echo ============================================================
 
 :: 1. Verify Python availability
@@ -147,7 +147,7 @@ set "TARGETS=!TARGETS! !UDE_ROOT!\FacetModeler\facetmodeler_cpp\ude_config.json"
 for %%t in (%TARGETS%) do (
     echo.
     echo [BUILD] Invoking UDE Orchestrator for target configuration: %%t
-    python -m oda_ude.orchestrator "%%t"
+    python -m ude.orchestrator "%%t"
     
     if !errorlevel! neq 0 (
         echo [ERROR] Pipeline execution failed for target configuration: %%t
@@ -172,7 +172,7 @@ chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 echo ============================================================
-echo   ODA UDE: BimNv Product Documentation Pipeline
+echo   UDE: BimNv Product Documentation Pipeline
 echo ============================================================
 
 :: 1. Verify Python availability
@@ -209,7 +209,7 @@ set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_java\ude_config.json"
 for %%t in (%TARGETS%) do (
     echo.
     echo [BUILD] Processing target: %%t
-    python -m oda_ude.orchestrator "%%t"
+    python -m ude.orchestrator "%%t"
     
     if !errorlevel! neq 0 (
         echo [ERROR] Build failed for target: %%t
@@ -262,11 +262,11 @@ set "PYTHON_ROOT=%SCRIPT_DIR%..\..\..\..\Src\Python"
 set "CONFIG=%SCRIPT_DIR%ude_config.json"
 
 echo ============================================================
-echo   ODA UDE: BimNv C++ API Reference Compilation
+echo   UDE: BimNv C++ API Reference Compilation
 echo ============================================================
 
 set "PYTHONPATH=%PYTHON_ROOT%"
-python -m oda_ude.orchestrator "%CONFIG%"
+python -m ude.orchestrator "%CONFIG%"
 
 if !errorlevel! neq 0 (
     echo [ERROR] UDE Target Pipeline failed.

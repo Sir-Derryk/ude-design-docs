@@ -10,7 +10,7 @@ sidebar_position: 4
 * **Date**: June 8, 2026
 :::
 
-This document defines the strict Python interfaces and class contracts for the core components of the Universal Document Engine (UDE) to ensure loose coupling and modular extensibility.
+This document defines the strict Python interfaces and class contracts for the core components of the Universal Documentation Engine (UDE) to ensure loose coupling and modular extensibility.
 
 ## Exception Hierarchy
 
@@ -18,7 +18,7 @@ All custom errors in UDE inherit from a unified base exception to enable robust 
 
 ```python
 class UdeError(Exception):
-    """Base exception for all Universal Document Engine errors."""
+    """Base exception for all Universal Documentation Engine errors."""
     pass
 
 class ParserError(UdeError):

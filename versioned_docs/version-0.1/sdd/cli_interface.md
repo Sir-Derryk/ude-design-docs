@@ -10,7 +10,7 @@ sidebar_position: 5
 * **Date**: June 8, 2026
 :::
 
-The Universal Document Engine provides a modular Command Line Interface (CLI) called `ude` to execute pipelines locally and offline.
+The Universal Documentation Engine provides a modular Command Line Interface (CLI) called `ude` to execute pipelines locally and offline.
 
 ## Command Structure
 
@@ -56,7 +56,7 @@ Users can control the pipeline execution using a standard `ude.toml` configurati
 
 ```toml
 [project]
-name = "Universal Document Engine"
+name = "Universal Documentation Engine"
 version = "1.0.0"
 
 [parser]

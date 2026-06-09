@@ -2,9 +2,9 @@
 sidebar_position: 4
 ---
 
-# Requirements Audit Report — Universal Document Engine (UDE)
+# Requirements Audit Report — Universal Documentation Engine (UDE)
 
-This audit report evaluates the structural, functional, and non-functional requirements of the **Universal Document Engine (UDE)** as documented in the Software Requirements Specification (SRS) and Business Requirements Document (BRD).
+This audit report evaluates the structural, functional, and non-functional requirements of the **Universal Documentation Engine (UDE)** as documented in the Software Requirements Specification (SRS) and Business Requirements Document (BRD).
 
 The requirements have been audited against the seven core engineering criteria: **Completeness (Полнота)**, **Traceability (Прослеживаемость)**, **Consistency (Непротиворечивость)**, **Unambiguity (Однозначность)**, **Testability (Тестируемость)**, **Feasibility (Реализуемость)**, and **Atomicity (Атомарность)**.
 

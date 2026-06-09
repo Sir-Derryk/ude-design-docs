@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'UDE Specifications',
-  tagline: 'Design and Technical Documentation for Universal Document Engine',
+  tagline: 'Design and Technical Documentation for Universal Documentation Engine',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -118,7 +118,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Universal Document Engine (UDE).`,
+      copyright: `Copyright © ${new Date().getFullYear()} Universal Documentation Engine (UDE).`,
     },
     prism: {
       theme: prismThemes.github,

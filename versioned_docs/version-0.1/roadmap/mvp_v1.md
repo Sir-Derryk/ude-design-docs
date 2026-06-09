@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # MVP (v1.0) Release Plan
 
-The **MVP (v1.0)** of the Universal Document Engine (UDE) focuses on building a robust, fully automated, offline documentation compiler using Doxygen XML as the primary ingestion format, and outputting beautifully formatted Hugo Markdown and static HTML pages.
+The **MVP (v1.0)** of the Universal Documentation Engine (UDE) focuses on building a robust, fully automated, offline documentation compiler using Doxygen XML as the primary ingestion format, and outputting beautifully formatted Hugo Markdown and static HTML pages.
 
 ## Scope of MVP (v1.0)
 
