@@ -86,8 +86,7 @@ ude/
     ├── product.json                  # Global product metadata and versioning (e.g. docs catalog)
     └── <target_id>/                  # Target compilation folder (e.g., bimnv_api_cpp, bimnv_api_cs)
         ├── ude_config.json           # Target-specific compilation pipeline settings
-        ├── Doxyfile                  # Doxygen extraction configuration (C++ targets only)
-        └── toc.yaml                  # Custom table of contents and manual layout structure
+        └── Doxyfile                  # Doxygen extraction configuration (C++ targets only)
 ```
 
 ### Automation Scripts Architecture
@@ -347,7 +346,7 @@ Specifies target-specific properties, language parsers, and custom preprocessing
 ## Target Folder Isolation & Caching (IR and Caches)
 
 To prevent cluttering Git commits of output directories, keep code workspaces completely clean, and optimize execution speeds:
-1. **Target Folder Isolation**: All pipeline-internal artifacts, specifically the Intermediate Representation Gzip file (`intermediate_representation.json.gz`) and the incremental build caches (`.build_cache.json.gz`), must be strictly stored in the dedicated target subdirectory under the `ude/` tree named after `<sdk>_<lang>` (e.g. `ude/Bimnv/bimnv_cpp/`). This `<sdk>_<lang>` folder is a direct descendant of `ude/`, is kept under version control, and hosts the target-specific batch script, `ude_config.json`, `Doxyfile`, and layout `toc.yaml`. They are completely isolated from `output_dir` (which contains final user-facing static Hugo markdown or HTML files only).
+1. **Target Folder Isolation**: All pipeline-internal artifacts, specifically the Intermediate Representation Gzip file (`intermediate_representation.json.gz`) and the incremental build caches (`.build_cache.json.gz`), must be strictly stored in the dedicated target subdirectory under the `ude/` tree named after `<sdk>_<lang>` (e.g. `ude/Bimnv/bimnv_cpp/`). This `<sdk>_<lang>` folder is a direct descendant of `ude/`, is kept under version control, and hosts the target-specific batch script, `ude_config.json`, and `Doxyfile`. They are completely isolated from `output_dir` (which contains final user-facing static Hugo markdown or HTML files only).
 2. **No Hardcoded Paths & Relative Path Resolution**: To achieve absolute portability across developer workstations and CI/CD agents, all directory and file paths used by the UDE engine must be specified exclusively within the configuration files (e.g., `ude_global.json`, `ude_config.json`, etc.). Physical paths must never be hardcoded directly into the Python source code. All paths configured in settings must be defined relative to the directory containing the config file. At startup, the orchestrator must dynamically resolve and convert them to absolute paths.
 3. **Transparent Compression**: The Intermediate Representation (IR) is aggressively compressed. When the parse phase finishes, the Pydantic memory model `ProjectCatalog.model_dump_json()` is serialized, compressed via the standard **Gzip** algorithm, and written directly to `<sdk>_<lang>/intermediate_representation.json.gz`. The rendering phase decompresses this archive directly into memory.
 4. **Incremental Parsing Cache**: The parser tracks source/XML file timestamps and content hashes inside `.build_cache.json.gz`. During parsing, any entity whose underlying source XML has not changed is loaded from cache, bypassing raw XML processing.

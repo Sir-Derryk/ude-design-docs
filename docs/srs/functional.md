@@ -126,7 +126,7 @@ sidebar_position: 2
   * *Version 1 (Baseline / MVP)*: Before initiating execution of any collector or parsing task, the orchestrator and the collector must perform strict environment pre-flight checks:
     1. Verify that Python is installed, executable, and accessible on the system PATH (since the orchestrator and parsing engine run as Python scripts).
     2. Verify the availability and execution permission of the Doxygen binary (as specified in `ude_global.json` or fallback system paths) if the project requires Doxygen preprocessing.
-    3. Verify the physical presence of all required target configurations (e.g., `ude_config.json`, `toc.yaml`, and `Doxyfile` for Doxygen-based projects).
+    3. Verify the physical presence of all required target configurations (e.g., `ude_config.json` and `Doxyfile` for Doxygen-based projects).
     4. Verify the existence, accessibility, and non-emptiness of all target source directories (`src_dir`).
     5. Verify the presence of all necessary raw source code files (e.g., `.h` files for C++, `.cs` files for C#, etc.) within those source directories required to compile or parse the specific project.
     If any checks fail, execution must be halted cleanly before subprocess spawn, throwing an environment-specific exception, writing diagnostic recommendations to stderr, and exiting with code `5`.
@@ -157,7 +157,7 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-03`, `REQ-BUS-09`
 
 * **`REQ-FUN-28` (Target Folder Isolation for Metadata and Cache)**:
-  * *Version 1 (Baseline / MVP)*: All pipeline-internal files—specifically the Intermediate Representation (`intermediate_representation.json.gz`) and build/parsing caches (`.build_cache.json.gz`)—must be strictly stored within a dedicated target subdirectory under the `ude/` tree, named according to the format `<sdk>_<lang>` (e.g. `ude/Bimnv/bimnv_cpp/`, `ude/Bimnv/bimnv_cs/`). This `<sdk>_<lang>` folder is a descendant of the `ude/` root directory, is kept under git version control, and contains the target-specific batch script, `ude_config.json`, `Doxyfile`, and table of contents layout configs. Intermediate and cache files must never be written to `output_dir` (which contains final user-facing files only) to ensure a clean separation between development metadata and production assets.
+  * *Version 1 (Baseline / MVP)*: All pipeline-internal files—specifically the Intermediate Representation (`intermediate_representation.json.gz`) and build/parsing caches (`.build_cache.json.gz`)—must be strictly stored within a dedicated target subdirectory under the `ude/` tree, named according to the format `<sdk>_<lang>` (e.g. `ude/Bimnv/bimnv_cpp/`, `ude/Bimnv/bimnv_cs/`). This `<sdk>_<lang>` folder is a descendant of the `ude/` root directory, is kept under git version control, and contains the target-specific batch script, `ude_config.json`, and `Doxyfile`. Intermediate and cache files must never be written to `output_dir` (which contains final user-facing files only) to ensure a clean separation between development metadata and production assets.
   * *Traces to*: `REQ-BUS-03`
 
 * **`REQ-FUN-29` (No Hardcoded Paths & Relative Path Resolution)**:
