@@ -5,12 +5,17 @@ sidebar_position: 2
 # Functional Requirements (Traceability Core)
 
 ## Extensible Parsing Module
-* **`REQ-FUN-01` (Multi-Source Ingestion Phasing)**: 
-  * *Version 1 (Baseline / MVP)*: The engine must ingest Doxygen-generated XML files (`index.xml` and compound files) as its primary input format to build the documentation catalog.
-  * *Future Phases (v2.0+)*: The parser architecture must be loosely coupled, enabling subsequent ingestion of other XML sources (e.g., Doc-o-matic XML) or direct raw code files via pluggable frontends without modifying the core pipeline.
+* **`REQ-FUN-01` (Multi-Source Ingestion & Preprocessing)**: 
+  * *Version 1 (Baseline / MVP)*: The engine must support a modular preprocessing/collection stage. For C++ SDK targets, the system must invoke Doxygen as a subprocess based on a local, target-specific `Doxyfile` to compile raw header files into XML outputs inside a designated temporary directory, which is then parsed to build the catalog.
+  * *Future Phases (v2.0+)*: The preprocessing and ingestion architectures must be loosely coupled. Subsequent versions must support direct code directory collection (for C#, Java, Python, and future native C++ AST-based parsers) or custom XML integrations (e.g., Doc-o-matic XML) without modifying the core pipeline or orchestrator.
   * *Traces to*: `REQ-BUS-01`
+
+* **`REQ-FUN-22` (Automated Collector Lifecycle & Temporary Cleanup)**:
+  * *Version 1 (Baseline / MVP)*: The orchestration pipeline must strictly manage the lifecycle of temporary files. Any temporary directories and intermediate XML files generated during the preprocessing/collection stage (e.g., Doxygen XML outputs) must be automatically and recursively deleted by the collector component immediately after ingestion. This cleanup must be guaranteed via a robust `try...finally` block, leaving the repository and CI/CD workspace completely free of intermediate garbage even if the parsing, validation, or rendering stages fail.
+  * *Traces to*: `REQ-BUS-03`
+
 * **`REQ-FUN-02` (Multi-Language API Entity Extraction)**:
-  * *Version 1 (Baseline / MVP)*: The engine must parse and extract structural API elements from the Doxygen XML output for **C++, C#, Java, and Python**, mapping them to a unified, language-agnostic Intermediate Representation (IR). Extracted entities must include namespaces, classes, structures, methods, member functions, fields, parameters, return types, access scopes (public/protected), and associated comment blocks.
+  * *Version 1 (Baseline / MVP)*: The engine must parse and extract structural API elements from the preprocessed Doxygen XML output for **C++, C#, Java, and Python**, mapping them to a unified, language-agnostic Intermediate Representation (IR). Extracted entities must include namespaces, classes, structures, methods, member functions, fields, parameters, return types, access scopes (public/protected), and associated comment blocks.
   * *Real-World C++ Parsing Constraints (MVP)*: Based on real-world C++ project XML characteristics, the parsing and rendering pipelines must satisfy the following specifications:
     1. **Namespace & Class Nesting**: Handle double-colon (`::`) delimiters to correctly resolve hierarchical namespaces and nested scopes (e.g., `OdGiContextForNwDatabase::DatabaseHolder` or `OdNwObjectContainer::iterator`).
     2. **Template Parameters & Escaping**: Correctly identify template-specialized compound and member names containing angle brackets (e.g., `NwExchangeTraits< NwExchangeType::kNw2Ifc >`). All template bracket sequences must be automatically escaped in rendering modules (e.g., as `\<` and `\>`) to prevent breakage in HTML DOM interpreters or Docusaurus/VitePress Markdown parsers.
@@ -116,3 +121,30 @@ sidebar_position: 2
   * *Baseline (MVP v1.0)*: Intermediate Representation compression.
   * *Future Phase (v2.0+)*: Translation Cache compression.
   * *Traces to*: `REQ-BUS-03`
+
+* **`REQ-FUN-23` (Environment & Dependency Verification)**: 
+  * *Version 1 (Baseline / MVP)*: Before initiating execution of any collector or parsing task, the orchestrator and the collector must perform strict environment pre-flight checks:
+    1. Verify that Python is installed, executable, and accessible on the system PATH (since the orchestrator and parsing engine run as Python scripts).
+    2. Verify the availability and execution permission of the Doxygen binary (as specified in `ude_global.json` or fallback system paths) if the project requires Doxygen preprocessing.
+    3. Verify the physical presence of all required target configurations (e.g., `ude_config.json`, `toc.yaml`, and `Doxyfile` for Doxygen-based projects).
+    4. Verify the existence, accessibility, and non-emptiness of all target source directories (`src_dir`).
+    5. Verify the presence of all necessary raw source code files (e.g., `.h` files for C++, `.cs` files for C#, etc.) within those source directories required to compile or parse the specific project.
+    If any checks fail, execution must be halted cleanly before subprocess spawn, throwing an environment-specific exception, writing diagnostic recommendations to stderr, and exiting with code `5`.
+  * *Traces to*: `REQ-BUS-09`
+
+* **`REQ-FUN-24` (Pipeline Fault Tolerance & Recovery)**:
+  * *Version 1 (Baseline / MVP)*: The system must enforce high-reliability operational boundaries:
+    1. **Multi-Project Execution Policy**: When orchestrated via `generate_all.bat`, the orchestrator must support a configurable error policy (via `ude_global.json`): `fail-fast` (abort the entire pipeline run at the first project error) or `continue-on-error` (log the target failure, skip the failed project, continue compilation of remaining projects, and print a consolidated error list at the end).
+    2. **Malformed XML Protection**: If individual generated XML files are malformed or unreadable, the parser must log specific warnings and proceed to extract structural entities from other valid compounds, avoiding total pipeline crashes.
+    3. **Crash Cleanup Guarantee**: If an unhandled exception or pipeline failure occurs during execution, the system must trigger automated cleanup via `finally` blocks to delete any generated temporary folders or XML files, preventing workspace contamination.
+  * *Traces to*: `REQ-BUS-03`, `REQ-BUS-09`
+
+* **`REQ-FUN-25` (Unified Logging & Auditing)**:
+  * *Version 1 (Baseline / MVP)*: The engine must implement a centralized, time-stamped, and thread-safe file-logging system writing to a configured log file (e.g. `ude_system.log`). The logging module must:
+    1. Document the starting parameters, timestamped progression, and duration of every lifecycle phase (Collect, Parse, Validation, Render, Cleanup).
+    2. Intercept and capture Doxygen subprocess stderr logs, categorizing compiler warnings and errors into the unified UDE log stream.
+    3. Log parse statistics (count of extracted namespaces, classes, methods, parameters, and entities) and rendering outputs (pages written).
+    4. Support configurable logging verbosity levels (`DEBUG`, `INFO`, `WARNING`, `ERROR`).
+    5. Write detailed stack traces of any occurring exceptions to the log file, while printing only high-level, clean, and developer-friendly diagnostic messages to the console stderr.
+  * *Traces to*: `REQ-BUS-03`, `REQ-BUS-09`
+

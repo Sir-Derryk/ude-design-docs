@@ -26,7 +26,82 @@ class ValidationError(UdeError):
 class RendererError(UdeError):
     """Raised when template compilation or output generation fails."""
     pass
+
+class EnvironmentError(UdeError):
+    """Raised when required software binaries (e.g. Doxygen) or configurations are missing."""
+    pass
 ```
+## Collector Interface (Preprocessing / Ingestion)
+
+The Collector component is responsible for retrieving, compiling, or organizing the raw source files into a unified format for ingestion. For example, compiling C++ headers into Doxygen XML in a temporary directory, and cleaning it up after parsing.
+
+```python
+from abc import ABC, abstractmethod
+from pathlib import Path
+
+class BaseCollector(ABC):
+    """Abstract base class for all preprocessing and ingestion data collectors."""
+
+    @abstractmethod
+    def validate_environment(self, config_path: Path) -> None:
+        """
+        Performs pre-flight checks on software binaries, configurations, and source paths.
+
+        Args:
+            config_path: Path to the target's configuration schema.
+
+        Raises:
+            EnvironmentError: If required software (e.g. Doxygen) or paths are missing.
+        """
+        pass
+
+    @abstractmethod
+    def collect(self, config_path: Path) -> Path:
+        """
+        Preprocesses or gathers the target code resources.
+        Creates temporary folders/structures if required.
+
+        Args:
+            config_path: Path to the target's configuration schema.
+
+        Returns:
+            Path to the directory containing files prepared for the Parser.
+        """
+        pass
+
+    @abstractmethod
+    def cleanup(self, temp_path: Path) -> None:
+        """
+        Cleans up any temporary directories, files, or system artifacts created.
+
+        Args:
+            temp_path: Path returned by the collect() method.
+        """
+        pass
+```
+
+### Concrete Implementations
+
+#### `DoxygenXmlCollector`
+* **Responsibilities**:
+  1. **`validate_environment()`**:
+     - Verifies Python is installed, executable, and accessible on system PATH.
+     - Verifies that the `doxygen` binary is installed and executable (checks system PATH and paths specified in `ude_global.json`).
+     - Ensures that the `Doxyfile` exists.
+     - Verifies that the source directories (`src_dir`) specified in the config exist, are accessible, and contain the required raw source code files (e.g. C++ header files `.h`) needed for Doxygen XML compilation.
+  2. Runs `doxygen Doxyfile` as a subprocess inside the project target directory.
+  3. Directs Doxygen XML output to an isolated temporary directory.
+  4. Deletes the entire temporary XML folder recursively during the `cleanup` phase.
+
+#### `NativeSourceCollector`
+* **Responsibilities**:
+  1. **`validate_environment()`**:
+     - Verifies Python is installed, executable, and accessible on system PATH.
+     - Verifies that the source directories (`src_dir`) specified in the config actually exist, are accessible, and contain the required raw source code files (e.g. C# `.cs`, Java `.java`, or Python `.py` files) needed for parsing.
+  2. Simply returns the absolute path to the local source directory directly (e.g. `src_dir`).
+  3. Performs no preprocessing actions and has a no-op `cleanup()` phase.
+
+---
 
 ## Parser Interface
 

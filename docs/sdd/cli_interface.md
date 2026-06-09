@@ -42,11 +42,9 @@ Performs the backend rendering phase only, reading the compressed IR.
   * `--output, -o`: Target output directory (overrides config).
   * `--format, -f`: Output format: `hugo` or `html` (overrides config).
 
----
-
 ## Global UDE Engine Settings (`ude_global.json`)
 
-To configure system-wide behaviors that apply across all products and outputs, UDE looks for a `ude_global.json` configuration file in its installation or execution root. This file controls global environment paths, system logging, and caching rules.
+To configure system-wide behaviors that apply across all products and outputs, UDE looks for a `ude_global.json` configuration file in its installation or execution root. This file controls global environment paths, system logging, caching rules, and multi-project execution resilience.
 
 ### Global Configuration Schema (`ude_global.json`)
 
@@ -55,6 +53,7 @@ To configure system-wide behaviors that apply across all products and outputs, U
   "doxygen_path": "C:\\Program Files\\doxygen\\bin\\doxygen.exe",
   "log_level": "INFO",
   "log_file": "./logs/ude_system.log",
+  "error_policy": "fail-fast",
   "global_templates_dir": "./templates",
   "cache_root_dir": "./.ude_cache",
   "translation_service": {
@@ -67,81 +66,197 @@ To configure system-wide behaviors that apply across all products and outputs, U
 
 * **`doxygen_path`**: Absolute path or environment lookup for the system's `doxygen` binary to automate XML extractions.
 * **`log_level`**: Controls logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`).
+* **`log_file`**: Output filepath for unified thread-safe file logging.
+* **`error_policy`**: Configures multi-target orchestration fault tolerance. Supports `fail-fast` (aborts execution at first project failure) and `continue-on-error` (logs errors, skips failed project, compiles remaining targets, summaries errors at the end).
 * **`cache_root_dir`**: Specifies where UDE can write general cache files, translation artifacts, and intermediate models.
 
 ---
 
-## Hierarchical JSON Configuration & Automation Architecture
+## Hierarchical JSON Configuration & Centralized Automation
 
-To support multi-product, multi-language, and multi-format compilation pipelines, the Universal Document Engine utilizes a decentralized, hierarchical JSON configuration structure accompanied by automated generation scripts.
+To support multi-product, multi-language, and multi-format compilation pipelines, the Universal Document Engine utilizes a decentralized, hierarchical JSON configuration structure located under the root `ude/` folder, orchestrated by a single centralized batch script inside `engine/`.
 
 ### Directory Structure
 
-All product-specific configurations are housed under a root `ude_configs/` directory:
+All product-specific configurations and assets are housed under a root `ude/` directory:
 
 ```text
-ude_configs/
-└── <product_name>/                   # Example: BimNv
-    ├── product.json                  # Global product metadata and versioning
-    └── outputs/                      # Configured compilation targets
-        └── <output_id>/              # E.g., cpp_hugo, csharp_html
-            ├── output.json           # Compilation-specific pipeline rules
-            ├── Doxyfile              # Target-specific Doxygen extraction configuration
-            ├── create_xml.bat        # Automated batch file to execute Doxygen and generate XML
-            └── build_documentation.bat # Automated batch file to compile XML using UDE
+ude/
+└── <product_name>/                   # Example: Bimnv, FacetModeler
+    ├── product.json                  # Global product metadata and versioning (e.g. docs catalog)
+    └── <target_id>/                  # Target compilation folder (e.g., bimnv_api_cpp, bimnv_api_cs)
+        ├── ude_config.json           # Target-specific compilation pipeline settings
+        ├── Doxyfile                  # Doxygen extraction configuration (C++ targets only)
+        └── toc.yaml                  # Custom table of contents and manual layout structure
 ```
 
-### Global Configuration (`product.json`)
-Contains immutable metadata identifying the product codebase:
+### Automation Scripts Architecture
+
+To support granular build execution and full flexibility in local development and CI/CD pipelines, UDE provides a hierarchical script structure for automation at three levels:
+1. **Central Level (`engine/generate_all.bat`)**: Sequentially triggers the Python orchestrator for all products and projects defined across the entire UDE scope.
+2. **SDK / Product Level (e.g., `engine/generate_<product>.bat` or `ude/<product>/generate_all.bat`)**: Triggers the orchestrator for all targets belonging to a specific SDK/Product (such as Bimnv, FacetModeler, Map, or IGES).
+3. **Project / Target Level (e.g., `engine/generate_<product>_<target>.bat` or `ude/<product>/<target>/generate_docs.bat`)**: Directly triggers the orchestrator for a single target configuration (e.g., C++ API Reference, C# API Reference).
+
+These scripts are described below.
+
+#### 1. Central Automation Script (`engine/generate_all.bat`)
+
+Responsible for orchestrating the sequential generation of all targets across all SDK products:
+
+```cmd
+@echo off
+chcp 65001 >nul
+setlocal enabledelayedexpansion
+
+echo ============================================================
+echo   ODA UDE: Multi-Target Documentation Generation Pipeline
+echo ============================================================
+
+set "UDE_ROOT=%~dp0..\ude"
+
+:: Define all project targets to be sequentially orchestrated
+set "TARGETS="
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cpp\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cs\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\FacetModeler\facetmodeler_api_cpp\ude_config.json"
+
+for %%t in (%TARGETS%) do (
+    echo.
+    echo [BUILD] Invoking UDE Orchestrator for target configuration: %%t
+    python -m oda_ude.orchestrator "%%t"
+    
+    if !errorlevel! neq 0 (
+        echo [ERROR] Pipeline execution failed for target configuration: %%t
+        exit /b 1
+    )
+)
+
+echo.
+echo ============================================================
+echo   [SUCCESS] All documentation compilation targets completed.
+echo ============================================================
+endlocal
+```
+
+#### 2. SDK / Product Automation Script (e.g., `engine/generate_bimnv.bat` or `ude/Bimnv/generate_all.bat`)
+
+Responsible for generating all target documentations belonging to a single SDK product (e.g., Bimnv):
+
+```cmd
+@echo off
+chcp 65001 >nul
+setlocal enabledelayedexpansion
+
+echo ============================================================
+echo   ODA UDE: BimNv Product Documentation Pipeline
+echo ============================================================
+
+set "UDE_ROOT=%~dp0..\ude"
+
+:: Define all targets specifically for this SDK
+set "TARGETS="
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cpp\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cs\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_java\ude_config.json"
+
+for %%t in (%TARGETS%) do (
+    echo.
+    echo [BUILD] Processing target: %%t
+    python -m oda_ude.orchestrator "%%t"
+    
+    if !errorlevel! neq 0 (
+        echo [ERROR] Build failed for target: %%t
+        exit /b 1
+    )
+)
+
+echo.
+echo ============================================================
+echo   [SUCCESS] BimNv product documentation finished.
+echo ============================================================
+endlocal
+```
+
+#### 3. Project / Target Automation Script (e.g., `engine/generate_bimnv_api_cpp.bat` or `ude/Bimnv/bimnv_api_cpp/generate_docs.bat`)
+
+Responsible for generating documentation for a single specific target (e.g., Bimnv C++ API Reference):
+
+```cmd
+@echo off
+chcp 65001 >nul
+setlocal enabledelayedexpansion
+
+set "SCRIPT_DIR=%~dp0"
+:: Path to Python modules in engine
+set "PYTHON_ROOT=%SCRIPT_DIR%..\..\..\..\Src\Python"
+set "CONFIG=%SCRIPT_DIR%ude_config.json"
+
+echo ============================================================
+echo   ODA UDE: BimNv C++ API Reference Compilation
+echo ============================================================
+
+set "PYTHONPATH=%PYTHON_ROOT%"
+python -m oda_ude.orchestrator "%CONFIG%"
+
+if !errorlevel! neq 0 (
+    echo [ERROR] UDE Target Pipeline failed.
+    exit /b 1
+)
+
+echo [OK]    Target documentation generated successfully.
+echo.
+endlocal
+```
+
+### Product Configuration (`product.json`)
+Contains general metadata identifying the product catalog:
 ```json
 {
-  "product_id": "bimnv",
-  "product_name": "BimNv SDK",
-  "version": "1.0.0",
-  "description": "Software Development Kit for BimNv visualization databases."
+  "product_name": "FacetModeler",
+  "docs": [
+    {
+      "type": "guide",
+      "id": "facetmodeler",
+      "title": "Developer's Guide",
+      "devguide_lang_suffix": "",
+      "path": "facetmodeler",
+      "main_page": "fm_dev_guide.html"
+    },
+    {
+      "type": "api",
+      "id": "facetmodeler_api_cpp",
+      "title": "C++ API Reference",
+      "lang": "cpp",
+      "devguide_lang_suffix": "",
+      "path": "facetmodeler_api_cpp",
+      "main_page": "index.html"
+    }
+  ]
 }
 ```
 
-### Target Configuration (`output.json`)
-Specifies ingestion frontends, render targets, relative paths, and language parsers:
+### Target Configuration (`ude_config.json`)
+Specifies target-specific properties, language parsers, and custom preprocessing collectors:
 ```json
 {
-  "output_id": "cpp_hugo",
-  "product_config": "../../product.json",
-  "source_language": "cpp",
-  "parser": "doxygen_xml",
-  "input_dir": "../../../engine/_xml/bimnv/doxygen",
-  "output_dir": "../../../user-docs/content/cpp",
-  "output_format": "HugoXML",
-  "parser_options": {
-    "ignore_internal": true,
-    "ignore_cond": true
+  "project_name": "ODA BimNv C++ API Reference",
+  "src_dir": ["../main/BimNv/Include"],
+  "static_pages_dir": "./",
+  "output_dir": "bimnv_api_cpp",
+  "copyright_start_year": 2002,
+  "collector": {
+    "type": "cpp_doxygen",
+    "doxyfile": "./Doxyfile",
+    "temp_xml_dir": "./_temp_xml"
   },
-  "renderer_options": {
-    "templates_dir": "../../../engine/templates"
-  }
+  "incremental": true,
+  "max_workers": 8
 }
 ```
-*Supported `output_format` values*: `HugoXML`, `HTML`.
-
-### Local Extraction Automation Scripts
-
-Each target configuration directory contains two platform-native batch scripts to orchestrate the generation lifecycle locally:
-
-1. **`create_xml.bat`**: Uses the local `Doxyfile` to extract parsing data from source code and place it into `input_dir`.
-   ```cmd
-   @echo off
-   echo [UDE] Launching Doxygen XML extraction...
-   doxygen Doxyfile
-   echo [UDE] Extraction finished successfully.
-   ```
-2. **`build_documentation.bat`**: Triggers the UDE Python compilation CLI directly for the specific config.
-   ```cmd
-   @echo off
-   echo [UDE] Starting documentation compilation...
-   python -m ude.cli compile --config output.json
-   echo [UDE] Compilation finished.
-   ```
+*   **`collector`**: Configures the preprocessing phase:
+    *   `type`: Identifies the `BaseCollector` implementation. Use `cpp_doxygen` for Doxygen-based C++ preprocessing, or `native_sources` for straight source directory analysis (C#, Java, Python).
+    *   `doxyfile`: Relative path to the Doxygen configuration file.
+    *   `temp_xml_dir`: Directory where intermediate Doxygen XML files are compiled, which is automatically parsed and then deleted upon completion.
 
 ---
 
@@ -163,3 +278,4 @@ To integrate cleanly with CI/CD pipelines, the CLI returns standardized exit cod
 * `2`: Pydantic/IR validation schema violation (`ValidationError`).
 * `3`: Missing input files or I/O write failures (`ParserError`, `RendererError`).
 * `4`: Invalid config parameters or syntax.
+* `5`: Environment or missing dependency verification failure (`EnvironmentError`).
