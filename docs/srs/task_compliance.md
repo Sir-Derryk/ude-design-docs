@@ -21,7 +21,7 @@ The registry contains aggregated results of the audits conducted on each develop
 | **`TSK-DAT-03`** | `REQ-FUN-26`, `REQ-FUN-27` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Completed | 🟢 Verified |
 | **`TSK-PAR-01`** | `REQ-NFN-02` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-PAR-02`** | `REQ-FUN-02`, `REQ-FUN-19`, `REQ-FUN-20` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Completed | 🟢 Verified |
-| **`TSK-COL-01`** | `REQ-FUN-01`, `REQ-FUN-22` | 🟡 Queued | `0%` | 🟡 Pending | 🟡 Pending | 🟡 Awaiting Build |
+| **`TSK-COL-01`** | `REQ-FUN-01`, `REQ-FUN-22` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Completed | 🟢 Verified |
 | **`TSK-NML-01`** | `REQ-FUN-14` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
 | **`TSK-NML-02`** | `REQ-FUN-13` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
 | **`TSK-RND-01`** | `REQ-FUN-03`, `REQ-FUN-04` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
