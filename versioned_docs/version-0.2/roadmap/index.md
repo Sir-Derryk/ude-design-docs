@@ -12,11 +12,9 @@ We track the revisions of these specifications using a structured versioning sch
 
 | Doc Version | Date | Phase Description | Lead Author | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **`0.3`** | **2026-06-09** | **Разработка прототипа (Prototype Development)** | **Antigravity AI** | **Draft (Active)** |
-| **`0.2`** | **2026-06-08** | **MVP Work Planning & TDD Task Specifications** | **Antigravity AI** | **Approved (Superceded)** |
+| **`0.2`** | **2026-06-08** | **MVP Work Planning & TDD Task Specifications** | **Antigravity AI** | **Approved (Current)** |
 | **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Antigravity AI** | **Approved (Superceded)** |
 
-* **Version 0.3 Scope**: Active core implementation of Python-based UDE prototype according to TDD methodologies (Weeks 1 to 5).
 * **Version 0.2 Scope**: Granular scheduling of 12 TDD tasks across 5 weeks, creating Russian-language executable `.antigravitycli/tasks/` instructions for agents, and updating Docusaurus navigation layouts.
 * **Version 0.1 Scope**: Gathering high-level business goals (BRD), defining system functional/non-functional constraints (SRS), drafting the pipeline design (SDD), and mapping out the implementation schedule.
 
