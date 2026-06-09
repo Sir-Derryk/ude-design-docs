@@ -6,12 +6,12 @@ sidebar_position: 2
 
 ## Extensible Parsing Module
 * **`REQ-FUN-01` (Multi-Source Ingestion & Preprocessing)**: 
-  * *Version 1 (Baseline / MVP)*: The engine must support a modular preprocessing/collection stage. For C++ SDK targets, the system must invoke Doxygen as a subprocess based on a local, target-specific `Doxyfile` to compile raw header files into XML outputs inside a designated temporary directory, which is then parsed to build the catalog.
-  * *Future Phases (v2.0+)*: The preprocessing and ingestion architectures must be loosely coupled. Subsequent versions must support direct code directory collection (for C#, Java, Python, and future native C++ AST-based parsers) or custom XML integrations (e.g., Doc-o-matic XML) without modifying the core pipeline or orchestrator.
+  * *Version 1 (Baseline / MVP)*: The engine must support a modular preprocessing/collection stage. For all supported SDK languages in Version 1.0 (C++, C#, Java, Python), the system must invoke Doxygen as a subprocess based on a local, target-specific `Doxyfile` to compile raw source and header files into XML outputs inside a designated temporary directory, which is then parsed to build the catalog.
+  * *Future Phases (v2.0+)*: The preprocessing and ingestion architectures must be loosely coupled. Subsequent versions must support direct code directory collection (with native AST-based parsers) or custom XML integrations (e.g., Doc-o-matic XML) without modifying the core pipeline or orchestrator.
   * *Traces to*: `REQ-BUS-01`
 
 * **`REQ-FUN-22` (Automated Collector Lifecycle & Temporary Cleanup)**:
-  * *Version 1 (Baseline / MVP)*: The orchestration pipeline must strictly manage the lifecycle of temporary files. Any temporary directories and intermediate XML files generated during the preprocessing/collection stage (e.g., Doxygen XML outputs) must be automatically and recursively deleted by the collector component immediately after ingestion. This cleanup must be guaranteed via a robust `try...finally` block, leaving the repository and CI/CD workspace completely free of intermediate garbage even if the parsing, validation, or rendering stages fail.
+  * *Version 1 (Baseline / MVP)*: The orchestration pipeline must strictly manage the lifecycle of temporary files. Any temporary directories and intermediate XML files generated during the preprocessing/collection stage (e.g., Doxygen XML outputs) must be automatically and recursively deleted by the collector component immediately after ingestion for all supported languages. This cleanup must be guaranteed via a robust `try...finally` block, leaving the repository and CI/CD workspace completely free of intermediate garbage even if the parsing, validation, or rendering stages fail.
   * *Traces to*: `REQ-BUS-03`
 
 * **`REQ-FUN-02` (Multi-Language API Entity Extraction)**:
@@ -36,7 +36,7 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-01`
 
 ## Multi-Format Formatting & Output Module
-* **`REQ-FUN-03` (Multi-Format Rendering)**: The engine must support rendering the extracted Intermediate Representation (IR) into a configurable choice of target formats, supporting **HTML, Markdown (generic or SSG-tailored), XML, and RAG JSON**.
+* **`REQ-FUN-03` (Multi-Format Rendering)**: The engine must support rendering the extracted Intermediate Representation (IR) into a configurable choice of target formats, supporting **HTML and Hugo-Tailored Markdown** in Version 1.0. Other formats such as generic Markdown, XML, and RAG JSON are planned for future phases (v2.0+).
   * *Traces to*: `REQ-BUS-02`
 * **`REQ-FUN-04` (Metadata Configuration)**: For page-based outputs (such as Markdown or HTML), the engine must allow customized metadata/front-matter layout injections (e.g. YAML/TOML blocks with title, order, and parent keys) via templates.
   * *Traces to*: `REQ-BUS-02`
@@ -147,4 +147,21 @@ sidebar_position: 2
     4. Support configurable logging verbosity levels (`DEBUG`, `INFO`, `WARNING`, `ERROR`).
     5. Write detailed stack traces of any occurring exceptions to the log file, while printing only high-level, clean, and developer-friendly diagnostic messages to the console stderr.
   * *Traces to*: `REQ-BUS-03`, `REQ-BUS-09`
+
+* **`REQ-FUN-26` (Incremental Parsing Cache)**:
+  * *Version 1 (Baseline / MVP)*: To prevent redundant parsing, the engine must implement incremental parsing based on file modification timestamps or content hashes (e.g. SHA-256) of input Doxygen XML files. If an XML compound (representing a class, namespace, structure, etc.) has not changed since the previous run, its corresponding entities must be loaded directly from `.build_cache.json.gz`, bypassing raw XML parsing to reduce execution time.
+  * *Traces to*: `REQ-BUS-03`, `REQ-BUS-09`
+
+* **`REQ-FUN-27` (Incremental Rendering Cache)**:
+  * *Version 1 (Baseline / MVP)*: To optimize documentation rendering (preventing redundant disk writes, reducing SSD wear, and keeping Git commits of local outputs clean), the renderer must support incremental rendering. It must compare the signature hash (or content hash of the IR entity) and template hash against the previously rendered files. If neither has changed, the renderer must skip rewriting the target output file.
+  * *Traces to*: `REQ-BUS-03`, `REQ-BUS-09`
+
+* **`REQ-FUN-28` (Target Folder Isolation for Metadata and Cache)**:
+  * *Version 1 (Baseline / MVP)*: All pipeline-internal files—specifically the Intermediate Representation (`intermediate_representation.json.gz`) and build/parsing caches (`.build_cache.json.gz`)—must be strictly stored within a dedicated target subdirectory under the `ude/` tree, named according to the format `<sdk>_<lang>` (e.g. `ude/Bimnv/bimnv_cpp/`, `ude/Bimnv/bimnv_cs/`). This `<sdk>_<lang>` folder is a descendant of the `ude/` root directory, is kept under git version control, and contains the target-specific batch script, `ude_config.json`, `Doxyfile`, and table of contents layout configs. Intermediate and cache files must never be written to `output_dir` (which contains final user-facing files only) to ensure a clean separation between development metadata and production assets.
+  * *Traces to*: `REQ-BUS-03`
+
+* **`REQ-FUN-29` (No Hardcoded Paths & Relative Path Resolution)**:
+  * *Version 1 (Baseline / MVP)*: All directory and file paths used by the UDE engine must be defined exclusively in the configuration files (`ude_global.json`, `ude_config.json`, `product.json`, etc.). Under no circumstances shall physical paths be hardcoded directly into the Python source code. Furthermore, all paths declared in the configurations must be relative (relative to the directory containing the config file). At runtime, the UDE orchestrator must automatically resolve and translate these relative paths into absolute paths, ensuring seamless portability between local developer environments and CI/CD servers.
+  * *Traces to*: `REQ-BUS-09`
+
 

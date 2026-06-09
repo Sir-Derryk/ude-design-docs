@@ -97,6 +97,8 @@ To support granular build execution and full flexibility in local development an
 2. **SDK / Product Level (e.g., `engine/generate_<product>.bat` or `ude/<product>/generate_all.bat`)**: Triggers the orchestrator for all targets belonging to a specific SDK/Product (such as Bimnv, FacetModeler, Map, or IGES).
 3. **Project / Target Level (e.g., `engine/generate_<product>_<target>.bat` or `ude/<product>/<target>/generate_docs.bat`)**: Directly triggers the orchestrator for a single target configuration (e.g., C++ API Reference, C# API Reference).
 
+All scripts automatically perform pre-flight checks on Python availability and auto-install any missing dependencies (`pydantic`, `lxml`, `jinja2`).
+
 These scripts are described below.
 
 #### 1. Central Automation Script (`engine/generate_all.bat`)
@@ -112,13 +114,36 @@ echo ============================================================
 echo   ODA UDE: Multi-Target Documentation Generation Pipeline
 echo ============================================================
 
+:: 1. Verify Python availability
+where python >nul 2>nul
+if !errorlevel! neq 0 (
+    echo [ERROR] Python is not installed or not added to PATH.
+    echo Please install Python 3.8 or higher.
+    exit /b 5
+)
+
+:: 2. Verify and install required library dependencies
+echo [INFO] Verifying required Python libraries...
+set "REQS=pydantic lxml jinja2"
+for %%p in (%REQS%) do (
+    python -c "import %%p" >nul 2>nul
+    if !errorlevel! neq 0 (
+        echo [INFO] Library '%%p' is missing. Installing...
+        python -m pip install %%p
+        if !errorlevel! neq 0 (
+            echo [ERROR] Failed to install '%%p' library.
+            exit /b 5
+        )
+    )
+)
+
 set "UDE_ROOT=%~dp0..\ude"
 
 :: Define all project targets to be sequentially orchestrated
 set "TARGETS="
-set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cpp\ude_config.json"
-set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cs\ude_config.json"
-set "TARGETS=!TARGETS! !UDE_ROOT!\FacetModeler\facetmodeler_api_cpp\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_cpp\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_cs\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\FacetModeler\facetmodeler_cpp\ude_config.json"
 
 for %%t in (%TARGETS%) do (
     echo.
@@ -151,13 +176,36 @@ echo ============================================================
 echo   ODA UDE: BimNv Product Documentation Pipeline
 echo ============================================================
 
+:: 1. Verify Python availability
+where python >nul 2>nul
+if !errorlevel! neq 0 (
+    echo [ERROR] Python is not installed or not added to PATH.
+    echo Please install Python 3.8 or higher.
+    exit /b 5
+)
+
+:: 2. Verify and install dependencies
+echo [INFO] Verifying required Python libraries...
+set "REQS=pydantic lxml jinja2"
+for %%p in (%REQS%) do (
+    python -c "import %%p" >nul 2>nul
+    if !errorlevel! neq 0 (
+        echo [INFO] Library '%%p' is missing. Installing...
+        python -m pip install %%p
+        if !errorlevel! neq 0 (
+            echo [ERROR] Failed to install '%%p' library.
+            exit /b 5
+        )
+    )
+)
+
 set "UDE_ROOT=%~dp0..\ude"
 
 :: Define all targets specifically for this SDK
 set "TARGETS="
-set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cpp\ude_config.json"
-set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_cs\ude_config.json"
-set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_api_java\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_cpp\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_cs\ude_config.json"
+set "TARGETS=!TARGETS! !UDE_ROOT!\Bimnv\bimnv_java\ude_config.json"
 
 for %%t in (%TARGETS%) do (
     echo.
@@ -177,7 +225,7 @@ echo ============================================================
 endlocal
 ```
 
-#### 3. Project / Target Automation Script (e.g., `engine/generate_bimnv_api_cpp.bat` or `ude/Bimnv/bimnv_api_cpp/generate_docs.bat`)
+#### 3. Project / Target Automation Script (e.g., `engine/generate_bimnv_cpp.bat` or `ude/Bimnv/bimnv_cpp/generate_docs.bat`)
 
 Responsible for generating documentation for a single specific target (e.g., Bimnv C++ API Reference):
 
@@ -185,6 +233,29 @@ Responsible for generating documentation for a single specific target (e.g., Bim
 @echo off
 chcp 65001 >nul
 setlocal enabledelayedexpansion
+
+:: 1. Verify Python availability
+where python >nul 2>nul
+if !errorlevel! neq 0 (
+    echo [ERROR] Python is not installed or not added to PATH.
+    echo Please install Python 3.8 or higher.
+    exit /b 5
+)
+
+:: 2. Verify and install dependencies
+echo [INFO] Verifying required Python libraries...
+set "REQS=pydantic lxml jinja2"
+for %%p in (%REQS%) do (
+    python -c "import %%p" >nul 2>nul
+    if !errorlevel! neq 0 (
+        echo [INFO] Library '%%p' is missing. Installing...
+        python -m pip install %%p
+        if !errorlevel! neq 0 (
+            echo [ERROR] Failed to install '%%p' library.
+            exit /b 5
+        )
+    )
+)
 
 set "SCRIPT_DIR=%~dp0"
 :: Path to Python modules in engine
@@ -245,28 +316,42 @@ Specifies target-specific properties, language parsers, and custom preprocessing
   "output_dir": "bimnv_api_cpp",
   "copyright_start_year": 2002,
   "collector": {
-    "type": "cpp_doxygen",
+    "type": "doxygen",
     "doxyfile": "./Doxyfile",
     "temp_xml_dir": "./_temp_xml"
   },
-  "incremental": true,
+  "parser": {
+    "type": "doxygen_xml",
+    "incremental": true
+  },
+  "renderer": {
+    "type": "hugo_markdown",
+    "incremental": true
+  },
   "max_workers": 8
 }
 ```
-*   **`collector`**: Configures the preprocessing phase:
-    *   `type`: Identifies the `BaseCollector` implementation. Use `cpp_doxygen` for Doxygen-based C++ preprocessing, or `native_sources` for straight source directory analysis (C#, Java, Python).
+*   **`collector`**: Configures the preprocessing stage:
+    *   `type`: Identifies the `BaseCollector` implementation. Use `doxygen` for Doxygen-based preprocessing across all supported languages (C++, C#, Java, Python).
     *   `doxyfile`: Relative path to the Doxygen configuration file.
     *   `temp_xml_dir`: Directory where intermediate Doxygen XML files are compiled, which is automatically parsed and then deleted upon completion.
+*   **`parser`**: Configures the ingestion and parsing stage:
+    *   `type`: Identifies the `BaseParser` implementation (e.g., `doxygen_xml`).
+    *   `incremental`: If `true`, enables incremental parsing based on input file hashes.
+*   **`renderer`**: Configures the output rendering stage:
+    *   `type`: Identifies the `BaseRenderer` implementation (e.g., `hugo_markdown` or `html`).
+    *   `incremental`: If `true`, enables incremental rendering to skip writing unchanged files.
 
 ---
 
-## Storage and Gzip Compression (IR)
+## Target Folder Isolation & Caching (IR and Caches)
 
-To prevent cluttering Git commits and bloating repository storage, the IR intermediate file is aggressively compressed:
-1. When `ude parse` finishes, the memory model `ProjectCatalog.model_dump_json()` is serialized to UTF-8.
-2. The JSON text is compressed using the **Gzip** algorithm.
-3. The compressed bytes are written directly to `<filename>.json.gz`.
-4. When `ude render` starts, it reads and decompresses the Gzip archive into memory and initializes `ProjectCatalog.model_validate_json()`, completing an instant round-trip.
+To prevent cluttering Git commits of output directories, keep code workspaces completely clean, and optimize execution speeds:
+1. **Target Folder Isolation**: All pipeline-internal artifacts, specifically the Intermediate Representation Gzip file (`intermediate_representation.json.gz`) and the incremental build caches (`.build_cache.json.gz`), must be strictly stored in the dedicated target subdirectory under the `ude/` tree named after `<sdk>_<lang>` (e.g. `ude/Bimnv/bimnv_cpp/`). This `<sdk>_<lang>` folder is a direct descendant of `ude/`, is kept under version control, and hosts the target-specific batch script, `ude_config.json`, `Doxyfile`, and layout `toc.yaml`. They are completely isolated from `output_dir` (which contains final user-facing static Hugo markdown or HTML files only).
+2. **No Hardcoded Paths & Relative Path Resolution**: To achieve absolute portability across developer workstations and CI/CD agents, all directory and file paths used by the UDE engine must be specified exclusively within the configuration files (e.g., `ude_global.json`, `ude_config.json`, etc.). Physical paths must never be hardcoded directly into the Python source code. All paths configured in settings must be defined relative to the directory containing the config file. At startup, the orchestrator must dynamically resolve and convert them to absolute paths.
+3. **Transparent Compression**: The Intermediate Representation (IR) is aggressively compressed. When the parse phase finishes, the Pydantic memory model `ProjectCatalog.model_dump_json()` is serialized, compressed via the standard **Gzip** algorithm, and written directly to `<sdk>_<lang>/intermediate_representation.json.gz`. The rendering phase decompresses this archive directly into memory.
+4. **Incremental Parsing Cache**: The parser tracks source/XML file timestamps and content hashes inside `.build_cache.json.gz`. During parsing, any entity whose underlying source XML has not changed is loaded from cache, bypassing raw XML processing.
+5. **Incremental Rendering Cache**: The renderer compares the current IR signature/content hashes and template hashes against previously generated static files. If an entity remains unchanged, writing to the disk is skipped, minimizing disk IO.
 
 ---
 
