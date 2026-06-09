@@ -15,7 +15,7 @@ We track the revisions of these specifications using a structured versioning sch
 | **`0.2`** | **2026-06-08** | **MVP Work Planning & TDD Task Specifications** | **Antigravity AI** | **Approved (Current)** |
 | **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Antigravity AI** | **Approved (Superceded)** |
 
-* **Version 0.2 Scope**: Granular scheduling of 12 TDD tasks across 5 weeks, creating Russian-language executable `.antigravitycli/tasks/` instructions for agents, and updating Docusaurus navigation layouts.
+* **Version 0.2 Scope**: Granular scheduling of 12 TDD tasks across 5 weeks, creating English-language executable `.antigravitycli/tasks/` instructions for agents, and updating Docusaurus navigation layouts.
 * **Version 0.1 Scope**: Gathering high-level business goals (BRD), defining system functional/non-functional constraints (SRS), drafting the pipeline design (SDD), and mapping out the implementation schedule.
 
 ---
