@@ -28,7 +28,7 @@ The registry contains aggregated results of the audits conducted on each develop
 | **`TSK-RND-02`** | `REQ-FUN-03`, `REQ-FUN-30`, `REQ-FUN-31`, `REQ-FUN-32` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-CLI-01`** | `REQ-FUN-07`, `REQ-BUS-09` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-CLI-03`** | `REQ-FUN-23`, `REQ-FUN-24`, `REQ-FUN-25`, `REQ-FUN-28`, `REQ-FUN-29`, `REQ-BUS-09` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Completed | 🟢 Verified |
-| **`TSK-CLI-02`** | `REQ-NFN-03` (Coverage >= 90%) | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
+| **`TSK-CLI-02`** | `REQ-NFN-03` (Coverage >= 90%), `REQ-FUN-33` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 
 *Status Legend:*
 *   🟢 **Passed (OK)**: Full compliance with the quality criterion, all tests are green, and requirements are covered.
