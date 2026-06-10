@@ -164,4 +164,44 @@ sidebar_position: 2
   * *Version 1 (Baseline / MVP)*: All directory and file paths used by the UDE engine must be defined exclusively in the configuration files (`ude_global.json`, `ude_config.json`, `product.json`, etc.). Under no circumstances shall physical paths be hardcoded directly into the Python source code. Furthermore, all paths declared in the configurations must be relative (relative to the directory containing the config file). At runtime, the UDE orchestrator must automatically resolve and translate these relative paths into absolute paths, ensuring seamless portability between local developer environments and CI/CD servers.
   * *Traces to*: `REQ-BUS-09`
 
+## Premium Layout & TOC Navigation Module
+* **`REQ-FUN-30` (TOC Logical Hierarchy & Physical Flat-Mapping)**:
+  * *Version 1 (Baseline / MVP)*: The rendering engine must support compiling structured API Table of Contents (TOC) trees for all base languages (C++, C#, Java, Python).
+  * *Logical Hierarchy Rules*:
+    * *C++*: Namespace -> Nested Namespace -> Classes/Structures/Enums/Global Functions -> Nested Classes -> Methods/Fields.
+    * *C#*: Namespaces (nested by dot separation) -> Classes/Interfaces/Enums -> Nested Classes -> Methods/Properties/Fields.
+    * *Java*: Packages (nested by dot separation) -> Classes/Interfaces/Enums -> Nested Classes -> Methods/Fields.
+    * *Python*: Packages -> Modules -> Classes/Functions -> Nested Classes -> Methods/Properties.
+  * *Physical Flat-Mapping Rules (Disk naming without deep folder nesting)*:
+    * *C++*: Hierarchy levels separated by double underscore `__` (e.g., `FacetModeler::Body::faceCount` -> `FacetModeler__Body__faceCount.html`). Overloaded method signatures separated by `@` (e.g., `apply(double)` -> `...__apply@double.html`). Safe string replacements for special characters (e.g., `*` -> `_ptr`, `&` -> `_ref`, `<` -> `_lt_`, `>` -> `_gt_`).
+    * *C#*: Dot package/namespace levels and nested classes separated by `__` (e.g., `Oda__Cloud__Connection.html`). Overloads separated by `@` with safety replacements.
+    * *Java*: Package levels separated by a single underscore `_`, nested class members separated by `__` (e.g., `org_graphics_Oda__Class.html`). Overloads separated by `@`.
+    * *Python*: Package/module dot levels and class levels separated by a single underscore `_`, member methods/properties separated by `__` (e.g., `ude_parsers_doxygen_DoxygenXmlParser__parse_file@str.html`).
+  * *Traces to*: `REQ-BUS-10`
+
+* **`REQ-FUN-31` (Multi-Format TOC Compilation & Sidebar Interactive Features)**:
+  * *Hugo Markdown TOC Integration*: The renderer must compile logical TOC paths into YAML/TOML front-matter metadata headers inside individual Markdown output files (utilizing standard key schemas: `title`, `weight`, `parent`) enabling native Hugo menu hierarchy assembly.
+  * *HTML Offline Sidebar (No CORS Restriction)*: Standalone HTML output must feature an offline-ready, dynamic sidebar loaded strictly via file protocols (`file:///`). To prevent browser CORS security blocks:
+    1. The hierarchical TOC database must be compiled as a global JSON object (`window.UDE_NAV_DATA`) inside a dedicated JavaScript file `nav_data.js` and loaded dynamically via a `<script>` tag.
+    2. The sidebar must render an interactive tree. Clicking on folder nodes collapses or expands them without triggering page reloads.
+  * *Interactive Sidebar Control & Search*:
+    1. **Resizable Panel Splitting**: Include a draggable vertical splitter handler (`.OdaDocSplitter`) that allows the user to resize the sidebar width. The user's custom width must be persistently stored in the browser's `localStorage` under the key `ude_sidebar_width` and automatically re-applied on subsequent page loads.
+    2. **Real-Time Search Filter**: Provide a fast, client-side text input filter (`#sidebarSearch` / `#odaTocSearchInput`) that performs real-time matching against TOC entity labels, auto-expanding parent scopes to reveal search results and hiding unmatched nodes.
+  * *Traces to*: `REQ-BUS-10`, `REQ-BUS-02`
+
+* **`REQ-FUN-32` (Standardized Entity-Type Page Layouts)**:
+  * *Version 1 (Baseline / MVP)*: The rendering templates must generate standardized layout structures for each public API entity page (namespaces, classes, structures, methods, modules, enums) across all supported languages.
+  * *Page Template Anatomy*:
+    1. **Visual Header**: Display the entity's fully qualified name alongside a highly visible, color-coded typographic badge designating the entity type (e.g., `[class]`, `[method]`, `[module]`).
+    2. **Prose Description Block (`.OdaDocBrief`)**: Section displaying the CommonMark normalized brief and detailed documentation prose.
+    3. **Metadata Panel (`.OdaDocContainerTable`)**: A clean tabular container detailing vital structural context (e.g., source file origin, enclosing parent module/namespace, access scope, and inheritance lines).
+    4. **Code Prototype Block (`.OdaDocCodeProto`)**: Code declaration blocks styled with specific CSS layouts, marked with the exact language-tag required for Highlight.js code highlighting.
+    5. **Expandable Member Tables**: Collate nested children (e.g., methods inside a class, fields inside a struct) into distinct, collapsible sections containing navigation tables. Each row must feature a high-fidelity visual indicator icon (such as `indicator-method-16.png`) denoting the member's specific subtype and accessibility.
+  * *Aesthetic and Visual Matching*:
+    1. **Style Compilation**: The HTML compiler must copy the reference stylesheet `main.css` and all visual indicator images from the reference directory (`refs/NewVersion/bimnv_api_cpp/`) to the output generation directory.
+    2. **Styles Integration**: Each generated HTML page must reference the local `main.css` inside its `<head>` section via `<link rel="stylesheet" href="main.css">`.
+    3. **Visual Look & Feel Exactness**: The overall layout appearance, color palette (employing ODA primary `#ff3100` and hover `#cc2600`), typography, responsive breakpoints, spacing, and panel sizing rules must be visually indistinguishable from the reference pages.
+  * *Traces to*: `REQ-BUS-10`
+
+
 
