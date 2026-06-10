@@ -203,5 +203,12 @@ sidebar_position: 2
     3. **Visual Look & Feel Exactness**: The overall layout appearance, color palette (employing ODA primary `#ff3100` and hover `#cc2600`), typography, responsive breakpoints, spacing, and panel sizing rules must be visually indistinguishable from the reference pages.
   * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-33` (Multi-Entity Dynamic File Prefixing & Page Coverage)**:
+  * *Version 1 (Baseline / MVP)*: Standalone pages are generated for all extracted API entities (including namespaces, packages, modules, classes, structures, interfaces, enums, functions, and variables), with the sole exception of enum members (which are documented inline on their parent enum's page). The physical filename of each generated page on disk, resolved by the `resolve_filename()` method in both HTML and Hugo Markdown renderers, must be dynamically prepended with the exact, lowercase entity type (e.g. `namespace_`, `class_`, `struct_`, `interface_`, `variable_`, `function_`, `enum_`) followed by an underscore (e.g. `class_MyClass.html`, `struct_MyStruct.html`, `interface_MyInterface.html`).
+  * *Unified Signature*: This rule must apply universally across all supported languages (C++, C#, Java, Python).
+  * *Excluded Entities*: Low-level members (such as individual enum values/members) do not generate separate standalone pages and are instead documented inline on their parent entity's page.
+  * *Traces to*: `REQ-BUS-02`, `REQ-BUS-10`
+
+
 
 
