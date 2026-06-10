@@ -34,7 +34,7 @@ In alignment with our engineering standards, we strictly follow the **Test-Drive
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest --cov=ude tests/
+        poetry run pytest --cov=ude tests/
         ```
     *   *Expected Result*: pytest runs successfully, returning exit code 0, and showing 100% coverage for `__init__.py`.
     *   *Manual Checks*:
@@ -62,7 +62,7 @@ poetry run pytest --cov=ude tests/
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_assets.py
+        poetry run pytest tests/test_assets.py
         ```
     *   *Expected Result*: All unit tests in `test_assets.py` pass cleanly.
     *   *Manual Checks*:
@@ -96,7 +96,7 @@ poetry run pytest tests/test_assets.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_models.py
+        poetry run pytest tests/test_models.py
         ```
     *   *Expected Result*: All schema validation tests pass with green status.
     *   *Manual Checks*:
@@ -122,7 +122,7 @@ poetry run pytest tests/test_models.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_storage.py
+        poetry run pytest tests/test_storage.py
         ```
     *   *Expected Result*: Tests pass successfully, demonstrating lossless compression/decompression.
     *   *Manual Checks*:
@@ -148,7 +148,7 @@ poetry run pytest tests/test_storage.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_caching.py
+        poetry run pytest tests/test_caching.py
         ```
     *   *Expected Result*: Unit tests pass, proving that the incremental build cache behaves correctly.
     *   *Manual Checks*:
@@ -181,7 +181,7 @@ poetry run pytest tests/test_caching.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_interfaces.py
+        poetry run pytest tests/test_interfaces.py
         ```
     *   *Expected Result*: All modular safety interface assertions pass.
     *   *Manual Checks*:
@@ -208,7 +208,7 @@ poetry run pytest tests/test_interfaces.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_doxygen_parser.py
+        poetry run pytest tests/test_doxygen_parser.py
         ```
     *   *Expected Result*: All parser unit tests pass with clean assertions.
     *   *Manual Checks*:
@@ -236,7 +236,7 @@ poetry run pytest tests/test_doxygen_parser.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_doxygen_collector.py
+        poetry run pytest tests/test_doxygen_collector.py
         ```
     *   *Expected Result*: Collector environment validations, subprocess runs, and cleanup safety tests pass.
     *   *Manual Checks*:
@@ -267,7 +267,7 @@ poetry run pytest tests/test_doxygen_collector.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_normalizer.py
+        poetry run pytest tests/test_normalizer.py
         ```
     *   *Expected Result*: Docstring normalization tests pass cleanly.
     *   *Manual Checks*:
@@ -294,7 +294,7 @@ poetry run pytest tests/test_normalizer.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_exclusions.py
+        poetry run pytest tests/test_exclusions.py
         ```
     *   *Expected Result*: Tag/range exclusion tests pass with 100% information isolation.
     *   *Manual Checks*:
@@ -324,7 +324,7 @@ poetry run pytest tests/test_exclusions.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_hugo_renderer.py
+        poetry run pytest tests/test_hugo_renderer.py
         ```
     *   *Expected Result*: Hugo rendering tests pass with green assertions.
     *   *Manual Checks*:
@@ -350,7 +350,7 @@ poetry run pytest tests/test_hugo_renderer.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_html_renderer.py
+        poetry run pytest tests/test_html_renderer.py
         ```
     *   *Expected Result*: Direct static HTML rendering tests pass successfully.
     *   *Manual Checks*:
@@ -384,7 +384,7 @@ poetry run pytest tests/test_html_renderer.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_cli.py
+        poetry run pytest tests/test_cli.py
         ```
     *   *Expected Result*: All CLI automation tests pass with green exit status.
     *   *Manual Checks*:
@@ -410,7 +410,7 @@ poetry run pytest tests/test_cli.py
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest --cov=ude tests/
+        poetry run pytest --cov=ude tests/
         ```
     *   *Expected Result*: Integration tests pass and overall test coverage report confirms >= 90% coverage.
     *   *Manual Checks*:
@@ -436,7 +436,7 @@ poetry run pytest --cov=ude tests/
     *   *Verification Command*:
         ```bash
         cd engine
-poetry run pytest tests/test_orchestrator.py
+        poetry run pytest tests/test_orchestrator.py
         ```
     *   *Expected Result*: Orchestrator portability and safety assertions pass cleanly.
     *   *Manual Checks*:
