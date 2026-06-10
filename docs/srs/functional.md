@@ -190,7 +190,7 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-10`, `REQ-BUS-02`
 
 * **`REQ-FUN-32` (Standardized Entity-Type Page Layouts)**:
-  * *Version 1 (Baseline / MVP)*: The rendering templates must generate standardized layout structures for each public API entity page (namespaces, classes, structures, methods, modules, enums) across all supported languages.
+  * *Version 1 (Baseline / MVP)*: The rendering templates must generate standardized layout structures for each public API entity page (classes, structures, and interfaces) across all supported languages.
   * *Page Template Anatomy*:
     1. **Visual Header**: Display the entity's fully qualified name alongside a highly visible, color-coded typographic badge designating the entity type (e.g., `[class]`, `[method]`, `[module]`).
     2. **Prose Description Block (`.OdaDocBrief`)**: Section displaying the CommonMark normalized brief and detailed documentation prose.
@@ -204,9 +204,9 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-10`
 
 * **`REQ-FUN-33` (Multi-Entity Dynamic File Prefixing & Page Coverage)**:
-  * *Version 1 (Baseline / MVP)*: Standalone pages are generated for all extracted API entities (including namespaces, packages, modules, classes, structures, interfaces, enums, functions, and variables), with the sole exception of enum members (which are documented inline on their parent enum's page). The physical filename of each generated page on disk, resolved by the `resolve_filename()` method in both HTML and Hugo Markdown renderers, must be dynamically prepended with the exact, lowercase entity type (e.g. `namespace_`, `class_`, `struct_`, `interface_`, `variable_`, `function_`, `enum_`) followed by an underscore (e.g. `class_MyClass.html`, `struct_MyStruct.html`, `interface_MyInterface.html`).
-  * *Unified Signature*: This rule must apply universally across all supported languages (C++, C#, Java, Python).
-  * *Excluded Entities*: Low-level members (such as individual enum values/members) do not generate separate standalone pages and are instead documented inline on their parent entity's page.
+  * *Version 1 (Baseline / MVP)*: Standalone pages are generated for extracted high-level object-oriented entities (classes, structures, and interfaces). The physical filename of each generated page on disk, resolved by the `resolve_filename()` method in both HTML and Hugo Markdown renderers, must be dynamically prepended with the exact, lowercase entity type (`class_`, `struct_`, `interface_`) followed by an underscore (e.g. `class_MyClass.html`, `struct_MyStruct.html`, `interface_MyInterface.html`). Other high-level entities (such as namespaces, packages, modules, enums, global functions, and variables) are represented hierarchically or inline within the generated documentation rather than having separate standalone pages in this baseline version.
+  * *Unified Signature*: This rule must apply universally across all supported languages (C++, C#, Java, Python) for all generated class, structure, and interface files.
+  * *Excluded Entities*: Members and other non-class entities do not generate separate standalone pages.
   * *Traces to*: `REQ-BUS-02`, `REQ-BUS-10`
 
 
