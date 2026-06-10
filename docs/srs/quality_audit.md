@@ -12,8 +12,8 @@ This report evaluates the functional requirements (SRS) and business requirement
 
 | Quality Criterion | Status | Score (1-10) | Key Findings & Observations |
 | :--- | :---: | :---: | :--- |
-| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue identified during the previous audit has been resolved, and the new requirements `REQ-BUS-10` and `REQ-FUN-30` through `REQ-FUN-32` completely cover the ToC hierarchy, flat-mapping, interactive sidebar mechanics (CORS protection, panel split resizing with localStorage, real-time filtering), standardized page templates, and compilation/copying of `main.css` and graphics assets. |
-| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The new business requirement `REQ-BUS-10` maps directly to `REQ-FUN-30`, `REQ-FUN-31`, and `REQ-FUN-32`. Furthermore, `REQ-FUN-31` also traces back to `REQ-BUS-02`. All traces in `task_compliance.md` and active roadmap `active_plan.md` are in 100% synchronization. |
+| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue identified during the previous audit has been resolved, and the new requirements `REQ-BUS-10` and `REQ-FUN-30` through `REQ-FUN-33` completely cover the ToC hierarchy, flat-mapping, dynamic file prefixing on disk, interactive sidebar mechanics (CORS protection, panel split resizing with localStorage, real-time filtering), standardized page templates, and compilation/copying of `main.css` and graphics assets. |
+| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The new business requirement `REQ-BUS-10` maps directly to `REQ-FUN-30`, `REQ-FUN-31`, `REQ-FUN-32`, and `REQ-FUN-33`. Furthermore, `REQ-FUN-31` and `REQ-FUN-33` also trace back to `REQ-BUS-02`. All traces in `task_compliance.md` and active roadmap `active_plan.md` are in 100% synchronization. |
 | **Consistency** | 🟢 Excellent | 10 | All potential conflicts (offline local execution mode vs online AI translation endpoints, pipeline throughput vs cache writing overhead, and local file-protocol security vs asynchronous ToC loads) have been explicitly resolved. Specifically, CORS blocks are bypassed in `REQ-FUN-31` by compiling the database into a JavaScript variable (`window.UDE_NAV_DATA`) inside `nav_data.js`, and visual match exactness is guaranteed by copying reference `main.css` stylesheets (`REQ-FUN-32`). |
 | **Unambiguity** | 🟢 Excellent | 10 | Requirements are formulated using precise technical and mathematical terms. Document completeness criteria, flat-mapping naming separators (`__`, `_`, `@`), visual CSS selectors (`.OdaDocBrief`, `.OdaDocCodeProto`), asset paths (`refs/NewVersion/bimnv_api_cpp/main.css`), and browser `localStorage` parameters are deterministically defined. |
 | **Testability** | 🟢 Excellent | 10 | The specifications define deterministic data transformations. Every requirement is testable via automated unit tests (verifying flat-mapped filenames, metadata headers, and JSON structure serialization) and integration/E2E UI tests. |
@@ -28,7 +28,7 @@ This report evaluates the functional requirements (SRS) and business requirement
 ## 🔍 Detailed Analysis and Recommendations
 
 During a scheduled requirements audit, a desynchronization between the local task catalog `.antigravitycli/` and Docusaurus documentation was detected and successfully resolved. Furthermore, the newly formulated layout and ToC specifications have been seamlessly integrated, ensuring top-tier quality:
-1. **Resolving Completeness Gaps**: Added 10 missing functional requirements (`REQ-FUN-19` to `REQ-FUN-29`) and premium layout requirements (`REQ-BUS-10`, `REQ-FUN-30` to `REQ-FUN-32`) to the documentation, covering incremental caching, automatic cleanup, SWIG/C++ macros filtering, ToC physical mapping, and offline-compatible sidebars.
+1. **Resolving Completeness Gaps**: Added 10 missing functional requirements (`REQ-FUN-19` to `REQ-FUN-29`) and premium layout requirements (`REQ-BUS-10`, `REQ-FUN-30` to `REQ-FUN-33`) to the documentation, covering incremental caching, automatic cleanup, SWIG/C++ macros filtering, ToC physical mapping, multi-entity filename prefixing, and offline-compatible sidebars.
 2. **Eliminating Security Risks (CORS)**: Restructuring the hierarchical navigation ToC into `nav_data.js` loaded via a `<script>` tag prevents web-browser CORS blockages, making the compiled documentation 100% compatible with local file loading (`file:///`).
 
 ### 💡 Project Roadmap Recommendations:
@@ -86,15 +86,16 @@ graph TD
         F30["REQ-FUN-30 (TOC Mapping Rules)"]
         F31["REQ-FUN-31 (TOC Formats & Sidebar Navigation)"]
         F32["REQ-FUN-32 (Standardized Page Layouts)"]
+        F33["REQ-FUN-33 (Multi-Entity Dynamic File Prefixing & Page Coverage)"]
     end
 
     F1 & F2 & F19 & F20 -->|Satisfies| B1
-    F3 & F4 & F31 -->|Satisfies| B2
+    F3 & F4 & F31 & F33 -->|Satisfies| B2
     F11 & F22 & F28 -->|Satisfies| B3
     F5 -->|Satisfies| B4
     F9 -->|Satisfies| B5
     F6 & F10 -->|Satisfies| B6
     F8 & F12 & F13 & F14 & F15 & F16 & F17 & F18 -->|Satisfies| B8
     F7 & F23 & F24 & F25 & F26 & F27 & F29 -->|Satisfies| B9
-    F30 & F31 & F32 -->|Satisfies| B10
+    F30 & F31 & F32 & F33 -->|Satisfies| B10
 ```
