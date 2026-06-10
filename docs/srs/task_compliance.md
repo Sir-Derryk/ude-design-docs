@@ -26,7 +26,7 @@ The registry contains aggregated results of the audits conducted on each develop
 | **`TSK-NML-02`** | `REQ-FUN-13` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-RND-01`** | `REQ-FUN-03`, `REQ-FUN-04`, `REQ-FUN-30`, `REQ-FUN-31`, `REQ-FUN-32` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-RND-02`** | `REQ-FUN-03`, `REQ-FUN-30`, `REQ-FUN-31`, `REQ-FUN-32` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
-| **`TSK-CLI-01`** | `REQ-FUN-07`, `REQ-BUS-09` | 🟢 Passed | `92%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
+| **`TSK-CLI-01`** | `REQ-FUN-07`, `REQ-BUS-09` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-CLI-03`** | `REQ-FUN-23`, `REQ-FUN-24`, `REQ-FUN-25`, `REQ-FUN-28`, `REQ-FUN-29`, `REQ-BUS-09` | 🟡 Queued | `0%` | 🟡 Pending | 🟡 Pending | 🟡 Awaiting Build |
 | **`TSK-CLI-02`** | `REQ-NFN-03` (Coverage >= 90%) | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Awaiting Build |
 
