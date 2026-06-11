@@ -90,6 +90,16 @@ const config: Config = {
           label: 'Specifications',
         },
         {
+          href: 'https://sir-derryk.github.io/ude-user-docs/',
+          label: 'User Guides',
+          position: 'left',
+        },
+        {
+          href: 'https://sir-derryk.github.io/ude-user-docs/api/',
+          label: 'API Reference',
+          position: 'left',
+        },
+        {
           type: 'docsVersionDropdown',
           position: 'right',
         },
@@ -109,6 +119,19 @@ const config: Config = {
             {
               label: 'Specifications',
               to: '/docs/0.1',
+            },
+          ],
+        },
+        {
+          title: 'Portals',
+          items: [
+            {
+              label: 'User Guides',
+              href: 'https://sir-derryk.github.io/ude-user-docs/',
+            },
+            {
+              label: 'API Reference',
+              href: 'https://sir-derryk.github.io/ude-user-docs/api/',
             },
           ],
         },
