@@ -209,6 +209,11 @@ sidebar_position: 2
   * *Excluded Entities*: Members and other non-class entities do not generate separate standalone pages.
   * *Traces to*: `REQ-BUS-02`, `REQ-BUS-10`
 
+* **`REQ-FUN-34` (Integrated Document Catalog Link & Reference)**:
+  * *Version 1 (Baseline / MVP)*: The generated online documentation portal (such as the VitePress and Hugo hybrid site) must feature an integrated, prominent reference link to the official, structured Document Catalog file (such as `ude_portal_blueprint.md` or a centralized index file). This ensures that developers and technical writers can instantly access the full list of compiled manuals, guides, and specifications directly from any generated page or within the portal's navigation sidebar.
+  * *Unified Access*: This catalog reference link must be rendered consistently inside the global navigation sidebar or footers of all compiled documentation types.
+  * *Traces to*: `REQ-BUS-11`
+
 
 
 
