@@ -52,6 +52,7 @@ const config: Config = {
       'classic',
       {
         docs: {
+          routeBasePath: '/',
           sidebarPath: './sidebars.ts',
           lastVersion: 'current',
           versions: {
@@ -133,7 +134,7 @@ const config: Config = {
           items: [
             {
               label: 'Specifications',
-              to: '/docs/0.1',
+              to: '/0.1',
             },
           ],
         },
