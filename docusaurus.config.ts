@@ -93,7 +93,7 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'UDE Specs',
+      title: 'Universal Documentation Engine Specifications',
       logo: {
         alt: 'UDE Logo',
         src: 'img/logo.png',
@@ -115,8 +115,9 @@ const config: Config = {
         },
         {
           href: 'https://github.com/Sir-Derryk/ude-design-docs',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
