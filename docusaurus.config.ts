@@ -56,6 +56,10 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
+              label: '0.4 (Documentation)',
+              path: '0.4',
+            },
+            '0.3': {
               label: '0.3 (Prototype)',
               path: '0.3',
             },
