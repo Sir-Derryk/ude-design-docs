@@ -100,12 +100,6 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Specifications',
-        },
-        {
           href: 'https://sir-derryk.github.io/ude-user-docs/',
           label: 'User Guides',
           position: 'left',
