@@ -186,5 +186,28 @@
   color: #a78bfa !important;
 }
 
+/* Shift Docusaurus heading hash-link (#) to the right of the heading text on hover */
+h1 .hash-link,
+h2 .hash-link,
+h3 .hash-link,
+h4 .hash-link,
+h5 .hash-link,
+h6 .hash-link {
+  float: none !important;
+  margin-left: 0.35em !important;
+  margin-right: 0 !important;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+h1:hover .hash-link,
+h2:hover .hash-link,
+h3:hover .hash-link,
+h4:hover .hash-link,
+h5:hover .hash-link,
+h6:hover .hash-link {
+  opacity: 1 !important;
+}
+
 
 
