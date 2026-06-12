@@ -58,7 +58,7 @@ const config: Config = {
           versions: {
             current: {
               label: '0.5 (Testing of Documentation)',
-              path: '0.5',
+              path: '',
             },
             '0.4': {
               label: '0.4 (Documentation)',
