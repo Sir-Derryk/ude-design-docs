@@ -214,6 +214,15 @@ sidebar_position: 2
   * *Unified Access*: This catalog reference link must be rendered consistently inside the global navigation sidebar or footers of all compiled documentation types.
   * *Traces to*: `REQ-BUS-11`
 
+* **`REQ-FUN-35` (No Empty Sidebar Sections & Auto-Linking)**:
+  * *Version 1 (Baseline / MVP)*: The documentation system's sidebar generation must enforce that every sidebar category, group, or node corresponds to a real, navigable page (preventing empty collapsible headers that do not open any page). If a sidebar section is defined, it must:
+    1. Direct the user to an explicit index/category page.
+    2. Or link to its first-level child document (the first descendant page under that section).
+    3. Or render a dynamically generated index page that lists all first-level children of that category.
+    This rule applies universally to both project/user-level manual document configurations (such as VitePress and Docusaurus sidebars) and UDE's automatic API Reference sidebar/TOC builder to ensure full structural coverage.
+  * *Traces to*: `REQ-BUS-10`
+
+
 
 
 
