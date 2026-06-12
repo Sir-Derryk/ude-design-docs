@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'UDE Specifications',
   tagline: 'Design and Technical Documentation for Universal Documentation Engine',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -56,6 +56,10 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
+              label: '0.5 (Testing of Documentation)',
+              path: '0.5',
+            },
+            '0.4': {
               label: '0.4 (Documentation)',
               path: '0.4',
             },
@@ -91,7 +95,7 @@ const config: Config = {
       title: 'UDE Specs',
       logo: {
         alt: 'UDE Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
       },
       items: [
         {
