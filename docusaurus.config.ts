@@ -52,12 +52,13 @@ const config: Config = {
       'classic',
       {
         docs: {
+          routeBasePath: '/',
           sidebarPath: './sidebars.ts',
           lastVersion: 'current',
           versions: {
             current: {
               label: '0.5 (Testing of Documentation)',
-              path: '0.5',
+              path: '',
             },
             '0.4': {
               label: '0.4 (Documentation)',
@@ -92,18 +93,12 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'UDE Specs',
+      title: 'Universal Documentation Engine Specifications',
       logo: {
         alt: 'UDE Logo',
         src: 'img/logo.png',
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Specifications',
-        },
         {
           href: 'https://sir-derryk.github.io/ude-user-docs/',
           label: 'User Guides',
@@ -120,8 +115,9 @@ const config: Config = {
         },
         {
           href: 'https://github.com/Sir-Derryk/ude-design-docs',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },
@@ -133,7 +129,7 @@ const config: Config = {
           items: [
             {
               label: 'Specifications',
-              to: '/docs/0.1',
+              to: '/0.1',
             },
           ],
         },
