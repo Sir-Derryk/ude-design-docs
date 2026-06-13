@@ -12,12 +12,14 @@ We track the revisions of these specifications using a structured versioning sch
 
 | Doc Version | Date | Phase Description | Lead Author | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **`0.5`** | **2026-06-13** | **Testing of Documentation** | **Sir Derryk** | **Draft (Active)** |
+| **`0.6`** | **2026-06-13** | **Software Testing & Bug Fixing** | **Sir Derryk** | **Draft (Active)** |
+| **`0.5`** | **2026-06-13** | **Testing of Documentation** | **Sir Derryk** | **Approved (Superceded)** |
 | **`0.4`** | **2026-06-11** | **Documentation** | **Sir Derryk** | **Approved (Superceded)** |
 | **`0.3`** | **2026-06-09** | **Prototype Development** | **Sir Derryk** | **Approved (Superceded)** |
 | **`0.2`** | **2026-06-08** | **MVP Work Planning & TDD Task Specifications** | **Sir Derryk** | **Approved (Superceded)** |
 | **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Sir Derryk** | **Approved (Superceded)** |
 
+* **Version 0.6 Scope**: Comprehensive software testing, regression bug fixing, and implementation of automated navigation structures in the UDE code generator (eliminating pageless sidebar categories and generating dedicated namespace pages).
 * **Version 0.5 Scope**: Comprehensive verification and testing of compiled documentation portals, sanitization of internal development metadata, and final deployment quality assurance.
 * **Version 0.4 Scope**: Comprehensive design, planning, and deployment of the hybrid online documentation portal (UDE Portal), including the GHA CI/CD publication workflow (UDE Publisher).
 * **Version 0.3 Scope**: Active core implementation of Python-based UDE prototype according to TDD methodologies (Weeks 1 to 5).
