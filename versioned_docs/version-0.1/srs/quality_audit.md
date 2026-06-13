@@ -125,5 +125,6 @@ The audited specifications represent a high-quality, production-ready requiremen
 
 ---
 
-> [!TIP]
-> **Conclusion**: The UDE Software Requirements Specification (SRS) is of **exceptional, professional-grade quality**. There are no blocking issues. The project is fully cleared to begin Python core implementation in the `engine` submodule.
+:::tip
+**Conclusion**: The UDE Software Requirements Specification (SRS) is of **exceptional, professional-grade quality**. There are no blocking issues. The project is fully cleared to begin Python core implementation in the `engine` submodule.
+:::
