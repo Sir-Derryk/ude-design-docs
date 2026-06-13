@@ -59,5 +59,5 @@ The MVP baseline includes the following subset of requirements from the SRS and 
 | **`REQ-FUN-29`** | Functional | Portable configuration relative path resolution | `REQ-BUS-09` |
 | **`REQ-NFN-01`** | Non-Functional | Execution performance (< 5s for 1000 classes) | - |
 | **`REQ-NFN-02`** | Non-Functional | Modularity via abstract base classes (`BaseParser`, `BaseRenderer`) | - |
-| **`REQ-NFN-03`** | Non-Functional | Maintain at least 90% unit test coverage | - |
+| **`REQ-NFN-03`** | Non-Functional | Maintain at least 98% unit test coverage | - |
 | **`REQ-NFN-04`** | Non-Functional | Pydantic v2 core validation & Jinja2 rendering | - |

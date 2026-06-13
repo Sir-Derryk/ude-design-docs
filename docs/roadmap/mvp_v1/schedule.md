@@ -35,7 +35,7 @@ gantt
     section Week 5: CLI & Integration
     TSK-CLI-01 (CLI Core & exit codes)     :t13, after t12, 2d
     TSK-CLI-03 (Multi-Target Orchestration):t14, after t13, 2d
-    TSK-CLI-02 (E2E & >=90% Coverage)      :t15, after t14, 3d
+    TSK-CLI-02 (E2E & >=98% Coverage)      :t15, after t14, 3d
 ```
 
 ---
@@ -80,7 +80,7 @@ gantt
     *   **Non-Interactive CLI**: Entrypoint script with exit codes and CLI arguments parsing (`TSK-CLI-01`).
     *   **Centralized Orchestrator**: Config-based path-portable pipeline manager with error policies and automatic cleanups (`TSK-CLI-03`).
     *   **Integration Tests**: Comprehensive E2E pipelines testing the complete XML ➡️ IR ➡️ Gzip ➡️ HTML/Hugo compilation (`TSK-CLI-02`).
-*   **TDD Checkpoint**: Full green status on all unit, integration, and path-portability orchestration suites; global unit test coverage strictly `>= 90%` (`REQ-NFN-03`).
+*   **TDD Checkpoint**: Full green status on all unit, integration, and path-portability orchestration suites; global unit test coverage strictly `>= 98%` (`REQ-NFN-03`).
 
 ---
 
@@ -88,7 +88,7 @@ gantt
 
 To declare the MVP completed and ready for production deployment, the code must successfully pass the following verification gates:
 
-1.  **Test Coverage Gate**: Global coverage computed via `pytest-cov` must be at least **`90%`**.
+1.  **Test Coverage Gate**: Global coverage computed via `pytest-cov` must be at least **`98%`**.
 2.  **Execution Velocity Gate**: Dynamic ingestion, parsing, and rendering of up to **`1,000 API classes`** must complete in **`< 5 seconds`** on a standard GitHub Actions virtualized environment.
 3.  **Git Hygiene Gate**: Verification that the repository remains 100% free of compiled documentation output files and contains only Gzip-compressed intermediate artifacts (`.json.gz`).
 
