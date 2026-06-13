@@ -57,27 +57,27 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: '0.6 (Software Testing & Bug Fixing)',
+              label: '0.6 (Testing and bug fixing)',
               path: '',
             },
             '0.5': {
-              label: '0.5 (Testing of Documentation)',
+              label: '0.5 (Testing documentation)',
               path: '0.5',
             },
             '0.4': {
-              label: '0.4 (Documentation)',
+              label: '0.4 (Developing documentation)',
               path: '0.4',
             },
             '0.3': {
-              label: '0.3 (Prototype)',
+              label: '0.3 (Developing prototype)',
               path: '0.3',
             },
             '0.2': {
-              label: '0.2 (MVP Planning)',
+              label: '0.2 (Planning MVP)',
               path: '0.2',
             },
             '0.1': {
-              label: '0.1 (Requirements)',
+              label: '0.1 (Requirements gathering)',
               path: '0.1',
             },
           },

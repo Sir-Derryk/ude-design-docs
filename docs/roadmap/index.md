@@ -12,12 +12,12 @@ We track the revisions of these specifications using a structured versioning sch
 
 | Doc Version | Date | Phase Description | Lead Author | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **`0.6`** | **2026-06-13** | **Software Testing & Bug Fixing** | **Sir Derryk** | **Draft (Active)** |
-| **`0.5`** | **2026-06-13** | **Testing of Documentation** | **Sir Derryk** | **Approved (Superceded)** |
-| **`0.4`** | **2026-06-11** | **Documentation** | **Sir Derryk** | **Approved (Superceded)** |
-| **`0.3`** | **2026-06-09** | **Prototype Development** | **Sir Derryk** | **Approved (Superceded)** |
-| **`0.2`** | **2026-06-08** | **MVP Work Planning & TDD Task Specifications** | **Sir Derryk** | **Approved (Superceded)** |
-| **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Sir Derryk** | **Approved (Superceded)** |
+| **`0.6`** | **2026-06-13** | **Testing and bug fixing** | **Sir Derryk** | **Draft (Active)** |
+| **`0.5`** | **2026-06-13** | **Testing documentation** | **Sir Derryk** | **Approved (Superceded)** |
+| **`0.4`** | **2026-06-11** | **Developing documentation** | **Sir Derryk** | **Approved (Superceded)** |
+| **`0.3`** | **2026-06-09** | **Developing prototype** | **Sir Derryk** | **Approved (Superceded)** |
+| **`0.2`** | **2026-06-08** | **Planning MVP** | **Sir Derryk** | **Approved (Superceded)** |
+| **`0.1`** | **2026-06-07** | **Requirements gathering** | **Sir Derryk** | **Approved (Superceded)** |
 
 * **Version 0.6 Scope**: Comprehensive software testing, regression bug fixing, and implementation of automated navigation structures in the UDE code generator (eliminating pageless sidebar categories and generating dedicated namespace pages).
 * **Version 0.5 Scope**: Comprehensive verification and testing of compiled documentation portals, sanitization of internal development metadata, and final deployment quality assurance.
