@@ -198,7 +198,7 @@ sidebar_position: 2
     4. **Code Prototype Block (`.OdaDocCodeProto`)**: Code declaration blocks styled with specific CSS layouts, marked with the exact language-tag required for Highlight.js code highlighting.
     5. **Expandable Member Tables**: Collate nested children (e.g., methods inside a class, fields inside a struct) into distinct, collapsible sections containing navigation tables. Each row must feature a high-fidelity visual indicator icon (such as `indicator-method-16.png`) denoting the member's specific subtype and accessibility.
   * *Aesthetic and Visual Matching*:
-    1. **Style Compilation**: The HTML compiler must copy the reference stylesheet `main.css` and all visual indicator images from the reference directory (`refs/NewVersion/bimnv_api_cpp/`) to the output generation directory.
+    1. **Style Compilation**: The HTML compiler must copy the reference stylesheet `main.css` and all visual indicator images from the directory specified globally in `ude_global.json` under `"stylesheet_dir"` to the output generation directory.
     2. **Styles Integration**: Each generated HTML page must reference the local `main.css` inside its `<head>` section via `<link rel="stylesheet" href="main.css">`.
     3. **Visual Look & Feel Exactness**: The overall layout appearance, color palette (employing ODA primary `#ff3100` and hover `#cc2600`), typography, responsive breakpoints, spacing, and panel sizing rules must be visually indistinguishable from the reference pages.
   * *Traces to*: `REQ-BUS-10`
@@ -210,7 +210,7 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-02`, `REQ-BUS-10`
 
 * **`REQ-FUN-34` (Integrated Document Catalog Link & Reference)**:
-  * *Version 1 (Baseline / MVP)*: The generated online documentation portal (such as the VitePress and Hugo hybrid site) must feature an integrated, prominent reference link to the official, structured Document Catalog file (such as `ude_portal_blueprint.md` or a centralized index file). This ensures that developers and technical writers can instantly access the full list of compiled manuals, guides, and specifications directly from any generated page or within the portal's navigation sidebar.
+  * *Version 1 (Baseline / MVP)*: The generated technical publications must support injecting custom catalog or central index links. If configured, these links are rendered consistently inside the global navigation sidebar or footers of all compiled documentation types, allowing developers to jump to user-defined manuals and guides.
   * *Unified Access*: This catalog reference link must be rendered consistently inside the global navigation sidebar or footers of all compiled documentation types.
   * *Traces to*: `REQ-BUS-11`
 
@@ -219,7 +219,7 @@ sidebar_position: 2
     1. Direct the user to an explicit index/category page.
     2. Or link to its first-level child document (the first descendant page under that section).
     3. Or render a dynamically generated index page that lists all first-level children of that category.
-    This rule applies universally to both project/user-level manual document configurations (such as VitePress and Docusaurus sidebars) and UDE's automatic API Reference sidebar/TOC builder to ensure full structural coverage.
+    This rule applies strictly to UDE's automatic API Reference sidebar/TOC compiler to ensure that every auto-generated structural category or group resolves to a valid index page or first-level child.
   * *Traces to*: `REQ-BUS-10`
 
 

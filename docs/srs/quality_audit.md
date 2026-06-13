@@ -12,8 +12,8 @@ This report evaluates the functional requirements (SRS) and business requirement
 
 | Quality Criterion | Status | Score (1-10) | Key Findings & Observations |
 | :--- | :---: | :---: | :--- |
-| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue identified during the previous audit has been resolved, and the new requirements `REQ-BUS-10` and `REQ-FUN-30` through `REQ-FUN-33` completely cover the ToC hierarchy, flat-mapping, dynamic file prefixing on disk, interactive sidebar mechanics (CORS protection, panel split resizing with localStorage, real-time filtering), standardized page templates, and compilation/copying of `main.css` and graphics assets. |
-| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The new business requirement `REQ-BUS-10` maps directly to `REQ-FUN-30`, `REQ-FUN-31`, `REQ-FUN-32`, and `REQ-FUN-33`. Furthermore, `REQ-FUN-31` and `REQ-FUN-33` also trace back to `REQ-BUS-02`. All traces across the Business Requirements (BRD), Software Requirements (SRS), and Software Design (SDD) are in 100% synchronization. |
+| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue identified during the previous audit has been resolved, and requirements `REQ-BUS-10`, `REQ-BUS-11`, `REQ-FUN-30` through `REQ-FUN-35` completely cover the ToC hierarchy, flat-mapping, dynamic file prefixing, interactive sidebar mechanics, customized catalog links injection, and pageless sidebar node elimination. |
+| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The business requirement `REQ-BUS-10` maps directly to `REQ-FUN-30`, `REQ-FUN-31`, `REQ-FUN-32`, `REQ-FUN-33`, and `REQ-FUN-35`. The new requirement `REQ-FUN-34` traces directly to `REQ-BUS-11`. All traces across the BRD, SRS, and SDD are in 100% synchronization. |
 | **Consistency** | 🟢 Excellent | 10 | All potential conflicts (offline local execution mode vs online AI translation endpoints, pipeline throughput vs cache writing overhead, and local file-protocol security vs asynchronous ToC loads) have been explicitly resolved. Specifically, CORS blocks are bypassed in `REQ-FUN-31` by compiling the database into a JavaScript variable (`window.UDE_NAV_DATA`) inside `nav_data.js`, and visual match exactness is guaranteed by copying reference `main.css` stylesheets (`REQ-FUN-32`). |
 | **Unambiguity** | 🟢 Excellent | 10 | Requirements are formulated using precise technical and mathematical terms. Document completeness criteria, flat-mapping naming separators (`__`, `_`, `@`), visual CSS selectors (`.OdaDocBrief`, `.OdaDocCodeProto`), asset paths (`refs/NewVersion/bimnv_api_cpp/main.css`), and browser `localStorage` parameters are deterministically defined. |
 | **Testability** | 🟢 Excellent | 10 | The specifications define deterministic data transformations. Every requirement is testable via automated unit tests (verifying flat-mapped filenames, metadata headers, and JSON structure serialization) and integration/E2E UI tests. |
@@ -52,6 +52,7 @@ graph TD
         B8["REQ-BUS-08 (Coverage Control & Quality Gates)"]
         B9["REQ-BUS-09 (Pipeline Automation)"]
         B10["REQ-BUS-10 (Premium Portal UX & Layouts)"]
+        B11["REQ-BUS-11 (Integrated Catalog Referencing)"]
     end
 
     subgraph SRS [Functional Requirements]
@@ -87,6 +88,8 @@ graph TD
         F31["REQ-FUN-31 (TOC Formats & Sidebar Navigation)"]
         F32["REQ-FUN-32 (Standardized Page Layouts)"]
         F33["REQ-FUN-33 (Multi-Entity Dynamic File Prefixing & Page Coverage)"]
+        F34["REQ-FUN-34 (Integrated Document Catalog Link)"]
+        F35["REQ-FUN-35 (No Empty Sidebar Sections)"]
     end
 
     F1 & F2 & F19 & F20 -->|Satisfies| B1
@@ -97,5 +100,6 @@ graph TD
     F6 & F10 -->|Satisfies| B6
     F8 & F12 & F13 & F14 & F15 & F16 & F17 & F18 -->|Satisfies| B8
     F7 & F23 & F24 & F25 & F26 & F27 & F29 -->|Satisfies| B9
-    F30 & F31 & F32 & F33 -->|Satisfies| B10
+    F30 & F31 & F32 & F33 & F35 -->|Satisfies| B10
+    F34 -->|Satisfies| B11
 ```
