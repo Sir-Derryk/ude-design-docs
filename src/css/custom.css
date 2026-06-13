@@ -104,6 +104,25 @@
   }
 }
 
+/* Custom Header for Table of Contents */
+.table-of-contents::before {
+  content: "On this page";
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: none;
+  color: #334155; /* neutral-700 */
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 6px;
+}
+
+[data-theme='dark'] .table-of-contents::before {
+  color: #e4e4e7; /* neutral-200 */
+  border-bottom: 1px solid #27272a; /* neutral-800 */
+}
+
 /* Premium smooth wrapping for outline links with elegant micro-spacing */
 .table-of-contents__link {
   display: block !important;
