@@ -27,7 +27,7 @@ This report evaluates the functional requirements (SRS) and business requirement
 
 ## 🔍 Detailed Analysis and Recommendations
 
-During a scheduled requirements audit, a desynchronization between the local task catalog `.antigravitycli/` and Docusaurus documentation was detected and successfully resolved:
+During a scheduled requirements audit, a desynchronization between the local requirements catalog and compiled documentation was detected and successfully resolved:
 1. **Resolving Completeness Gaps**: The master requirement matrix [requirements.md](file:///D:/My%20repositories/Pipeline/design-docs/docs/roadmap/mvp_v1/requirements.md) was updated to include 10 missing functional requirements (from `REQ-FUN-19` to `REQ-FUN-29`) that cover incremental caching, automatic workspace cleanup, unified logging, fault tolerance, C++ export macro filtering, and SWIG-specific wrapper exclusion.
 2. **Correcting Traceability**: Wrong trace links in the compliance registry [task_compliance.md](file:///D:/My%20repositories/Pipeline/design-docs/docs/srs/task_compliance.md) were fixed: task `TSK-DAT-03` is now correctly mapped to the incremental caching requirements (`REQ-FUN-26`, `REQ-FUN-27`), while task `TSK-CLI-03` has been expanded to encompass all orchestrator-coordinated system requirements (`REQ-FUN-23`, `REQ-FUN-24`, `REQ-FUN-25`, `REQ-FUN-28`, `REQ-FUN-29`).
 

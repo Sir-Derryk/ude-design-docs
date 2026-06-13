@@ -12,7 +12,7 @@ We track the revisions of these specifications using a structured versioning sch
 
 | Doc Version | Date | Phase Description | Lead Author | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Antigravity AI** | **Approved (Current)** |
+| **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Sir Derryk** | **Approved (Current)** |
 
 * **Version 0.1 Scope**: Gathering high-level business goals (BRD), defining system functional/non-functional constraints (SRS), drafting the pipeline design (SDD), and mapping out the implementation schedule.
 
