@@ -12,14 +12,14 @@ We track the revisions of these specifications using a structured versioning sch
 
 | Doc Version | Date | Phase Description | Lead Author | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **`0.4`** | **2026-06-11** | **Documentation** | **Antigravity AI** | **Draft (Active)** |
-| **`0.3`** | **2026-06-09** | **Prototype Development** | **Antigravity AI** | **Approved (Superceded)** |
-| **`0.2`** | **2026-06-08** | **MVP Work Planning & TDD Task Specifications** | **Antigravity AI** | **Approved (Superceded)** |
-| **`0.1`** | **2026-06-07** | **Requirements Gathering & Initial Draft** | **Antigravity AI** | **Approved (Superceded)** |
+| **`0.4`** | **2026-06-11** | **Developing documentation** | **Sir Derryk** | **Draft (Active)** |
+| **`0.3`** | **2026-06-09** | **Developing prototype** | **Sir Derryk** | **Approved (Superceded)** |
+| **`0.2`** | **2026-06-08** | **Planning MVP** | **Sir Derryk** | **Approved (Superceded)** |
+| **`0.1`** | **2026-06-07** | **Requirements gathering** | **Sir Derryk** | **Approved (Superceded)** |
 
 * **Version 0.4 Scope**: Comprehensive design, planning, and deployment of the hybrid online documentation portal (UDE Portal), including the GHA CI/CD publication workflow (UDE Publisher).
 * **Version 0.3 Scope**: Active core implementation of Python-based UDE prototype according to TDD methodologies (Weeks 1 to 5).
-* **Version 0.2 Scope**: Granular scheduling of 12 TDD tasks across 5 weeks, creating English-language executable `.antigravitycli/tasks/` instructions for agents, and updating Docusaurus navigation layouts.
+* **Version 0.2 Scope**: Granular scheduling of 12 TDD tasks across 5 weeks, preparing executable development task specifications, and updating Docusaurus navigation layouts.
 * **Version 0.1 Scope**: Gathering high-level business goals (BRD), defining system functional/non-functional constraints (SRS), drafting the pipeline design (SDD), and mapping out the implementation schedule.
 
 ---

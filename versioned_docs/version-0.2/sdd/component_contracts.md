@@ -6,8 +6,9 @@ sidebar_position: 4
 
 This document defines the strict Python interfaces and class contracts for the core components of the Universal Documentation Engine (UDE) to ensure loose coupling and modular extensibility.
 
-> [!IMPORTANT]
-> **Strict Portability Principle**: Physical file and directory paths must never be hardcoded inside any of the component classes or engine implementation code. All paths must be loaded from configurations as relative paths (relative to the configuration file location) and resolved dynamically to absolute paths by the UDE Orchestrator at startup before being passed to components.
+:::info
+**Strict Portability Principle**: Physical file and directory paths must never be hardcoded inside any of the component classes or engine implementation code. All paths must be loaded from configurations as relative paths (relative to the configuration file location) and resolved dynamically to absolute paths by the UDE Orchestrator at startup before being passed to components.
+:::
 
 ## Exception Hierarchy
 
