@@ -397,7 +397,7 @@ In alignment with our engineering standards, we strictly follow the **Test-Drive
 *   **Part 1: Implementation Guide**:
     *   Create a complete end-to-end integration test file `tests/test_integration_pipeline.py`.
     *   Load all mock files from `tests/assets/doxygen/`, run the parser, write Gzip files, reload, compile to Hugo Markdown and HTML layouts, and verify structural files on disk.
-    *   Refactor and optimize test files across the engine until the aggregate test coverage reaches `>= 90%`.
+    *   Refactor and optimize test files across the engine until the aggregate test coverage reaches `>= 98%`.
 *   **Part 2: Verification Guide**:
     *   *TDD Red Phase*: Write `tests/test_integration_pipeline.py` executing the entire pipeline flow and asserting compiled HTML structures. Run pytest-cov to check current coverage.
     *   *TDD Green Phase*: Refactor parser helper routines, handle edge cases, and add coverage tests.
@@ -405,17 +405,17 @@ In alignment with our engineering standards, we strictly follow the **Test-Drive
         ```bash
         pytest --cov=ude tests/
         ```
-    *   *Expected Result*: Complete green status across all E2E integration suites, and aggregate coverage calculated strictly **`>= 90%`**.
+    *   *Expected Result*: Complete green status across all E2E integration suites, and aggregate coverage calculated strictly **`>= 98%`**.
 *   **Part 3: User Acceptance Scenario**:
     *   *Verification Command*:
         ```bash
         cd engine
         poetry run pytest --cov=ude tests/
         ```
-    *   *Expected Result*: Integration tests pass and overall test coverage report confirms >= 90% coverage.
+    *   *Expected Result*: Integration tests pass and overall test coverage report confirms >= 98% coverage.
     *   *Manual Checks*:
         *   [ ] Confirm that a complete integration pipeline test `tests/test_integration_pipeline.py` is present.
-        *   [ ] Verify that the overall code coverage of `ude/` is calculated and strictly meets or exceeds **`90%`**.
+        *   [ ] Verify that the overall code coverage of `ude/` is calculated and strictly meets or exceeds **`98%`**.
         *   [ ] Verify that all file and directory paths are fully dynamic and portable (no absolute hardcoded developer paths).
         *   [ ] Verify that the central compliance registry at `design-docs/docs/srs/task_compliance.md` is updated to reflect task completion.
 ### `TSK-CLI-03` (Centralized Multi-Target Orchestrator)
