@@ -187,6 +187,7 @@ sidebar_position: 2
   * *Interactive Sidebar Control & Search*:
     1. **Resizable Panel Splitting**: Include a draggable vertical splitter handler (`.OdaDocSplitter`) that allows the user to resize the sidebar width. The user's custom width must be persistently stored in the browser's `localStorage` under the key `ude_sidebar_width` and automatically re-applied on subsequent page loads.
     2. **Real-Time Search Filter**: Provide a fast, client-side text input filter (`#sidebarSearch` / `#odaTocSearchInput`) that performs real-time matching against TOC entity labels, auto-expanding parent scopes to reveal search results and hiding unmatched nodes.
+    3. **Active Node Focus & Auto-Scrolling (HTML & Hugo)**: On page load, the sidebar must automatically focus on the navigation node representing the currently active page. It must automatically expand all parent folders/namespaces of the active node to make it visible. Furthermore, the sidebar container must automatically scroll so that the active node is positioned as high as possible within the sidebar's visible viewport (at the top of the scrolling container) to ensure immediate context visibility. This behavior must be implemented identically for both the standalone offline HTML Help portal and the Hugo static site.
   * *Traces to*: `REQ-BUS-10`, `REQ-BUS-02`
 
 * **`REQ-FUN-32` (Standardized Entity-Type Page Layouts)**:
@@ -197,6 +198,7 @@ sidebar_position: 2
     3. **Metadata Panel (`.OdaDocContainerTable`)**: A clean tabular container detailing vital structural context (e.g., source file origin, enclosing parent module/namespace, access scope, and inheritance lines).
     4. **Code Prototype Block (`.OdaDocCodeProto`)**: Code declaration blocks styled with specific CSS layouts, marked with the exact language-tag required for Highlight.js code highlighting.
     5. **Expandable Member Tables**: Collate nested children (e.g., methods inside a class, fields inside a struct) into distinct, collapsible sections containing navigation tables. Each row must feature a high-fidelity visual indicator icon (such as `indicator-method-16.png`) denoting the member's specific subtype and accessibility.
+    6. **Language-Specific Custom Templates**: Each target language must utilize its own distinct HTML template (or unique customization parameters) specifying how class/module declarations, methods, properties, fields, and constructors are visually presented (e.g., correct scope delimiters like `::` vs `.`, base class inheritance syntax, and parameter lists) to ensure 100% look-and-feel alignment with native coding standards.
   * *Aesthetic and Visual Matching*:
     1. **Style Compilation**: The HTML compiler must copy the reference stylesheet `main.css` and all visual indicator images from the directory specified globally in `ude_global.json` under `"stylesheet_dir"` to the output generation directory.
     2. **Styles Integration**: Each generated HTML page must reference the local `main.css` inside its `<head>` section via `<link rel="stylesheet" href="main.css">`.
@@ -220,6 +222,7 @@ sidebar_position: 2
     2. Or link to its first-level child document (the first descendant page under that section).
     3. Or render a dynamically generated index page that lists all first-level children of that category.
     This rule applies strictly to UDE's automatic API Reference sidebar/TOC compiler to ensure that every auto-generated structural category or group resolves to a valid index page or first-level child.
+  * *Language-Specific JSON Mapping*: The generated sidebar hierarchy must dynamically conform to the rules and virtual groupings specified in the respective language-specific JSON configurations (`toc_cpp.json`, `toc_cs.json`, `toc_java.json`, `toc_py.json`). However, to avoid empty/dead folders, a virtual category node (e.g., *Structs and Enums* or *Interfaces*) must only be created in the sidebar if there is at least one active, compiled entity of that type under the parent namespace/package scope. Any virtual category with zero entities in a compiled target must be pruned on-the-fly.
   * *Traces to*: `REQ-BUS-10`
 
 
