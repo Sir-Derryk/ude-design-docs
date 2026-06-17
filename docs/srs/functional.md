@@ -229,7 +229,28 @@ sidebar_position: 2
   * *Language-Specific JSON Mapping*: The generated sidebar hierarchy must dynamically conform to the rules and virtual groupings specified in the respective language-specific JSON configurations (`toc_cpp.json`, `toc_cs.json`, `toc_java.json`, `toc_py.json`). However, to avoid empty/dead folders, a virtual category node must only be created in the sidebar if there is at least one active, compiled entity of that type under the parent namespace/package scope. Any virtual category with zero entities in a compiled target must be pruned on-the-fly.
   * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-36` (Standardized Welcome Pages)**:
+  * *Version 1 (Baseline / MVP)*: Both `HtmlRenderer` (rendering standalone offline HTML) and `HugoMarkdownRenderer` (rendering Markdown files for Hugo) must output an identical landing page title and description:
+    1. **Page Title**: `"API Reference Welcome"`
+    2. **Page Body / Description**: *"Welcome to the API Reference documentation portal. Please browse the sidebar to explore code entities."*
+    This ensures that when a user first enters the API Reference section of any generated portal, they are greeted by a consistent, standardized message across all output formats.
+  * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-37` (Standardized Namespace Landing Page Briefs)**:
+  * *Version 1 (Baseline / MVP)*: Both HTML and Markdown compilation pipelines must generate standard, uniform introductory headers at the top of namespace index/landing pages (e.g. `_index.md` for Hugo or `namespace_<id>.html` for HTML). The brief description must consistently read: *"List of classes in the <NamespaceID> namespace."*
+    The renderer must dynamically adapt the rendering of `<NamespaceID>` to match target language and format patterns (e.g., as code blocks `\`{namespace.name}\`` in Markdown, or formatting delimiters `::` to `.` for non-C++ languages).
+  * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-38` (Header Branding & Dual-Portal Cross-Linking)**:
+  * *Version 1 (Baseline / MVP)*: The VitePress-based operational documentation portal header configuration must strictly conform to the following branding and navigation design system:
+    1. **Header Title & Logo**: The header must display the logo (loaded from `/logo.png`) alongside the text title `"Universal Documentation Engine Operational Documentation"`.
+    2. **Dual-Portal Cross-Linking**: The navigation bar must include exactly two main links to bridge static user-facing docs and live-generated API Reference portals:
+       - `"User Docs"` link pointing to `/docs/chapter1-quick-start` with target set to `_blank` to open in a new tab.
+       - `"API Reference"` link pointing to `https://sir-derryk.github.io/ude-user-docs/api/` with target set to `_blank` to open in a new tab.
+    3. **Visual Indicators**: Both links must be styled with external link icons and must open cleanly in a new browser tab with appropriate `rel="noopener noreferrer"` attributes to ensure security and performance.
+  * *Traces to*: `REQ-BUS-10`
 
-
+* **`REQ-FUN-39` (Multi-URL Active Sidebar Highlighting)**:
+  * *Version 1 (Baseline / MVP)*: The sidebar layout templates inside the Hugo-based static website renderer must use environment-agnostic tests against the page's relative URL (`.RelPermalink`) to determine whether the main welcome navigation card is highlighted as active.
+    To guarantee the active state persists regardless of whether the site is hosted on a local development server or compiled inside production root/subdirectories, the active state check for the "API Reference Welcome" card must evaluate as `true` if and only if `.RelPermalink` is exactly equivalent to either `/`, `/api/`, or `/ude-user-docs/api/`.
+  * *Traces to*: `REQ-BUS-10`
