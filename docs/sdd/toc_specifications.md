@@ -36,9 +36,9 @@ C++ supports arbitrary multi-level nested namespaces. The logical TOC structure 
 
 ```text
 ▲ API Reference (C++)
-  ├── [Namespace] FacetModeler
-  │     ├── [Namespace] FacetModeler::Features
-  │     │     ├── [Namespace] FacetModeler::Features::Parting
+  ├── [Namespace] MyNamespace
+  │     ├── [Namespace] MyNamespace::Features
+  │     │     ├── [Namespace] MyNamespace::Features::Parting
   │     │     │     ├── [Folder] Classes
   │     │     │     │     ├── [Class] PartingLine
   │     │     │     │     │     ├── [Constructor] PartingLine
@@ -63,13 +63,13 @@ C++ supports arbitrary multi-level nested namespaces. The logical TOC structure 
 
 | Logical API Path | Physical Flat-Mapped Filename |
 | :--- | :--- |
-| `FacetModeler` (Namespace) | `FacetModeler.html` |
-| `FacetModeler::Features` (Namespace) | `FacetModeler__Features.html` |
-| `FacetModeler::Features::Parting::PartingLine` (Class) | `class_FacetModeler__Features__Parting__PartingLine.html` |
-| `PartingLine` (Constructor with double) | `class_FacetModeler__Features__Parting__PartingLine__PartingLine@double.html` |
-| `apply(double)` (Method) | `class_FacetModeler__Features__Parting__PartingLine__apply@double.html` |
-| `getResult()` (Method) | `class_FacetModeler__Features__Parting__PartingLine__getResult.html` |
-| `createPartingLine(const Body&)` (Global function)| `FacetModeler__Features__Parting__createPartingLine@const_Body_ref.html` |
+| `MyNamespace` (Namespace) | `MyNamespace.html` |
+| `MyNamespace::Features` (Namespace) | `MyNamespace__Features.html` |
+| `MyNamespace::Features::Parting::PartingLine` (Class) | `class_MyNamespace__Features__Parting__PartingLine.html` |
+| `PartingLine` (Constructor with double) | `class_MyNamespace__Features__Parting__PartingLine__PartingLine@double.html` |
+| `apply(double)` (Method) | `class_MyNamespace__Features__Parting__PartingLine__apply@double.html` |
+| `getResult()` (Method) | `class_MyNamespace__Features__Parting__PartingLine__getResult.html` |
+| `createPartingLine(const Body&)` (Global function)| `MyNamespace__Features__Parting__createPartingLine@const_Body_ref.html` |
 
 ---
 
@@ -80,10 +80,10 @@ C# namespaces are organized hierarchically using dot separation. The TOC mirrors
 
 ```text
 ▲ API Reference (C#)
-  └── [Namespace] ODA
-        └── [Namespace] ODA.FacetModeler
-              └── [Namespace] ODA.FacetModeler.Core
-                    ├── [Namespace] ODA.FacetModeler.Core.Geom
+  └── [Namespace] MyCompany
+        └── [Namespace] MyCompany.MyProduct
+              └── [Namespace] MyCompany.MyProduct.Core
+                    ├── [Namespace] MyCompany.MyProduct.Core.Geom
                     │     ├── [Folder] Classes
                     │     │     ├── [Class] Vector3D
                     │     │     │     ├── [Constructor] Vector3D (double, double, double)
@@ -108,12 +108,12 @@ C# namespaces are organized hierarchically using dot separation. The TOC mirrors
 
 | Logical API Path | Physical Flat-Mapped Filename |
 | :--- | :--- |
-| `ODA.FacetModeler` (Namespace) | `ODA__FacetModeler.html` |
-| `ODA.FacetModeler.Core.Geom.Vector3D` (Class) | `class_ODA__FacetModeler__Core__Geom__Vector3D.html` |
-| `Vector3D` (Constructor with 3 doubles) | `class_ODA__FacetModeler__Core__Geom__Vector3D__Vector3D@double@double@double.html` |
-| `X` (Property of `Vector3D`) | `class_ODA__FacetModeler__Core__Geom__Vector3D__X.html` |
-| `DotProduct(Vector3D)` (Method) | `class_ODA__FacetModeler__Core__Geom__Vector3D__DotProduct@Vector3D.html` |
-| `IGeometry3D` (Interface) | `interface_ODA__FacetModeler__Core__Geom__IGeometry3D.html` |
+| `MyCompany.MyProduct` (Namespace) | `MyCompany__MyProduct.html` |
+| `MyCompany.MyProduct.Core.Geom.Vector3D` (Class) | `class_MyCompany__MyProduct__Core__Geom__Vector3D.html` |
+| `Vector3D` (Constructor with 3 doubles) | `class_MyCompany__MyProduct__Core__Geom__Vector3D__Vector3D@double@double@double.html` |
+| `X` (Property of `Vector3D`) | `class_MyCompany__MyProduct__Core__Geom__Vector3D__X.html` |
+| `DotProduct(Vector3D)` (Method) | `class_MyCompany__MyProduct__Core__Geom__Vector3D__DotProduct@Vector3D.html` |
+| `IGeometry3D` (Interface) | `interface_MyCompany__MyProduct__Core__Geom__IGeometry3D.html` |
 
 ---
 
@@ -125,10 +125,10 @@ Java modules rely on nested package trees. The TOC displays every package as a d
 ```text
 ▲ API Reference (Java)
   └── [Package] com
-        └── [Package] com.opendesign
-              └── [Package] com.opendesign.facetmodeler
-                    ├── [Package] com.opendesign.facetmodeler.features
-                    │     ├── [Package] com.opendesign.facetmodeler.features.parting
+        └── [Package] com.example
+              └── [Package] com.example.product
+                    ├── [Package] com.example.product.features
+                    │     ├── [Package] com.example.product.features.parting
                     │     │     ├── [Folder] Classes
                     │     │     │     ├── [Class] PartingTool
                     │     │     │     │     ├── [Constructor] PartingTool (double)
@@ -152,12 +152,12 @@ Java modules rely on nested package trees. The TOC displays every package as a d
 
 | Logical API Path | Physical Flat-Mapped Filename |
 | :--- | :--- |
-| `com.opendesign.facetmodeler` (Package) | `com_opendesign_facetmodeler.html` |
-| `com.opendesign.facetmodeler.features.parting.PartingTool` (Class) | `class_com_opendesign_facetmodeler_features_parting_PartingTool.html` |
-| `PartingTool(double)` (Constructor) | `class_com_opendesign_facetmodeler_features_parting_PartingTool__PartingTool@double.html` |
-| `execute()` (Method) | `class_com_opendesign_facetmodeler_features_parting_PartingTool__execute.html` |
-| `setTolerance(double)` (Method) | `class_com_opendesign_facetmodeler_features_parting_PartingTool__setTolerance@double.html` |
-| `IPartingOperation` (Interface) | `interface_com_opendesign_facetmodeler_features_parting_IPartingOperation.html` |
+| `com.example.product` (Package) | `com_example_product.html` |
+| `com.example.product.features.parting.PartingTool` (Class) | `class_com_example_product_features_parting_PartingTool.html` |
+| `PartingTool(double)` (Constructor) | `class_com_example_product_features_parting_PartingTool__PartingTool@double.html` |
+| `execute()` (Method) | `class_com_example_product_features_parting_PartingTool__execute.html` |
+| `setTolerance(double)` (Method) | `class_com_example_product_features_parting_PartingTool__setTolerance@double.html` |
+| `IPartingOperation` (Interface) | `interface_com_example_product_features_parting_IPartingOperation.html` |
 
 ---
 
