@@ -12,8 +12,8 @@ This report evaluates the functional requirements (SRS) and business requirement
 
 | Quality Criterion | Status | Score (1-10) | Key Findings & Observations |
 | :--- | :---: | :---: | :--- |
-| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue has been resolved, and requirements `REQ-BUS-10`, `REQ-BUS-11`, and `REQ-FUN-30` through `REQ-FUN-35` fully cover the ToC hierarchy, flat-mapping, dynamic file prefixing, and interactive sidebars. This includes Sphinx/RST normalization for Python SWIG wrappers (`REQ-FUN-14`) with type mapping, flatter navigation layouts in Hugo with auto-generated Namespace landing page tables, and hierarchical index pages for collapsible group folders in standalone HTML (`REQ-FUN-35`), ensuring 100% complete coverage without empty or dead menu links. |
-| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The business requirement `REQ-BUS-10` maps directly to `REQ-FUN-30`, `REQ-FUN-31`, `REQ-FUN-32`, `REQ-FUN-33`, and `REQ-FUN-35`. All traces across the BRD, SRS, and SDD are in 100% synchronization. |
+| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue has been resolved, and requirements `REQ-BUS-10`, `REQ-BUS-11`, and `REQ-FUN-30` through `REQ-FUN-44` fully cover the ToC hierarchy, flat-mapping, dynamic file prefixing, interactive sidebars, polymorphic signature formatting strategies, layout loading fallbacks, and backward-compatible parser facades. This includes Sphinx/RST normalization for Python SWIG wrappers (`REQ-FUN-14`) with type mapping, flatter navigation layouts in Hugo with auto-generated Namespace landing page tables, and hierarchical index pages for collapsible group folders in standalone HTML (`REQ-FUN-35`), ensuring 100% complete coverage without empty or dead menu links. |
+| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The business requirements map directly to functional requirements, including the signature strategies, template fallbacks, and routing parser facades (`REQ-FUN-42`, `REQ-FUN-43`, `REQ-FUN-44`). All traces across the BRD, SRS, and SDD are in 100% synchronization. |
 | **Consistency** | 🟢 Excellent | 10 | All potential conflicts (offline local execution mode vs online AI translation endpoints, pipeline throughput vs cache writing overhead, and local file-protocol security vs asynchronous ToC loads) have been explicitly resolved. Specifically, CORS blocks are bypassed in `REQ-FUN-31` by compiling the database into a JavaScript variable (`window.UDE_NAV_DATA`) inside `nav_data.js`, and visual match exactness is guaranteed by copying reference `main.css` stylesheets (`REQ-FUN-32`). Active node focus and vertical scrolling behaviors are natively implemented and separated per target platform (Vanilla JS for offline HTML, custom theme script for Hugo), avoiding cross-platform interference. |
 | **Unambiguity** | 🟢 Excellent | 10 | Requirements are formulated using precise technical and mathematical terms. Document completeness criteria, flat-mapping naming separators (`__`, `_`, `@`), visual CSS selectors (`.OdaDocBrief`, `.OdaDocCodeProto`), DOM scroll parameters (`offsetTop`, `scrollTop`, `.api-item.active`, `.OdaDocTOCRow.active`), asset paths (`refs/NewVersion/bimnv_api_cpp/main.css`), and browser `localStorage` parameters are deterministically defined. |
 | **Testability** | 🟢 Excellent | 10 | The specifications define deterministic data transformations. Every requirement is testable via automated unit tests (verifying flat-mapped filenames, metadata headers, and JSON structure serialization) and integration/E2E UI tests. |
@@ -28,7 +28,7 @@ This report evaluates the functional requirements (SRS) and business requirement
 ## 🔍 Detailed Analysis and Recommendations
 
 During a scheduled requirements audit, a desynchronization between the local requirements catalog and compiled documentation was detected and successfully resolved. Furthermore, the newly formulated layout and ToC specifications have been seamlessly integrated, ensuring top-tier quality:
-1. **Resolving Completeness Gaps**: Added 10 missing functional requirements (`REQ-FUN-19` to `REQ-FUN-29`) and premium layout requirements (`REQ-BUS-10`, `REQ-FUN-30` to `REQ-FUN-33`) to the documentation, covering incremental caching, automatic cleanup, SWIG/C++ macros filtering, ToC physical mapping, multi-entity filename prefixing, and offline-compatible sidebars.
+1. **Resolving Completeness Gaps**: Added missing functional requirements (`REQ-FUN-19` to `REQ-FUN-29`, `REQ-FUN-42` to `REQ-FUN-44`) and premium layout requirements (`REQ-BUS-10`, `REQ-FUN-30` to `REQ-FUN-33`) to the documentation, covering incremental caching, automatic cleanup, SWIG/C++ macros filtering, polymorphic signature formatting strategies, layout loading fallbacks, backward-compatible parser facades, ToC physical mapping, multi-entity filename prefixing, and offline-compatible sidebars.
 2. **Eliminating Security Risks (CORS)**: Restructuring the hierarchical navigation ToC into `nav_data.js` loaded via a `<script>` tag prevents web-browser CORS blockages, making the compiled documentation 100% compatible with local file loading (`file:///`).
 3. **Sphinx/RST Support for SWIG Python Wrappers**: Expanded comment normalization specification (`REQ-FUN-14`) to natively parse Sphinx/RST style docstrings, automatically mapping types from `:type` annotations to their respective parameters and merging them inside the IR. This covers specialized Python SWIG wrappers.
 4. **Target-Specific Navigation Layouts & Namespace Tables**: Updated specification `REQ-FUN-35` to formulate explicit layouts per target. Hugo generates flat folder structures omitting intermediate grouping folders but dynamically compiles rich Namespace landing pages listing classes in structured tables with clickable links and brief descriptions. Standalone HTML generates hierarchical category indexes for all collapsible virtual group folders.
@@ -93,16 +93,19 @@ graph TD
         F33["REQ-FUN-33 (Multi-Entity Dynamic File Prefixing & Page Coverage)"]
         F34["REQ-FUN-34 (Integrated Document Catalog Link)"]
         F35["REQ-FUN-35 (No Empty Sidebar Sections)"]
+        F42["REQ-FUN-42 (Language-Specific Signature Formatting Strategy)"]
+        F43["REQ-FUN-43 (Robust Layout Template Loading & Inline Fallback)"]
+        F44["REQ-FUN-44 (Backward-Compatible Multi-Language Parser Facade)"]
     end
 
-    F1 & F2 & F19 & F20 -->|Satisfies| B1
-    F3 & F4 & F31 & F33 -->|Satisfies| B2
+    F1 & F2 & F19 & F20 & F44 -->|Satisfies| B1
+    F3 & F4 & F31 & F33 & F42 & F43 -->|Satisfies| B2
     F11 & F22 & F28 -->|Satisfies| B3
     F5 -->|Satisfies| B4
     F9 -->|Satisfies| B5
     F6 & F10 -->|Satisfies| B6
     F8 & F12 & F13 & F14 & F15 & F16 & F17 & F18 -->|Satisfies| B8
-    F7 & F23 & F24 & F25 & F26 & F27 & F29 -->|Satisfies| B9
-    F30 & F31 & F32 & F33 & F35 -->|Satisfies| B10
+    F7 & F23 & F24 & F25 & F26 & F27 & F29 & F43 & F44 -->|Satisfies| B9
+    F30 & F31 & F32 & F33 & F35 & F42 -->|Satisfies| B10
     F34 -->|Satisfies| B11
 ```

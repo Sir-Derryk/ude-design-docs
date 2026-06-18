@@ -237,8 +237,8 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-10`
 
 * **`REQ-FUN-37` (Standardized Namespace Landing Page Briefs)**:
-  * *Version 1 (Baseline / MVP)*: Both HTML and Markdown compilation pipelines must generate standard, uniform introductory headers at the top of namespace index/landing pages (e.g. `_index.md` for Hugo or `namespace_<id>.html` for HTML). The brief description must consistently read: *"List of classes in the <NamespaceID> namespace."*
-    The renderer must dynamically adapt the rendering of `<NamespaceID>` to match target language and format patterns (e.g., as code blocks `\`{namespace.name}\`` in Markdown, or formatting delimiters `::` to `.` for non-C++ languages).
+  * *Version 1 (Baseline / MVP)*: Both HTML and Markdown compilation pipelines must generate standard, uniform introductory headers at the top of namespace index/landing pages (e.g. `_index.md` for Hugo or `namespace_<id>.html` for HTML). The brief description must consistently read: *"List of classes in the \<NamespaceID\> namespace."*
+    The renderer must dynamically adapt the rendering of `\<NamespaceID\>` to match target language and format patterns (e.g., as code blocks `\{namespace.name\}` in Markdown, or formatting delimiters `::` to `.` for non-C++ languages).
   * *Traces to*: `REQ-BUS-10`
 
 * **`REQ-FUN-38` (Header Branding & Dual-Portal Cross-Linking)**:
@@ -267,4 +267,23 @@ sidebar_position: 2
     1. **Extraction**: Map template parameter names and their accompanying text descriptions into structured metadata within the Intermediate Representation (IR) entity schema.
     2. **Layout Rendering**: The HTML and Hugo-Markdown rendering engines must display these template parameters inside a dedicated, highly visible metadata table or block (labeled "Template Parameters") situated directly below the class/method header and above the standard parameter list.
   * *Traces to*: `REQ-BUS-01`, `REQ-BUS-10`
+
+* **`REQ-FUN-42` (Language-Specific Signature Formatting Strategy)**:
+  * *Version 1 (Baseline / MVP)*: The rendering system must employ an extensible Strategy Pattern to handle formatting of code declarations, namespace structures, scopes, and names tailored to each target programming language (C++, C#, Java, Python). This is mediated via a polymorphic interface `BaseSignatureFormatter` and a dynamic selection factory `get_signature_formatter(language)`. The system must normalize namespace boundaries, prefix syntax, class structure headers, and dynamically assemble fallback method signatures if physical documentation elements are missing.
+  * *Traces to*: `REQ-BUS-02`, `REQ-BUS-10`
+
+* **`REQ-FUN-43` (Robust Layout Template Loading & Inline Fallback)**:
+  * *Version 1 (Baseline / MVP)*: The static HTML rendering engine must implement a dual-stage fallback layout loading mechanism to ensure high fault tolerance and complete resilience against compilation crashes:
+    1. **Primary Loader**: The engine attempts to load a language-specific template (e.g., `templates/\<lang\>/class_layout.html`) using a physical filesystem loader.
+    2. **Secondary Fallback**: If the language-specific directory or template does not exist, the renderer must transparently fall back to the root default template `templates/class_layout.html`.
+    3. **Fail-Safe Inline Fallback**: If no physical template directory or files are found on disk, the system must initialize a default in-memory layout using a predefined, high-fidelity inline template string to guarantee error-free local and CI/CD verification regardless of host filesystem layout states.
+  * *Traces to*: `REQ-BUS-02`, `REQ-BUS-09`
+
+* **`REQ-FUN-44` (Backward-Compatible Multi-Language Parser Facade)**:
+  * *Version 1 (Baseline / MVP)*: To decouple language-specific parsing details from orchestration and testing components, the ingestion pipeline must employ a unified Parser Facade (`DoxygenXmlParser`). This routing class must:
+    1. Inherit from a universal base parser (`BaseDoxygenParser`), preserving Liskov Substitution Principle (LSP).
+    2. Dynamically instantiate and delegate work to concrete subclasses (such as `CppDoxygenParser`, `CsharpDoxygenParser`, `JavaDoxygenParser`, or `PythonDoxygenParser`) based on an explicit `language` configuration.
+    3. Support dynamic auto-detection of target programming languages using path analysis on input XML/source directories if no explicit language argument is provided.
+    4. Maintain backward compatibility by exposing public entry points under the standard `ude.parsers.doxygen` module namespace, shielding external orchestrators from internal class refactoring.
+  * *Traces to*: `REQ-BUS-01`, `REQ-BUS-09`
 
