@@ -229,7 +229,61 @@ sidebar_position: 2
   * *Language-Specific JSON Mapping*: The generated sidebar hierarchy must dynamically conform to the rules and virtual groupings specified in the respective language-specific JSON configurations (`toc_cpp.json`, `toc_cs.json`, `toc_java.json`, `toc_py.json`). However, to avoid empty/dead folders, a virtual category node must only be created in the sidebar if there is at least one active, compiled entity of that type under the parent namespace/package scope. Any virtual category with zero entities in a compiled target must be pruned on-the-fly.
   * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-36` (Standardized Welcome Pages)**:
+  * *Version 1 (Baseline / MVP)*: Both `HtmlRenderer` (rendering standalone offline HTML) and `HugoMarkdownRenderer` (rendering Markdown files for Hugo) must output an identical landing page title and description:
+    1. **Page Title**: `"API Reference Welcome"`
+    2. **Page Body / Description**: *"Welcome to the API Reference documentation portal. Please browse the sidebar to explore code entities."*
+    This ensures that when a user first enters the API Reference section of any generated portal, they are greeted by a consistent, standardized message across all output formats.
+  * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-37` (Standardized Namespace Landing Page Briefs)**:
+  * *Version 1 (Baseline / MVP)*: Both HTML and Markdown compilation pipelines must generate standard, uniform introductory headers at the top of namespace index/landing pages (e.g. `_index.md` for Hugo or `namespace_<id>.html` for HTML). The brief description must consistently read: *"List of classes in the \<NamespaceID\> namespace."*
+    The renderer must dynamically adapt the rendering of `\<NamespaceID\>` to match target language and format patterns (e.g., as code blocks `\{namespace.name\}` in Markdown, or formatting delimiters `::` to `.` for non-C++ languages).
+  * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-38` (Header Branding & Dual-Portal Cross-Linking)**:
+  * *Version 1 (Baseline / MVP)*: The VitePress-based operational documentation portal header configuration must strictly conform to the following branding and navigation design system:
+    1. **Header Title & Logo**: The header must display the logo (loaded from `/logo.png`) alongside the text title `"Universal Documentation Engine Operational Documentation"`.
+    2. **Dual-Portal Cross-Linking**: The navigation bar must include exactly two main links to bridge static user-facing docs and live-generated API Reference portals:
+       - `"User Docs"` link pointing to `/docs/chapter1-quick-start` with target set to `_blank` to open in a new tab.
+       - `"API Reference"` link pointing to `https://sir-derryk.github.io/ude-user-docs/api/` with target set to `_blank` to open in a new tab.
+    3. **Visual Indicators**: Both links must be styled with external link icons and must open cleanly in a new browser tab with appropriate `rel="noopener noreferrer"` attributes to ensure security and performance.
+  * *Traces to*: `REQ-BUS-10`
 
+* **`REQ-FUN-39` (Multi-URL Active Sidebar Highlighting)**:
+  * *Version 1 (Baseline / MVP)*: The sidebar layout templates inside the Hugo-based static website renderer must use environment-agnostic tests against the page's relative URL (`.RelPermalink`) to determine whether the main welcome navigation card is highlighted as active.
+    To guarantee the active state persists regardless of whether the site is hosted on a local development server or compiled inside production root/subdirectories, the active state check for the "API Reference Welcome" card must evaluate as `true` if and only if `.RelPermalink` is exactly equivalent to either `/`, `/api/`, or `/ude-user-docs/api/`.
+  * *Traces to*: `REQ-BUS-10`
+
+* **`REQ-FUN-40` (SWIG Pointer Type Mapping & Cleanup)**:
+  * *Version 1 (Baseline / MVP)*: During parsing of SWIG-generated C# and Java wrapper code, the parsing module must automatically detect low-level, generic SWIG-specific pointer types (specifically matching the pattern `SWIGTYPE_p_<type>` such as `SWIGTYPE_p_double`, `SWIGTYPE_p_void`, or platform-specific pointer handles like `HandleRef`) and map them to their clean, natural language-native equivalents:
+    1. **For C#**: Convert `SWIGTYPE_p_double` to `double[]` or `ref double` (depending on API context), and `SWIGTYPE_p_void` to `System.IntPtr`.
+    2. **For Java**: Convert `SWIGTYPE_p_double` to `double[]` and `SWIGTYPE_p_void` to `java.nio.ByteBuffer` or `long`.
+    This cleanup must be performed inside the Intermediate Representation (IR) compiler stage, ensuring that final rendered developer documentation displays clean, natural types instead of raw SWIG plumbing types.
+  * *Traces to*: `REQ-BUS-01`, `REQ-BUS-10`
+
+* **`REQ-FUN-41` (C++ Template Parameter Extraction & Rendering)**:
+  * *Version 1 (Baseline / MVP)*: The C++ parsing and normalization modules must support extracting template parameter documentation tags (specifically `\tparam` or `@tparam` directives) from comment blocks.
+    1. **Extraction**: Map template parameter names and their accompanying text descriptions into structured metadata within the Intermediate Representation (IR) entity schema.
+    2. **Layout Rendering**: The HTML and Hugo-Markdown rendering engines must display these template parameters inside a dedicated, highly visible metadata table or block (labeled "Template Parameters") situated directly below the class/method header and above the standard parameter list.
+  * *Traces to*: `REQ-BUS-01`, `REQ-BUS-10`
+
+* **`REQ-FUN-42` (Language-Specific Signature Formatting Strategy)**:
+  * *Version 1 (Baseline / MVP)*: The rendering system must employ an extensible Strategy Pattern to handle formatting of code declarations, namespace structures, scopes, and names tailored to each target programming language (C++, C#, Java, Python). This is mediated via a polymorphic interface `BaseSignatureFormatter` and a dynamic selection factory `get_signature_formatter(language)`. The system must normalize namespace boundaries, prefix syntax, class structure headers, and dynamically assemble fallback method signatures if physical documentation elements are missing.
+  * *Traces to*: `REQ-BUS-02`, `REQ-BUS-10`
+
+* **`REQ-FUN-43` (Robust Layout Template Loading & Inline Fallback)**:
+  * *Version 1 (Baseline / MVP)*: The static HTML rendering engine must implement a dual-stage fallback layout loading mechanism to ensure high fault tolerance and complete resilience against compilation crashes:
+    1. **Primary Loader**: The engine attempts to load a language-specific template (e.g., `templates/\<lang\>/class_layout.html`) using a physical filesystem loader.
+    2. **Secondary Fallback**: If the language-specific directory or template does not exist, the renderer must transparently fall back to the root default template `templates/class_layout.html`.
+    3. **Fail-Safe Inline Fallback**: If no physical template directory or files are found on disk, the system must initialize a default in-memory layout using a predefined, high-fidelity inline template string to guarantee error-free local and CI/CD verification regardless of host filesystem layout states.
+  * *Traces to*: `REQ-BUS-02`, `REQ-BUS-09`
+
+* **`REQ-FUN-44` (Backward-Compatible Multi-Language Parser Facade)**:
+  * *Version 1 (Baseline / MVP)*: To decouple language-specific parsing details from orchestration and testing components, the ingestion pipeline must employ a unified Parser Facade (`DoxygenXmlParser`). This routing class must:
+    1. Inherit from a universal base parser (`BaseDoxygenParser`), preserving Liskov Substitution Principle (LSP).
+    2. Dynamically instantiate and delegate work to concrete subclasses (such as `CppDoxygenParser`, `CsharpDoxygenParser`, `JavaDoxygenParser`, or `PythonDoxygenParser`) based on an explicit `language` configuration.
+    3. Support dynamic auto-detection of target programming languages using path analysis on input XML/source directories if no explicit language argument is provided.
+    4. Maintain backward compatibility by exposing public entry points under the standard `ude.parsers.doxygen` module namespace, shielding external orchestrators from internal class refactoring.
+  * *Traces to*: `REQ-BUS-01`, `REQ-BUS-09`
 

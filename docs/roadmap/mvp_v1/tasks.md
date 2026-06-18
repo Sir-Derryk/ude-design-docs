@@ -217,6 +217,25 @@ In alignment with our engineering standards, we strictly follow the **Test-Drive
         *   [ ] Verify that compiler-specific macros and SWIG wrapper internals are filtered out during ingestion.
         *   [ ] Verify that all file and directory paths are fully dynamic and portable (no absolute hardcoded developer paths).
         *   [ ] Verify that the central compliance registry at `design-docs/docs/srs/task_compliance.md` is updated to reflect task completion.
+### `TSK-PAR-03` (Multi-Language Parser Facade)
+*   **Part 1: Implementation Guide**:
+    *   Subclass `DoxygenXmlParser` from `BaseDoxygenParser` to form a routing Facade pattern.
+    *   Dynamically instantiate and route parsing requests to concrete subclasses (e.g., `CppDoxygenParser`, `CsharpDoxygenParser`, `JavaDoxygenParser`, `PythonDoxygenParser`) based on the provided `language` argument.
+    *   Support dynamic auto-detection of programming languages using path analysis if the language is unspecified.
+    *   Maintain complete backward compatibility of import paths under `ude.parsers.doxygen`.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_parser_facade.py` asserting proper routing and fallback auto-detection.
+    *   *TDD Green Phase*: Implement routing facade and language detection.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_parser_facade.py
+        ```
+*   **Part 3: User Acceptance Scenario**:
+    *   *Expected Result*: All facade assertions pass cleanly, routing parser jobs seamlessly.
+    *   *Manual Checks*:
+        *   [ ] Verify that `DoxygenXmlParser` inherits from `BaseDoxygenParser` to maintain LSP compliance.
+        *   [ ] Confirm dynamic language auto-detection via directory structures.
+        *   [ ] Confirm backward-compatible imports under `ude.parsers.doxygen`.
 ### `TSK-COL-01` (Preprocessing Environment & Doxygen Collectors)
 *   **Part 1: Implementation Guide**:
     *   Define `BaseCollector` in `ude/interfaces.py` with abstract methods: `validate_environment(config_path)`, `collect(config_path) -> Path`, and `cleanup(temp_path)`.
@@ -358,6 +377,38 @@ In alignment with our engineering standards, we strictly follow the **Test-Drive
         *   [ ] Confirm that the renderer outputs full static pages containing functional navigation links, CSS stylings, and lists.
         *   [ ] Verify that all file and directory paths are fully dynamic and portable (no absolute hardcoded developer paths).
         *   [ ] Verify that the central compliance registry at `design-docs/docs/srs/task_compliance.md` is updated to reflect task completion.
+### `TSK-RND-09` (Language-Specific Signature Formatting Strategy)
+*   **Part 1: Implementation Guide**:
+    *   Implement an extensible Strategy Pattern via `BaseSignatureFormatter` and `get_signature_formatter(language)`.
+    *   Format names, scope delimiters (`::` vs `.`), prefix syntax, templates, and fallback methods per target language.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_signature_strategies.py` asserting correct delimiters and formatting per language.
+    *   *TDD Green Phase*: Implement signature strategies and integrate them.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_signature_strategies.py
+        ```
+*   **Part 3: User Acceptance Scenario**:
+    *   *Expected Result*: Formatters output exact language-compliant declarations.
+    *   *Manual Checks*:
+        *   [ ] Verify that the formatter selection operates via `get_signature_formatter(language)`.
+        *   [ ] Verify that scope delimiters (`::` for C++, `.` for other languages) are dynamically resolved.
+
+### `TSK-RND-10` (Robust Layout Template Loading & Inline Fallback)
+*   **Part 1: Implementation Guide**:
+    *   Implement a fallback loader chain inside `HtmlRenderer`: primary language layout, secondary root default layout, and fail-safe inline template string.
+*   **Part 2: Verification Guide**:
+    *   *TDD Red Phase*: Write `tests/test_template_fallbacks.py` asserting no crashes and successful inline loading when directories are missing.
+    *   *TDD Green Phase*: Implement fallback loader logic.
+    *   *Verification Command*:
+        ```bash
+        pytest tests/test_template_fallbacks.py
+        ```
+*   **Part 3: User Acceptance Scenario**:
+    *   *Expected Result*: Fault-tolerant layouts ensure error-free builds in all environment setups.
+    *   *Manual Checks*:
+        *   [ ] Verify physical template absence triggers fail-safe inline string loading.
+        *   [ ] Confirm no crashing occurs during rendering if standard folders are missing.
 ---
 
 ## 🚀 Task Group 6: Automation & Integration Gates
