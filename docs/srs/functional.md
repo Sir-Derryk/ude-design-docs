@@ -254,3 +254,17 @@ sidebar_position: 2
   * *Version 1 (Baseline / MVP)*: The sidebar layout templates inside the Hugo-based static website renderer must use environment-agnostic tests against the page's relative URL (`.RelPermalink`) to determine whether the main welcome navigation card is highlighted as active.
     To guarantee the active state persists regardless of whether the site is hosted on a local development server or compiled inside production root/subdirectories, the active state check for the "API Reference Welcome" card must evaluate as `true` if and only if `.RelPermalink` is exactly equivalent to either `/`, `/api/`, or `/ude-user-docs/api/`.
   * *Traces to*: `REQ-BUS-10`
+
+* **`REQ-FUN-40` (SWIG Pointer Type Mapping & Cleanup)**:
+  * *Version 1 (Baseline / MVP)*: During parsing of SWIG-generated C# and Java wrapper code, the parsing module must automatically detect low-level, generic SWIG-specific pointer types (specifically matching the pattern `SWIGTYPE_p_<type>` such as `SWIGTYPE_p_double`, `SWIGTYPE_p_void`, or platform-specific pointer handles like `HandleRef`) and map them to their clean, natural language-native equivalents:
+    1. **For C#**: Convert `SWIGTYPE_p_double` to `double[]` or `ref double` (depending on API context), and `SWIGTYPE_p_void` to `System.IntPtr`.
+    2. **For Java**: Convert `SWIGTYPE_p_double` to `double[]` and `SWIGTYPE_p_void` to `java.nio.ByteBuffer` or `long`.
+    This cleanup must be performed inside the Intermediate Representation (IR) compiler stage, ensuring that final rendered developer documentation displays clean, natural types instead of raw SWIG plumbing types.
+  * *Traces to*: `REQ-BUS-01`, `REQ-BUS-10`
+
+* **`REQ-FUN-41` (C++ Template Parameter Extraction & Rendering)**:
+  * *Version 1 (Baseline / MVP)*: The C++ parsing and normalization modules must support extracting template parameter documentation tags (specifically `\tparam` or `@tparam` directives) from comment blocks.
+    1. **Extraction**: Map template parameter names and their accompanying text descriptions into structured metadata within the Intermediate Representation (IR) entity schema.
+    2. **Layout Rendering**: The HTML and Hugo-Markdown rendering engines must display these template parameters inside a dedicated, highly visible metadata table or block (labeled "Template Parameters") situated directly below the class/method header and above the standard parameter list.
+  * *Traces to*: `REQ-BUS-01`, `REQ-BUS-10`
+
