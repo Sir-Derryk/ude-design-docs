@@ -1,0 +1,321 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #0891B2;
+  --ifm-color-primary-dark: #0e7490;
+  --ifm-color-primary-darker: #155e75;
+  --ifm-color-primary-darkest: #164e63;
+  --ifm-color-primary-light: #22d3ee;
+  --ifm-color-primary-lighter: #67e8f9;
+  --ifm-color-primary-lightest: #a5f3fc;
+  
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ifm-code-font-family: 'JetBrains Mono', monospace;
+  --ifm-code-font-size: 90%;
+  
+  /* Inline code highlighting (Quantum Purple) */
+  --ifm-code-color: #8B5CF6;
+  --ifm-code-background: #f5f3ff;
+  --ifm-code-padding-horizontal: 0.4rem;
+  --ifm-code-padding-vertical: 0.1rem;
+  --ifm-code-border-radius: 4px;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(6, 182, 212, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #06B6D4;
+  --ifm-color-primary-dark: #0891B2;
+  --ifm-color-primary-darker: #0e7490;
+  --ifm-color-primary-darkest: #155e75;
+  --ifm-color-primary-light: #22d3ee;
+  --ifm-color-primary-lighter: #67e8f9;
+  --ifm-color-primary-lightest: #ecfeff;
+  
+  --ifm-code-color: #a78bfa;
+  --ifm-code-background: #1e1b4b;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(6, 182, 212, 0.2);
+}
+
+/* Custom Scrollbars to match VitePress exactly */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #06B6D4;
+}
+
+/* Header and navbar styling alignment with premium blur */
+.navbar {
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-theme='dark'] .navbar {
+  background-color: rgba(24, 24, 27, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+.hero--primary {
+  background: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%) !important;
+}
+
+/* Custom logo styling inside navbar */
+.navbar__logo {
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+.navbar__logo:hover {
+  transform: scale(1.05);
+}
+
+/* Steel blue-gray variables for Mermaid wrapper diagram nodes */
+.mermaid {
+  --mermaid-theme-variables: {
+    "primaryColor": "#f1f5f9",
+    "primaryTextColor": "#1e293b",
+    "lineColor": "#64748B",
+    "nodeBorder": "#64748B"
+  }
+}
+
+/* Custom Header for Table of Contents */
+.table-of-contents::before {
+  content: "On this page";
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: none;
+  color: #334155; /* neutral-700 */
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 6px;
+}
+
+[data-theme='dark'] .table-of-contents::before {
+  color: #e4e4e7; /* neutral-200 */
+  border-bottom: 1px solid #27272a; /* neutral-800 */
+}
+
+/* Premium smooth wrapping for outline links with elegant micro-spacing */
+.table-of-contents__link {
+  display: block !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  padding: 5px 0 !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+.table-of-contents__link:hover {
+  color: #8B5CF6 !important; /* Quantum Purple hover */
+  text-decoration: none !important;
+  padding-left: 4px !important;
+}
+
+.table-of-contents__link--active {
+  color: #06B6D4 !important; /* Electric Cyan active */
+  font-weight: 600 !important;
+}
+
+/* Sidebar Menu smooth indentations and hover micro-animations matching VitePress */
+.menu__link {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.menu__link:hover {
+  color: #06B6D4 !important; /* Hover Electric Cyan */
+  background-color: rgba(6, 182, 212, 0.05) !important;
+  padding-left: 14px !important; /* Smooth slide-in */
+}
+
+.menu__link--active {
+  background-color: rgba(6, 182, 212, 0.08) !important;
+  color: #06B6D4 !important;
+  font-weight: 600 !important;
+}
+
+/* Footer modern look matching VitePress */
+.footer {
+  background-color: #f8fafc !important; /* Light mode matching grey */
+  border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+  color: #475569 !important;
+  padding: 48px 0 !important;
+}
+
+[data-theme='dark'] .footer {
+  background-color: #0f172a !important; /* Dark mode matching black/grey */
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+  color: #94a3b8 !important;
+}
+
+.footer__title {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+[data-theme='dark'] .footer__title {
+  color: #f1f5f9 !important;
+}
+
+.footer__link-item {
+  color: #64748b !important;
+  transition: all 0.25s ease !important;
+}
+
+.footer__link-item:hover {
+  color: #8B5CF6 !important; /* Quantum Purple hover */
+  text-decoration: none !important;
+}
+
+[data-theme='dark'] .footer__link-item {
+  color: #94a3b8 !important;
+}
+
+[data-theme='dark'] .footer__link-item:hover {
+  color: #a78bfa !important;
+}
+
+/* Shift Docusaurus heading hash-link (#) to the right of the heading text on hover */
+h1 .hash-link,
+h2 .hash-link,
+h3 .hash-link,
+h4 .hash-link,
+h5 .hash-link,
+h6 .hash-link {
+  float: none !important;
+  margin-left: 0.35em !important;
+  margin-right: 0 !important;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+h1:hover .hash-link,
+h2:hover .hash-link,
+h3:hover .hash-link,
+h4:hover .hash-link,
+h5:hover .hash-link,
+h6:hover .hash-link {
+  opacity: 1 !important;
+}
+
+/* Standardized Universal Documentation Engine Header styling */
+.navbar {
+  height: 64px !important;
+}
+
+.navbar__brand {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: #0f172a !important;
+  padding: 0 !important;
+  margin-right: 2rem !important;
+}
+
+[data-theme='dark'] .navbar__brand {
+  color: #f8fafc !important;
+}
+
+.navbar__logo {
+  height: 32px !important;
+  width: auto !important;
+  border-radius: 6px !important;
+  margin-right: 0.5rem !important;
+  transition: transform 0.2s ease !important;
+}
+
+.navbar__logo:hover {
+  transform: scale(1.05) !important;
+}
+
+.navbar__item {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #475569 !important;
+}
+
+.navbar__item:hover {
+  color: #0f172a !important;
+}
+
+[data-theme='dark'] .navbar__item {
+  color: #94a3b8 !important;
+}
+
+[data-theme='dark'] .navbar__item:hover {
+  color: #f8fafc !important;
+}
+
+.navbar__link--active {
+  color: #0891b2 !important;
+  font-weight: 600 !important;
+}
+
+/* GitHub Icon Navbar styling to match theme-toggle size */
+.header-github-link {
+  width: 36px;
+  height: 36px;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
+.header-github-link::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-color: #475569;
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.517-1.303.958-1.602-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.56.81 1.67.81 3.38 0 2.44-.015 4.41-.015 5.01 0 .321.217.696.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.517-1.303.958-1.602-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.56.81 1.67.81 3.38 0 2.44-.015 4.41-.015 5.01 0 .321.217.696.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  transition: background-color 0.2s;
+}
+
+[data-theme='dark'] .header-github-link::before {
+  background-color: #94a3b8;
+}
+
+.header-github-link:hover::before {
+  background-color: #0891b2 !important;
+}
+
+
+
