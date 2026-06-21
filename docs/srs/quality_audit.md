@@ -38,6 +38,7 @@ During a scheduled requirements audit, a desynchronization between the local req
 *   **Recommendation 1 (Consistency / SEO)**: When compiling ToC paths into YAML metadata for Hugo (`REQ-FUN-31`), ensure that the resulting relative folders correspond cleanly to Hugo's section hierarchy to prevent routing or rendering loops.
 *   **Recommendation 2 (Testability / UI)**: For validating the interactive, client-side features of the HTML static sidebar (dynamic search filtering, splitter resizing) in future releases (v2.0+), it is recommended to write automated UI integration tests utilizing a headless-browser runner (e.g. Playwright).
 *   **Recommendation 3 (Consistency / Portability)**: Strictly enforce the relative paths principle (`REQ-FUN-29`) when developing the pipeline orchestrator. No absolute physical paths may be hardcoded inside any core UDE Python scripts.
+*   **Recommendation 4 (Artifact Verification Specification)**: A dedicated, separate list of the 4 integration and artifact testing suites is fully maintained and documented in [integration_tests_specification.md](integration_tests_specification.md). All functional requirements for quality verification link directly to this document.
 
 ---
 

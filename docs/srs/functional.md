@@ -308,6 +308,7 @@ sidebar_position: 2
 ## Automated Quality & Alignment Testing Module
 
 * **`REQ-FUN-48` (Golden Master Regression Testing)**:
+  * *Specification Reference*: See complete specifications in [integration_tests_specification.md](integration_tests_specification.md).
   * *Version 1 (Baseline / MVP)*: The test suite must include a comprehensive Golden Master regression pipeline (`test_golden_master.py`) parametrized across all supported languages (C++, C#, Java, Python). For each target language, the test must:
     1. Parse pre-compiled Doxygen XML files into a `ProjectCatalog`.
     2. Serialize the catalog and validate the resulting Intermediate Representation (IR) against a golden JSON baseline (`assets/golden_master/ir/{lang}.json`).
@@ -317,6 +318,7 @@ sidebar_position: 2
   * *Traces to*: `REQ-BUS-08`
 
 * **`REQ-FUN-49` (Docomatic Semantic Alignment & Difference Tracking)**:
+  * *Specification Reference*: See complete specifications in [integration_tests_specification.md](integration_tests_specification.md).
   * *Version 1 (Baseline / MVP)*: The test suite must implement a Docomatic semantic alignment validation pipeline (`test_docomatic_alignment.py`) to verify structural and semantic identity between UDE compiled outputs and legacy Docomatic reference documentation. The test pipeline must:
     1. Parse legacy Docomatic `contents.html` files to extract the navigation sidebar/TOC tree structure and verify link-level navigation alignment.
     2. Extract and normalize semantic text blocks (paragraphs, tables, lists, preformatted code) from both legacy HTML pages and UDE compiled HTML/Markdown outputs, filtering out layout differences (e.g., delimiters, headers, info panels).
