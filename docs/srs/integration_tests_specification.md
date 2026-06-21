@@ -8,12 +8,12 @@ This document provides a comprehensive, centralized specification of the **12 sp
 
 | Test Suite / Tool | Purpose & Scope | Implementation Status | Verified Functionality Status | Primary Script(s) / Traced Req |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Golden Master Regression** | Verifies parsing and rendering consistency against portable baselines. | **Implemented** | **Already Implemented** (Parser & Renderers) | [run_regression_tests.py](../../../Tests/run_regression_tests.py) <br/> `REQ-FUN-48` |
-| **2. Docomatic Alignment** | Ensures semantic and ToC alignment with legacy Docomatic outputs. | **Implemented** | **Already Implemented** (ToC & Structure Mapping) | [test_docomatic_alignment.py](../../../engine/tests/test_docomatic_alignment.py) <br/> `REQ-FUN-49` |
-| **3. Page Integrity Verifier** | Ensures compiled pages physically exist on disk and contain correct heading signatures. | **Implemented** | **Already Implemented** (HTML Page Layouts) | [verify_pages.py](../../../Tests/verify_pages.py) <br/> `REQ-FUN-31`, `REQ-FUN-32` |
-| **4. Post-Build Link Checker** | Crawls generated HTML to validate local pathways and external URLs. | **Implemented** | **Already Implemented** (Routing & Delimiter Layouts) | [check_links.py](../../../Tests/check_links.py) <br/> `REQ-FUN-31` |
+| **1. Golden Master Regression** | Verifies parsing and rendering consistency against portable baselines. | **Implemented** | **Already Implemented** (Parser & Renderers) | `run_regression_tests.py` <br/> `REQ-FUN-48` |
+| **2. Docomatic Alignment** | Ensures semantic and ToC alignment with legacy Docomatic outputs. | **Implemented** | **Already Implemented** (ToC & Structure Mapping) | `test_docomatic_alignment.py` <br/> `REQ-FUN-49` |
+| **3. Page Integrity Verifier** | Ensures compiled pages physically exist on disk and contain correct heading signatures. | **Implemented** | **Already Implemented** (HTML Page Layouts) | `verify_pages.py` <br/> `REQ-FUN-31`, `REQ-FUN-32` |
+| **4. Post-Build Link Checker** | Crawls generated HTML to validate local pathways and external URLs. | **Implemented** | **Already Implemented** (Routing & Delimiter Layouts) | `check_links.py` <br/> `REQ-FUN-31` |
 | **5. Incremental Build Integrity** | Validates that changes to source files write only the affected compiled assets. | *Planned* <br/> (Covered by Unit Tests) | **Already Implemented** (`BuildCacheManager`) | `test_incremental_build.py` (Planned) <br/> `REQ-FUN-29`, `TSK-DAT-03` |
-| **6. Multi-Language Cross-Link Resolver** | Verifies cross-reference resolution for mixed-language APIs (C++, C#, Python). | **Implemented** <br/> (Bundled in Link Checker) | **Already Implemented** (Polymorphic Delimiters) | [check_links.py](../../../Tests/check_links.py) <br/> `REQ-FUN-31`, `TSK-RND-09` |
+| **6. Multi-Language Cross-Link Resolver** | Verifies cross-reference resolution for mixed-language APIs (C++, C#, Python). | **Implemented** <br/> (Bundled in Link Checker) | **Already Implemented** (Polymorphic Delimiters) | `check_links.py` <br/> `REQ-FUN-31`, `TSK-RND-09` |
 | **7. RAG-Friendly Export Schema Validator** | Validates structure, metadata coverage, and schema compliance of exported JSON datasets. | *Planned* <br/> (Future Phase v2.0+) | **Already Implemented** (Pydantic IR Schema & Gzip Storage) | `test_rag_schema.py` (Planned) <br/> `REQ-FUN-05`, `REQ-BUS-04` |
 | **8. Robustness against Doxygen Versions** | Runs parser over pre-defined XML schemas from various Doxygen releases to ensure compatibility. | *Planned* <br/> (Future Phase v2.0+) | *Planned* (Cross-Version Parser — Phase v2.0+) | `test_doxygen_compatibility.py` (Planned) <br/> `REQ-FUN-19`, `TSK-PAR-02` |
 | **9. API Coverage Audit** | Analyzes the ratio of documented code entities and alerts on undocumented structures. | *Planned* | **Already Implemented** (Docstring Extraction & IR Metadata) | `test_api_coverage.py` (Planned) <br/> `REQ-FUN-48` |
@@ -31,17 +31,17 @@ This document provides a comprehensive, centralized specification of the **12 sp
 ### 📦 1. Golden Master Regression Testing
 This suite prevents behavioral drift in the parser and rendering components. It maintains and compares output state snapshots.
 *   **Workflow**:
-    1. Developers run [prepare_baseline.py](../../../Tests/prepare_baseline.py) to freeze the state of Doxygen XML parsing, Pydantic IR catalogs (`.json.gz`), rendered standalone HTML, and Hugo Markdown.
-    2. During continuous integration, [run_regression_tests.py](../../../Tests/run_regression_tests.py) regenerates these outputs on-the-fly and runs a multi-stage comparison (JSON structure match and directory diffing).
+    1. Developers run `prepare_baseline.py` to freeze the state of Doxygen XML parsing, Pydantic IR catalogs (`.json.gz`), rendered standalone HTML, and Hugo Markdown.
+    2. During continuous integration, `run_regression_tests.py` regenerates these outputs on-the-fly and runs a multi-stage comparison (JSON structure match and directory diffing).
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: Implemented in **Python** ([prepare_baseline.py](../../../Tests/prepare_baseline.py) & [run_regression_tests.py](../../../Tests/run_regression_tests.py))
+    *   **Current Status**: Implemented in **Python** (`prepare_baseline.py` & `run_regression_tests.py`)
     *   **Easy**: **Python** (native serialization of Pydantic JSON schemas, folder comparison utilities without compilation overhead).
     *   **Medium**: **C#, Java** (robust built-in directory scanning and JSON support, but require compiling separate verification utilities).
     *   **Hard**: **Delphi (Object Pascal)** (requires custom integration of external JSON parser frameworks).
     *   **Extremely Hard**: **C++** (requires tedious cross-platform linking of JSON libraries, directory diffing algorithms, and compilation).
 *   **Key Files**:
-    *   [Tests/prepare_baseline.py](../../../Tests/prepare_baseline.py)
-    *   [Tests/run_regression_tests.py](../../../Tests/run_regression_tests.py)
+    *   `Tests/prepare_baseline.py`
+    *   `Tests/run_regression_tests.py`
 
 ---
 
@@ -53,13 +53,13 @@ This suite verifies that the newly built UDE output matches the exact semantic c
     3. Handles known layout differences via the `AlignmentAllowances` database.
     4. Automatically writes new discrepancies into `difference_mock_sdk_{lang}.json` and enforces CI blocks under strict mode.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: Implemented in **Python** ([test_docomatic_alignment.py](../../../engine/tests/test_docomatic_alignment.py))
+    *   **Current Status**: Implemented in **Python** (`test_docomatic_alignment.py`)
     *   **Easy**: **Python** (highly recommended due to specialized HTML parsing libraries like BeautifulSoup/lxml).
     *   **Medium**: **C#, Java** (supported by HTML parsers like HtmlAgilityPack or JSoup, but strict static typing makes the dynamic alignment mapping rigid).
     *   **Hard**: **Delphi (Object Pascal)** (parsing unstructured HTML and hierarchical ToCs without robust modern HTML-DOM engines is labor-intensive).
     *   **Extremely Hard**: **C++** (practically unfeasible due to absence of standard high-level HTML-DOM engines, resulting in high implementation overhead).
 *   **Key Files**:
-    *   [engine/tests/test_docomatic_alignment.py](../../../engine/tests/test_docomatic_alignment.py)
+    *   `engine/tests/test_docomatic_alignment.py`
 
 ---
 
@@ -71,12 +71,12 @@ This validator performs a physical sanity check on compiled static pages on disk
     3. Traverses compiled directory structures to verify that every expected route corresponds to a compiled file (e.g. `index.html`).
     4. Asserts that the physical HTML files contain the exact page heading signature.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: Implemented in **Python** ([verify_pages.py](../../../Tests/verify_pages.py))
+    *   **Current Status**: Implemented in **Python** (`verify_pages.py`)
     *   **Easy**: **Python** (native directory walk and lightweight regex heading verification).
     *   **Medium**: **C#, Java, Delphi (Object Pascal), Python** (all support quick file scanning and directory routing natively with negligible boilerplate).
     *   **Hard**: **C++** (filesystem `<filesystem>` operations are verbose and regex matching requires extra boilerplate).
 *   **Key Files**:
-    *   [Tests/verify_pages.py](../../../Tests/verify_pages.py)
+    *   `Tests/verify_pages.py`
 
 ---
 
@@ -89,13 +89,13 @@ This crawling tool ensures zero broken navigation links exist in the published p
     4. Validates C++, C#, Java, and Python delimiter layouts (e.g. namespace resolution via `::` vs `.`).
     5. Performs real-world concurrent network requests (utilizing HTTP `HEAD` with dynamic `GET` fallbacks) for external web links.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: Implemented in **Python** ([check_links.py](../../../Tests/check_links.py))
+    *   **Current Status**: Implemented in **Python** (`check_links.py`)
     *   **Easy**: **Python** (built-in concurrent networking with requests/aiohttp, making URL verification highly performant).
     *   **Medium**: **C#, Java, Python** (easy HTTP/HTTPS network clients and standard async processing).
     *   **Hard**: **Delphi (Object Pascal)** (asynchronous concurrent sockets require tedious configuration using Indy or WinINet frameworks).
     *   **Extremely Hard**: **C++** (building a multi-threaded, SSL-enabled asynchronous web crawler is extremely complex and bloating).
 *   **Key Files**:
-    *   [Tests/check_links.py](../../../Tests/check_links.py)
+    *   `Tests/check_links.py`
 
 ---
 
@@ -121,7 +121,7 @@ This test tracks routing accuracy across cross-referenced API frameworks utilizi
     1. Parsers resolve polymorphic entities (e.g. SWIG-generated Python wrappers referencing underlying C++ core classes).
     2. The Link Checker scrolls the compiled assets, verifying that references dynamically mapped between C# or Python scopes correctly navigate back to C++ source modules.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: Implemented in **Python** (bundled inside [check_links.py](../../../Tests/check_links.py))
+    *   **Current Status**: Implemented in **Python** (bundled inside `check_links.py`)
     *   **Easy**: **Python** (highly flexible dynamic type mapping in memory across different programming languages).
     *   **Medium**: **C#, Java** (strict static typing requires implementing custom type adapters).
     *   **Hard**: **Delphi (Object Pascal)** (parsing module namespaces and custom units is tedious).
