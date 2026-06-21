@@ -16,10 +16,10 @@ This document provides a comprehensive, centralized specification of the **12 sp
 | **6. Multi-Language Cross-Link Resolver** | Verifies cross-reference resolution for mixed-language APIs (C++, C#, Python). | **Implemented** <br/> (Bundled in Link Checker) | **Already Implemented** (Polymorphic Delimiters) | [check_links.py](../../../Tests/check_links.py) <br/> `REQ-FUN-31`, `TSK-RND-09` |
 | **7. RAG-Friendly Export Schema Validator** | Validates structure, metadata coverage, and schema compliance of exported JSON datasets. | *Planned* <br/> (Future Phase v2.0+) | **Already Implemented** (Pydantic IR Schema & Gzip Storage) | `test_rag_schema.py` (Planned) <br/> `REQ-FUN-05`, `REQ-BUS-04` |
 | **8. Robustness against Doxygen Versions** | Runs parser over pre-defined XML schemas from various Doxygen releases to ensure compatibility. | *Planned* <br/> (Future Phase v2.0+) | *Planned* (Cross-Version Parser — Phase v2.0+) | `test_doxygen_compatibility.py` (Planned) <br/> `REQ-FUN-19`, `TSK-PAR-02` |
-| **9. API Coverage Audit** | Analyzes the ratio of documented code entities and alerts on undocumented structures. | *Planned* | *Planned* (Docstring Coverage Metrics) | `test_api_coverage.py` (Planned) <br/> `REQ-FUN-48` |
-| **10. CSS Visual Regression** | Uses headless rendering to perform screenshot pixel-diff checks on page templates. | *Planned* | *Planned* (Template CSS & Theme Styles) | `test_visual_regression.py` (Planned) |
+| **9. API Coverage Audit** | Analyzes the ratio of documented code entities and alerts on undocumented structures. | *Planned* | **Already Implemented** (Docstring Extraction & IR Metadata) | `test_api_coverage.py` (Planned) <br/> `REQ-FUN-48` |
+| **10. CSS Visual Regression** | Uses headless rendering to perform screenshot pixel-diff checks on page templates. | *Planned* | **Already Implemented** (Template HTML & CSS Compilation) | `test_visual_regression.py` (Planned) |
 | **11. Search Index Validity** | Validates that compiled search engine index JSON keys match physical page anchors. | *Planned* | **Already Implemented** (Search Engine Indexing) | `test_search_index.py` (Planned) <br/> `REQ-FUN-31` |
-| **12. Wrapper Boundary Integrity** | Verifies parameter mapping consistency across multi-language API wrappers (SWIG/JNI). | *Planned* | *Planned* (Multi-Language API wrappers) | `test_boundary_integrity.py` (Planned) <br/> `TSK-RND-09` |
+| **12. Wrapper Boundary Integrity** | Verifies parameter mapping consistency across multi-language API wrappers (SWIG/JNI). | *Planned* | **Already Implemented** (SWIG Wrappers & Core Parsing) | `test_boundary_integrity.py` (Planned) <br/> `TSK-RND-09` |
 
 > [!IMPORTANT]
 > **Strict Template Existence Policy**: Under the strict pipeline validation design, if physical layout templates are missing or corrupted on disk, the compilation process must explicitly fail and crash with a `RendererError` instead of reverting to hot-reload inline fallbacks. This ensures visual regressions are caught immediately.
@@ -168,7 +168,7 @@ Analyzes the ratio of documented code entities and alerts in continuous integrat
     2. Computes the final API documentation coverage ratio (%).
     3. Triggers build errors or alerts in CI if coverage drops below the strict threshold (e.g. 90%).
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned*
+    *   **Current Status**: *Planned* (Verified Functionality Status: **Already Implemented** via Docstring Extraction & IR Metadata)
     *   **Easy**: **Python** (parsing generated JSON catalogs, performing dynamic ratio calculation, and printing reports).
     *   **Medium**: **C#, Java** (strong collections support for grouping and counting, easy HTML output writing).
     *   **Hard**: **Delphi (Object Pascal)** (tedious JSON processing and custom data sorting).
@@ -185,7 +185,7 @@ Uses headless rendering engines to perform automated screenshot pixel-diff check
     3. Runs a pixel-by-pixel comparisons (image subtraction) against pre-defined visual baseline files.
     4. Automatically flags and exports visual layouts shifts exceeding 0.1% threshold.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned*
+    *   **Current Status**: *Planned* (Verified Functionality Status: **Already Implemented** via Template HTML & CSS Compilation)
     *   **Easy**: **Python** (native integration with Playwright or Selenium, immediate screenshot comparison using Pillow/OpenCV).
     *   **Medium**: **C#, Java** (strong bindings to Playwright/Selenium, robust image manipulation libraries).
     *   **Hard / Extremely Hard**: **Delphi (Object Pascal), C++** (extremely difficult to integrate headless rendering engines and image diffing tools without bloating external binaries).
@@ -215,7 +215,7 @@ Verifies parameter mapping consistency across multi-language API wrappers (SWIG/
     2. Correlates parameter lists, data types, and default values across boundaries.
     3. Triggers alerts on any parameters that are renamed or missed in translation mapping tables.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned*
+    *   **Current Status**: *Planned* (Verified Functionality Status: **Already Implemented** via SWIG Wrappers & Core Parsing)
     *   **Easy**: **Python** (flexible runtime class introspection and C++ header parsing).
     *   **Medium**: **C#, Java** (reflection and meta-programming support for boundary parameter checks).
     *   **Hard**: **Delphi (Object Pascal)** (inspecting flat C-style DLL interfaces requires manual schema declarations).
