@@ -287,3 +287,43 @@ sidebar_position: 2
     4. Maintain backward compatibility by exposing public entry points under the standard `ude.parsers.doxygen` module namespace, shielding external orchestrators from internal class refactoring.
   * *Traces to*: `REQ-BUS-01`, `REQ-BUS-09`
 
+## Hierarchical Configuration & Multi-Level Merging Module
+
+* **`REQ-FUN-45` (Config Inheritance and Flat-Merging)**:
+  * *Version 1 (Baseline / MVP)*: The orchestrator must support loading a parent global configuration file (`ude_global.json`) by walking up the directory tree from the local configuration file (`ude_config.json`). The orchestrator must flat-merge the loaded dictionary with the target-specific local configurations (`config = {**resolved_global_config, **config}`), allowing local parameters to cleanly override global defaults.
+  * *Traces to*: `REQ-BUS-12`
+
+* **`REQ-FUN-46` (Combined Output Path Resolution)**:
+  * *Version 1 (Baseline / MVP)*: The orchestrator must support splitting output directory resolution. If `output_base_dir` (defined globally or locally) and `output_subdir` (defined locally) are both present, the engine must combine them into a single absolute path (`out_dir = (base_dir_ref / config["output_base_dir"] / config["output_subdir"]).resolve()`). If either key is absent, the system must gracefully fall back to reading the standard relative `output_dir` property (relative to the target config directory), ensuring 100% backward compatibility for pre-existing configurations.
+  * *Traces to*: `REQ-BUS-12`
+
+* **`REQ-FUN-47` (Sequential Doxyfile Assembly)**:
+  * *Version 1 (Baseline / MVP)*: The Doxygen XML collector must support a three-stage sequential merge model to compile the final `Doxyfile` used by the subprocess:
+    1. **Global Default Template**: Attempt to load a global template from a predefined engine templates directory (`engine/ude/templates/Doxyfile`). This template must store standard workspace default performance configurations (such as `NUM_PROC_THREADS`, `LOOKUP_CACHE_SIZE`, and `XML_PROGRAMLISTING`).
+    2. **Local Project Override**: If a project-specific `Doxyfile` is defined in `ude_config.json` (under `collector.doxyfile_template`) and exists physically next to the config, its contents must be read and appended to the global template. In Doxygen, sequential definition of identical keys ensures that later entries override earlier ones.
+    3. **Dynamic Orchestrator Parameters**: Finally, the collector must append dynamic, run-specific configuration entries (specifically `OUTPUT_DIRECTORY`, `INPUT`, `GENERATE_XML = YES`, `XML_OUTPUT = xml`, `RECURSIVE = YES`, `GENERATE_HTML = NO`, `GENERATE_LATEX = NO`, and target language optimization options).
+    If the global template read fails due to a file-access error, the collector must throw a clear `CollectorError` starting with `"Failed to read Doxyfile template"`.
+  * *Traces to*: `REQ-BUS-13`
+
+## Automated Quality & Alignment Testing Module
+
+* **`REQ-FUN-48` (Golden Master Regression Testing)**:
+  * *Specification Reference*: See complete specifications in [integration_tests_specification.md](integration_tests_specification.md).
+  * *Version 1 (Baseline / MVP)*: The test suite must include a comprehensive Golden Master regression pipeline (`test_golden_master.py`) parametrized across all supported languages (C++, C#, Java, Python). For each target language, the test must:
+    1. Parse pre-compiled Doxygen XML files into a `ProjectCatalog`.
+    2. Serialize the catalog and validate the resulting Intermediate Representation (IR) against a golden JSON baseline (`assets/golden_master/ir/{lang}.json`).
+    3. Render static HTML and validate the entire output directory structure and file contents against a standalone HTML baseline (`assets/golden_master/html/{lang}`).
+    4. Render Hugo Markdown and validate the output directory structure and file contents against a Hugo Markdown baseline (`assets/golden_master/markdown/{lang}`).
+    5. Support an option to automatically update all baselines by running with the environment variable `UPDATE_BASELINES=1`.
+  * *Traces to*: `REQ-BUS-08`
+
+* **`REQ-FUN-49` (Docomatic Semantic Alignment & Difference Tracking)**:
+  * *Specification Reference*: See complete specifications in [integration_tests_specification.md](integration_tests_specification.md).
+  * *Version 1 (Baseline / MVP)*: The test suite must implement a Docomatic semantic alignment validation pipeline (`test_docomatic_alignment.py`) to verify structural and semantic identity between UDE compiled outputs and legacy Docomatic reference documentation. The test pipeline must:
+    1. Parse legacy Docomatic `contents.html` files to extract the navigation sidebar/TOC tree structure and verify link-level navigation alignment.
+    2. Extract and normalize semantic text blocks (paragraphs, tables, lists, preformatted code) from both legacy HTML pages and UDE compiled HTML/Markdown outputs, filtering out layout differences (e.g., delimiters, headers, info panels).
+    3. Utilize a robust allowances engine (`AlignmentAllowances`) to load, match, and skip known structural, sidebar, or content-level deviations defined in version-controlled allowance files (`mock_sdk_{lang}.json`).
+    4. Automatically record any newly detected content or sidebar deviations into git-ignored difference-tracking files (`difference_mock_sdk_{lang}.json`).
+    5. Run in two enforcement modes controlled via environment variables: **Strict Mode** (fails the test suite using `pytest.fail` if any unallowed deviations are found when `STRICT_ALIGNMENT=1` is set, intended for CI quality gates) and **Soft Mode** (emits a standard `UserWarning` warning developers of deviations without halting the build, intended for local development and refactoring).
+  * *Traces to*: `REQ-BUS-08`, `REQ-BUS-10`
+

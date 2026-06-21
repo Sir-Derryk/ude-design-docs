@@ -12,8 +12,8 @@ This report evaluates the functional requirements (SRS) and business requirement
 
 | Quality Criterion | Status | Score (1-10) | Key Findings & Observations |
 | :--- | :---: | :---: | :--- |
-| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue has been resolved, and requirements `REQ-BUS-10`, `REQ-BUS-11`, and `REQ-FUN-30` through `REQ-FUN-44` fully cover the ToC hierarchy, flat-mapping, dynamic file prefixing, interactive sidebars, polymorphic signature formatting strategies, layout loading fallbacks, and backward-compatible parser facades. This includes Sphinx/RST normalization for Python SWIG wrappers (`REQ-FUN-14`) with type mapping, flatter navigation layouts in Hugo with auto-generated Namespace landing page tables, and hierarchical index pages for collapsible group folders in standalone HTML (`REQ-FUN-35`), ensuring 100% complete coverage without empty or dead menu links. |
-| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The business requirements map directly to functional requirements, including the signature strategies, template fallbacks, and routing parser facades (`REQ-FUN-42`, `REQ-FUN-43`, `REQ-FUN-44`). All traces across the BRD, SRS, and SDD are in 100% synchronization. |
+| **Completeness** | 🟢 Excellent | 10 | The specification fully covers all 4 target programming languages (C++, C#, Java, Python). The desynchronization issue has been resolved, and requirements `REQ-BUS-10`, `REQ-BUS-11`, and `REQ-FUN-30` through `REQ-FUN-47` fully cover the ToC hierarchy, flat-mapping, dynamic file prefixing, interactive sidebars, polymorphic signature formatting strategies, layout loading fallbacks, backward-compatible parser facades, hierarchical configuration inheritance (`REQ-BUS-12`, `REQ-FUN-45`, `REQ-FUN-46`), and three-tier sequential Doxyfile template merging (`REQ-BUS-13`, `REQ-FUN-47`). Additionally, automated testing coverage is completely specified via `REQ-FUN-48` and `REQ-FUN-49` for Golden Master regression and Docomatic semantic alignment, complete with deviation allowance systems. This includes Sphinx/RST normalization for Python SWIG wrappers (`REQ-FUN-14`) with type mapping, flatter navigation layouts in Hugo with auto-generated Namespace landing page tables, and hierarchical index pages for collapsible group folders in standalone HTML (`REQ-FUN-35`), ensuring 100% complete coverage without empty or dead menu links. |
+| **Traceability** | 🟢 Excellent | 10 | Every functional requirement (REQ-FUN) has a direct bidirectional trace to a corresponding business requirement. The business requirements map directly to functional requirements, including the signature strategies, template fallbacks, routing parser facades, JSON config inheritance, sequential Doxyfile merging model (`REQ-FUN-42` to `REQ-FUN-47`), and the newly added Golden Master and Docomatic testing specs (`REQ-FUN-48`, `REQ-FUN-49` tracing to `REQ-BUS-08` and `REQ-BUS-10` respectively). All traces across the BRD, SRS, and SDD are in 100% synchronization. |
 | **Consistency** | 🟢 Excellent | 10 | All potential conflicts (offline local execution mode vs online AI translation endpoints, pipeline throughput vs cache writing overhead, and local file-protocol security vs asynchronous ToC loads) have been explicitly resolved. Specifically, CORS blocks are bypassed in `REQ-FUN-31` by compiling the database into a JavaScript variable (`window.UDE_NAV_DATA`) inside `nav_data.js`, and visual match exactness is guaranteed by copying reference `main.css` stylesheets (`REQ-FUN-32`). Active node focus and vertical scrolling behaviors are natively implemented and separated per target platform (Vanilla JS for offline HTML, custom theme script for Hugo), avoiding cross-platform interference. |
 | **Unambiguity** | 🟢 Excellent | 10 | Requirements are formulated using precise technical and mathematical terms. Document completeness criteria, flat-mapping naming separators (`__`, `_`, `@`), visual CSS selectors (`.OdaDocBrief`, `.OdaDocCodeProto`), DOM scroll parameters (`offsetTop`, `scrollTop`, `.api-item.active`, `.OdaDocTOCRow.active`), asset paths (`refs/NewVersion/bimnv_api_cpp/main.css`), and browser `localStorage` parameters are deterministically defined. |
 | **Testability** | 🟢 Excellent | 10 | The specifications define deterministic data transformations. Every requirement is testable via automated unit tests (verifying flat-mapped filenames, metadata headers, and JSON structure serialization) and integration/E2E UI tests. |
@@ -38,6 +38,7 @@ During a scheduled requirements audit, a desynchronization between the local req
 *   **Recommendation 1 (Consistency / SEO)**: When compiling ToC paths into YAML metadata for Hugo (`REQ-FUN-31`), ensure that the resulting relative folders correspond cleanly to Hugo's section hierarchy to prevent routing or rendering loops.
 *   **Recommendation 2 (Testability / UI)**: For validating the interactive, client-side features of the HTML static sidebar (dynamic search filtering, splitter resizing) in future releases (v2.0+), it is recommended to write automated UI integration tests utilizing a headless-browser runner (e.g. Playwright).
 *   **Recommendation 3 (Consistency / Portability)**: Strictly enforce the relative paths principle (`REQ-FUN-29`) when developing the pipeline orchestrator. No absolute physical paths may be hardcoded inside any core UDE Python scripts.
+*   **Recommendation 4 (Artifact Verification Specification)**: A dedicated, separate list of the 4 integration and artifact testing suites is fully maintained and documented in [integration_tests_specification.md](integration_tests_specification.md). All functional requirements for quality verification link directly to this document.
 
 ---
 
@@ -56,6 +57,8 @@ graph TD
         B9["REQ-BUS-09 (Pipeline Automation)"]
         B10["REQ-BUS-10 (Premium Portal UX & Layouts)"]
         B11["REQ-BUS-11 (Integrated Catalog Referencing)"]
+        B12["REQ-BUS-12 (Hierarchical Configurations)"]
+        B13["REQ-BUS-13 (Doxyfile Merging Model)"]
     end
 
     subgraph SRS [Functional Requirements]
@@ -96,6 +99,11 @@ graph TD
         F42["REQ-FUN-42 (Language-Specific Signature Formatting Strategy)"]
         F43["REQ-FUN-43 (Robust Layout Template Loading & Inline Fallback)"]
         F44["REQ-FUN-44 (Backward-Compatible Multi-Language Parser Facade)"]
+        F45["REQ-FUN-45 (Config Inheritance and Flat-Merging)"]
+        F46["REQ-FUN-46 (Combined Output Path Resolution)"]
+        F47["REQ-FUN-47 (Sequential Doxyfile Assembly)"]
+        F48["REQ-FUN-48 (Golden Master Regression Testing)"]
+        F49["REQ-FUN-49 (Docomatic Semantic Alignment & Difference Tracking)"]
     end
 
     F1 & F2 & F19 & F20 & F44 -->|Satisfies| B1
@@ -104,8 +112,10 @@ graph TD
     F5 -->|Satisfies| B4
     F9 -->|Satisfies| B5
     F6 & F10 -->|Satisfies| B6
-    F8 & F12 & F13 & F14 & F15 & F16 & F17 & F18 -->|Satisfies| B8
+    F8 & F12 & F13 & F14 & F15 & F16 & F17 & F18 & F48 & F49 -->|Satisfies| B8
     F7 & F23 & F24 & F25 & F26 & F27 & F29 & F43 & F44 -->|Satisfies| B9
-    F30 & F31 & F32 & F33 & F35 & F42 -->|Satisfies| B10
+    F30 & F31 & F32 & F33 & F35 & F42 & F49 -->|Satisfies| B10
     F34 -->|Satisfies| B11
+    F45 & F46 -->|Satisfies| B12
+    F47 -->|Satisfies| B13
 ```
