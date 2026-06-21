@@ -1,6 +1,6 @@
 # Integration and Artifact Verification Tests Specification
 
-This document provides a comprehensive, centralized specification of the **13 specialized post-build integration and artifact verification tests** of the **Universal Documentation Engine (UDE)**. These tests operate at the integration, semantic, and artifact validation levels to ensure 100% correctness of compiled documentation without testing raw internal code logic.
+This document provides a comprehensive, centralized specification of the **12 specialized post-build integration and artifact verification tests** of the **Universal Documentation Engine (UDE)**. These tests operate at the integration, semantic, and artifact validation levels to ensure 100% correctness of compiled documentation without testing raw internal code logic.
 
 ---
 
@@ -15,12 +15,14 @@ This document provides a comprehensive, centralized specification of the **13 sp
 | **5. Incremental Build Integrity** | Validates that changes to source files write only the affected compiled assets. | *Planned* <br/> (Covered by Unit Tests) | **Already Implemented** (`BuildCacheManager`) | `test_incremental_build.py` (Planned) <br/> `REQ-FUN-29`, `TSK-DAT-03` |
 | **6. Multi-Language Cross-Link Resolver** | Verifies cross-reference resolution for mixed-language APIs (C++, C#, Python). | **Implemented** <br/> (Bundled in Link Checker) | **Already Implemented** (Polymorphic Delimiters) | [check_links.py](../../../Tests/check_links.py) <br/> `REQ-FUN-31`, `TSK-RND-09` |
 | **7. RAG-Friendly Export Schema Validator** | Validates structure, metadata coverage, and schema compliance of exported JSON datasets. | *Planned* <br/> (Future Phase v2.0+) | **Already Implemented** (Pydantic IR Schema & Gzip Storage) | `test_rag_schema.py` (Planned) <br/> `REQ-FUN-05`, `REQ-BUS-04` |
-| **8. Template Hot-Reload Fallback** | Verifies fail-safe default inline rendering when physical template directories are missing. | *Planned* <br/> (Covered by Unit Tests) | **Already Implemented** (Backup Inline Fallbacks) | `test_fallback_renderer.py` (Planned) <br/> `REQ-FUN-33`, `TSK-RND-10` |
-| **9. Robustness against Doxygen Versions** | Runs parser over pre-defined XML schemas from various Doxygen releases to ensure compatibility. | *Planned* <br/> (Future Phase v2.0+) | *Planned* (Cross-Version Parser — Phase v2.0+) | `test_doxygen_compatibility.py` (Planned) <br/> `REQ-FUN-19`, `TSK-PAR-02` |
-| **10. API Coverage Audit** | Analyzes the ratio of documented code entities and alerts on undocumented structures. | *Planned* | *Planned* (Docstring Coverage Metrics) | `test_api_coverage.py` (Planned) <br/> `REQ-FUN-48` |
-| **11. CSS Visual Regression** | Uses headless rendering to perform screenshot pixel-diff checks on page templates. | *Planned* | *Planned* (Template CSS & Theme Styles) | `test_visual_regression.py` (Planned) |
-| **12. Search Index Validity** | Validates that compiled search engine index JSON keys match physical page anchors. | *Planned* | **Already Implemented** (Search Engine Indexing) | `test_search_index.py` (Planned) <br/> `REQ-FUN-31` |
-| **13. Wrapper Boundary Integrity** | Verifies parameter mapping consistency across multi-language API wrappers (SWIG/JNI). | *Planned* | *Planned* (Multi-Language API wrappers) | `test_boundary_integrity.py` (Planned) <br/> `TSK-RND-09` |
+| **8. Robustness against Doxygen Versions** | Runs parser over pre-defined XML schemas from various Doxygen releases to ensure compatibility. | *Planned* <br/> (Future Phase v2.0+) | *Planned* (Cross-Version Parser — Phase v2.0+) | `test_doxygen_compatibility.py` (Planned) <br/> `REQ-FUN-19`, `TSK-PAR-02` |
+| **9. API Coverage Audit** | Analyzes the ratio of documented code entities and alerts on undocumented structures. | *Planned* | *Planned* (Docstring Coverage Metrics) | `test_api_coverage.py` (Planned) <br/> `REQ-FUN-48` |
+| **10. CSS Visual Regression** | Uses headless rendering to perform screenshot pixel-diff checks on page templates. | *Planned* | *Planned* (Template CSS & Theme Styles) | `test_visual_regression.py` (Planned) |
+| **11. Search Index Validity** | Validates that compiled search engine index JSON keys match physical page anchors. | *Planned* | **Already Implemented** (Search Engine Indexing) | `test_search_index.py` (Planned) <br/> `REQ-FUN-31` |
+| **12. Wrapper Boundary Integrity** | Verifies parameter mapping consistency across multi-language API wrappers (SWIG/JNI). | *Planned* | *Planned* (Multi-Language API wrappers) | `test_boundary_integrity.py` (Planned) <br/> `TSK-RND-09` |
+
+> [!IMPORTANT]
+> **Strict Template Existence Policy**: Under the strict pipeline validation design, if physical layout templates are missing or corrupted on disk, the compilation process must explicitly fail and crash with a `RendererError` instead of reverting to hot-reload inline fallbacks. This ensures visual regressions are caught immediately.
 
 ---
 
@@ -117,7 +119,7 @@ This suite validates the correctness of the two-level build cache (`BuildCacheMa
 This test tracks routing accuracy across cross-referenced API frameworks utilizing distinct language scopes.
 *   **Workflow**:
     1. Parsers resolve polymorphic entities (e.g. SWIG-generated Python wrappers referencing underlying C++ core classes).
-    2. The Link Checker crawls the compiled assets, verifying that references dynamically mapped between C# or Python scopes correctly navigate back to C++ source modules.
+    2. The Link Checker scrolls the compiled assets, verifying that references dynamically mapped between C# or Python scopes correctly navigate back to C++ source modules.
 *   **Language Feasibility Matrix**:
     *   **Current Status**: Implemented in **Python** (bundled inside [check_links.py](../../../Tests/check_links.py))
     *   **Easy**: **Python** (highly flexible dynamic type mapping in memory across different programming languages).
@@ -144,22 +146,7 @@ Ensures the machine-readable outputs generated for enterprise AI systems are mat
 
 ---
 
-### 🛡️ 8. Template Hot-Reload Fallback Verification
-Guarantees absolute robustness of the documentation pipeline when visual layouts are missing or corrupted.
-*   **Workflow**:
-    1. Moves or renames the primary visual templates folder (`engine/templates/`).
-    2. Runs the static HTML compilation process.
-    3. Verifies that the engine does not throw unhandled exceptions, and successfully produces a readable portal built on inline default template fallbacks.
-*   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned* (Core fallback logic already implemented in Python renderers)
-    *   **Easy**: **Python** (dynamic routing of Jinja2 environments to fail-safe inline backup strings).
-    *   **Medium**: **C#, Java** (dynamic templating context replacement using Razor or Thymeleaf engines).
-    *   **Hard / Extremely Hard**: **Delphi (Object Pascal), C++** (lack of standard high-level text templating frameworks).
-*   **Traced Tasks**: `TSK-RND-10` (Fallback Loading Strategies)
-
----
-
-### 🧪 9. Robustness against Doxygen Versions
+### 🧪 8. Robustness against Doxygen Versions
 Verifies backward-compatible parsing against varied Doxygen XML dialects produced by different compiler releases.
 *   **Workflow**:
     1. Runs the UDE parser engine over identical source modules pre-compiled via distinct Doxygen versions (e.g. `1.9.x`, `1.10.x`, `1.12.x`).
@@ -174,7 +161,7 @@ Verifies backward-compatible parsing against varied Doxygen XML dialects produce
 
 ---
 
-### 📊 10. API Coverage Audit & Undocumented Entities Alert
+### 📊 9. API Coverage Audit & Undocumented Entities Alert
 Analyzes the ratio of documented code entities and alerts in continuous integration pipelines on undocumented structures to guarantee comprehensive reference coverage.
 *   **Workflow**:
     1. Parses the compiled database IR (`.json.gz`) to cross-reference total entity definitions against entities containing non-empty docstrings.
@@ -190,7 +177,7 @@ Analyzes the ratio of documented code entities and alerts in continuous integrat
 
 ---
 
-### 🖼️ 11. CSS Visual Regression & Screenshot Diff Tester
+### 🖼️ 10. CSS Visual Regression & Screenshot Diff Tester
 Uses headless rendering engines to perform automated screenshot pixel-diff checks on page templates to protect responsive designs from regressions.
 *   **Workflow**:
     1. Launches a headless web browser (e.g. Playwright or Selenium) to render local offline HTML pages.
@@ -205,7 +192,7 @@ Uses headless rendering engines to perform automated screenshot pixel-diff check
 
 ---
 
-### 🔍 12. Search Index Integrity & Anchor Verifier
+### 🔍 11. Search Index Integrity & Anchor Verifier
 Validates that compiled search engine index JSON keys match physical page anchors to prevent dead ends in live searching.
 *   **Workflow**:
     1. Reads compiled searchable indexes (`search.json` assets used in VitePress/Hugo portals).
@@ -221,7 +208,7 @@ Validates that compiled search engine index JSON keys match physical page anchor
 
 ---
 
-### 🌉 13. Wrapper Boundary Parameter Integrity
+### 🌉 12. Wrapper Boundary Parameter Integrity
 Verifies parameter mapping consistency across multi-language API wrappers (SWIG/JNI) to avoid documentation desynchronization.
 *   **Workflow**:
     1. Dynamically parses C++ core headers alongside generated target language wrappers (Python, C#, Java, or Delphi modules).
