@@ -106,7 +106,7 @@ This suite validates the correctness of the two-level build cache (`BuildCacheMa
     2. Modifies a single source entity (XML file) and triggers an incremental compilation.
     3. Verifies that only the changed entity's page and TOC index file are updated, and other files remain untouched.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned* (Assigned to **Java** as the optimal minimum complexity target; core caching logic already implemented in Python under `BuildCacheManager`)
+    *   **Current Status**: *Planned* (Target Language: **Java**)
     *   **Easy**: **Python** (integrated directly into the compiler's build pipeline).
     *   **Medium**: **C#, Java** (excellent built-in libraries for SHA-256 hashing and directory mapping).
     *   **Hard**: **Delphi (Object Pascal)** (requires custom wrapping of system crypto APIs for secure file hashing).
@@ -137,7 +137,7 @@ Ensures the machine-readable outputs generated for enterprise AI systems are mat
     2. Reads the output JSON files and runs validation against strict JSON/Pydantic schemas.
     3. Asserts the presence of mandatory metadata keys (`entity_type`, `fully_qualified_name`, `signature_hash`, `line_range`, `dependencies`).
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned* (Assigned to **Python** as the optimal minimum complexity target; core validation models defined in Python under `ude/models.py`)
+    *   **Current Status**: *Planned* (Target Language: **Python**)
     *   **Easy**: **Python** (native schema enforcement via built-in Pydantic validators).
     *   **Medium**: **C#, Java** (robust JSON Schema verification libraries).
     *   **Hard**: **Delphi (Object Pascal)** (lack of built-in data contract schema validators).
@@ -168,7 +168,7 @@ Analyzes the ratio of documented code entities and alerts in continuous integrat
     2. Computes the final API documentation coverage ratio (%).
     3. Triggers build errors or alerts in CI if coverage drops below the strict threshold (e.g. 90%).
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned* (Assigned to **C#** as the optimal minimum complexity target; Verified Functionality Status: **Already Implemented** via Docstring Extraction & IR Metadata)
+    *   **Current Status**: *Planned* (Target Language: **C#**)
     *   **Easy**: **Python** (parsing generated JSON catalogs, performing dynamic ratio calculation, and printing reports).
     *   **Medium**: **C#, Java** (strong collections support for grouping and counting, easy HTML output writing).
     *   **Hard**: **Delphi (Object Pascal)** (tedious JSON processing and custom data sorting).
@@ -185,7 +185,7 @@ Uses headless rendering engines to perform automated screenshot pixel-diff check
     3. Runs a pixel-by-pixel comparisons (image subtraction) against pre-defined visual baseline files.
     4. Automatically flags and exports visual layouts shifts exceeding 0.1% threshold.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned* (Assigned to **C++** as the optimal minimum complexity target; Verified Functionality Status: **Already Implemented** via Template HTML & CSS Compilation)
+    *   **Current Status**: *Planned* (Target Language: **C++**)
     *   **Easy**: **Python** (native integration with Playwright or Selenium, immediate screenshot comparison using Pillow/OpenCV).
     *   **Medium**: **C#, Java** (strong bindings to Playwright/Selenium, robust image manipulation libraries).
     *   **Hard / Extremely Hard**: **Delphi (Object Pascal), C++** (extremely difficult to integrate headless rendering engines and image diffing tools without bloating external binaries).
@@ -199,7 +199,7 @@ Validates that compiled search engine index JSON keys match physical page anchor
     2. Verifies that each logical item's URL structure maps directly to a generated static HTML file on disk.
     3. For anchor references (e.g., `#ClassEntity`), parses target HTML files using DOM selectors to guarantee that elements with matching `id` or `name` attributes actually exist.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned* (Assigned to **Delphi** as the optimal minimum complexity target; Indexing compiler engine already implemented)
+    *   **Current Status**: *Planned* (Target Language: **Delphi**)
     *   **Easy**: **Python** (fast JSON loading, simple HTML element parsing via lxml).
     *   **Medium**: **C#, Java** (easy JSON schema validation and file structure checking).
     *   **Hard**: **Delphi (Object Pascal)** (tedious DOM parsing and routing checking).
@@ -215,24 +215,9 @@ Verifies parameter mapping consistency across multi-language API wrappers (SWIG/
     2. Correlates parameter lists, data types, and default values across boundaries.
     3. Triggers alerts on any parameters that are renamed or missed in translation mapping tables.
 *   **Language Feasibility Matrix**:
-    *   **Current Status**: *Planned* (Assigned to **Python** as the optimal minimum complexity target; Verified Functionality Status: **Already Implemented** via SWIG Wrappers & Core Parsing)
+    *   **Current Status**: *Planned* (Target Language: **Python**)
     *   **Easy**: **Python** (flexible runtime class introspection and C++ header parsing).
     *   **Medium**: **C#, Java** (reflection and meta-programming support for boundary parameter checks).
     *   **Hard**: **Delphi (Object Pascal)** (inspecting flat C-style DLL interfaces requires manual schema declarations).
     *   **Extremely Hard**: **C++** (demands extensive parsing of complex header ASTs to match dynamic wrapping types).
 *   **Traced Tasks**: `TSK-RND-09` (Signature strategizer)
-
----
-
-## 🎯 Схема минимизации сложности разработки (v2.0)
-
-В целях достижения абсолютного теоретического минимума сложности разработки при внедрении интеграционных проверок для пяти целевых языков программирования (Python, C++, C#, Java, Delphi) сформирована следующая оптимальная схема распределения **6 запланированных тестов, проверяющих уже реализованный функционал ядра**:
-
-| № | Тест (ещё не реализован) | Выбранный язык | Сложность | Архитектурное обоснование выбора |
-| :-: | :--- | :--- | :-: | :--- |
-| **1** | **CSS Visual Regression** <br/>*(Тест №10)* | **C++** | **Hard / Extremely Hard** | Предотвращает необходимость сборки сетевых сокетов, парсеров разметки и AST-деревьев. Является единственным подъемным интеграционным тестом для C++ из пула запланированных. |
-| **2** | **Search Index Validity** <br/>*(Тест №11)* | **Delphi** | **Hard** | Требует лишь десериализации базового JSON и плоских файловых проверок существования без интеграции тяжеловесных DOM-структур или сетевых клиентов. |
-| **3** | **API Coverage Audit** <br/>*(Тест №9)* | **C#** | **Medium** | Родной синтаксис LINQ и библиотека `System.Text.Json` позволяют реализовать фильтрацию и агрегацию метаданных в файлах IR `.json.gz` с минимальным шаблонным кодом. |
-| **4** | **Incremental Build Integrity** <br/>*(Тест №5)* | **Java** | **Medium** | Позволяет использовать мощный стандартный `MessageDigest` (SHA-256) и кроссплатформенный I/O (`java.nio.file`) для отслеживания инкрементальных слепков сборки. |
-| **5** | **RAG-Friendly Export Validator** <br/>*(Тест №7)* | **Python** | **Easy** | Родные модели Pydantic в ядре UDE позволяют реализовать проверку схем экспорта за считанные минуты без внешних схем и спецификаций. |
-| **6** | **Wrapper Boundary Parameter Integrity** <br/>*(Тест №12)* | **Python** | **Easy** | Динамическое исследование типов в рантайме Python избавляет от необходимости парсинга исходных C++ заголовков и создания структур сопоставления. |
