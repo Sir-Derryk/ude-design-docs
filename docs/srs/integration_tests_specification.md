@@ -29,8 +29,8 @@ This suite prevents behavioral drift in the parser and rendering components. It 
     2. During continuous integration, [run_regression_tests.py](../../../Tests/run_regression_tests.py) regenerates these outputs on-the-fly and runs a multi-stage comparison (JSON structure match and directory diffing).
 *   **Language Matrix**:
     *   **Current Language**: Python ([prepare_baseline.py](../../../Tests/prepare_baseline.py) & [run_regression_tests.py](../../../Tests/run_regression_tests.py))
-    *   **Supported Languages**: C++, C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C++, C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Key Files**:
     *   [Tests/prepare_baseline.py](../../../Tests/prepare_baseline.py)
     *   [Tests/run_regression_tests.py](../../../Tests/run_regression_tests.py)
@@ -46,8 +46,8 @@ This suite verifies that the newly built UDE output matches the exact semantic c
     4. Automatically writes new discrepancies into `difference_mock_sdk_{lang}.json` and enforces CI blocks under strict mode.
 *   **Language Matrix**:
     *   **Current Language**: Python ([test_docomatic_alignment.py](../../../engine/tests/test_docomatic_alignment.py))
-    *   **Supported Languages**: C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Key Files**:
     *   [engine/tests/test_docomatic_alignment.py](../../../engine/tests/test_docomatic_alignment.py)
 
@@ -62,8 +62,8 @@ This validator performs a physical sanity check on compiled static pages on disk
     4. Asserts that the physical HTML files contain the exact page heading signature.
 *   **Language Matrix**:
     *   **Current Language**: Python ([verify_pages.py](../../../Tests/verify_pages.py))
-    *   **Supported Languages**: C++, C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C++, C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Key Files**:
     *   [Tests/verify_pages.py](../../../Tests/verify_pages.py)
 
@@ -79,8 +79,8 @@ This crawling tool ensures zero broken navigation links exist in the published p
     5. Performs real-world concurrent network requests (utilizing HTTP `HEAD` with dynamic `GET` fallbacks) for external web links.
 *   **Language Matrix**:
     *   **Current Language**: Python ([check_links.py](../../../Tests/check_links.py))
-    *   **Supported Languages**: C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Key Files**:
     *   [Tests/check_links.py](../../../Tests/check_links.py)
 
@@ -94,8 +94,8 @@ This suite validates the correctness of the two-level build cache (`BuildCacheMa
     3. Verifies that only the changed entity's page and TOC index file are updated, and other files remain untouched.
 *   **Language Matrix**:
     *   **Current Language**: *None* (Core caching logic in Python under `BuildCacheManager`)
-    *   **Supported Languages**: C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Traced Tasks**: `TSK-DAT-03` (Build Cache Manager)
 
 ---
@@ -107,8 +107,8 @@ This test tracks routing accuracy across cross-referenced API frameworks utilizi
     2. The Link Checker crawls the compiled assets, verifying that references dynamically mapped between C# or Python scopes correctly navigate back to C++ source modules.
 *   **Language Matrix**:
     *   **Current Language**: Python (Bundled inside [check_links.py](../../../Tests/check_links.py))
-    *   **Supported Languages**: C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Traced Tasks**: `TSK-RND-09` (Signature strategizer), `Tests/check_links.py`
 
 ---
@@ -121,8 +121,8 @@ Ensures the machine-readable outputs generated for enterprise AI systems are mat
     3. Asserts the presence of mandatory metadata keys (`entity_type`, `fully_qualified_name`, `signature_hash`, `line_range`, `dependencies`).
 *   **Language Matrix**:
     *   **Current Language**: *None* (Core schemas are in Python under `ude/models.py`)
-    *   **Supported Languages**: C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Traced Requirements**: `REQ-FUN-05`, `REQ-BUS-04` (RAG Hierarchical Export)
 
 ---
@@ -135,8 +135,8 @@ Guarantees absolute robustness of the documentation pipeline when visual layouts
     3. Verifies that the engine does not throw unhandled exceptions, and successfully produces a readable portal built on inline default template fallbacks.
 *   **Language Matrix**:
     *   **Current Language**: *None* (Core fallback implementation in Python)
-    *   **Supported Languages**: C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Traced Tasks**: `TSK-RND-10` (Fallback Loading Strategies)
 
 ---
@@ -148,6 +148,6 @@ Verifies backward-compatible parsing against varied Doxygen XML dialects produce
     2. Asserts that the resulting `ProjectCatalog` model instances are structurally identical, preventing breaking parsing regressions.
 *   **Language Matrix**:
     *   **Current Language**: *None*
-    *   **Supported Languages**: C#, Java, Python
-    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java), Low (C++)
+    *   **Supported Languages**: C#, Java, Python, Delphi (Object Pascal)
+    *   **AI Expediency**: Highly Recommended (Python), High (C#, Java, Delphi), Low (C++)
 *   **Traced Requirements**: `REQ-FUN-19`, `TSK-PAR-02`
