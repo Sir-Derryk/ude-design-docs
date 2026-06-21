@@ -304,3 +304,24 @@ sidebar_position: 2
     3. **Dynamic Orchestrator Parameters**: Finally, the collector must append dynamic, run-specific configuration entries (specifically `OUTPUT_DIRECTORY`, `INPUT`, `GENERATE_XML = YES`, `XML_OUTPUT = xml`, `RECURSIVE = YES`, `GENERATE_HTML = NO`, `GENERATE_LATEX = NO`, and target language optimization options).
     If the global template read fails due to a file-access error, the collector must throw a clear `CollectorError` starting with `"Failed to read Doxyfile template"`.
   * *Traces to*: `REQ-BUS-13`
+
+## Automated Quality & Alignment Testing Module
+
+* **`REQ-FUN-48` (Golden Master Regression Testing)**:
+  * *Version 1 (Baseline / MVP)*: The test suite must include a comprehensive Golden Master regression pipeline (`test_golden_master.py`) parametrized across all supported languages (C++, C#, Java, Python). For each target language, the test must:
+    1. Parse pre-compiled Doxygen XML files into a `ProjectCatalog`.
+    2. Serialize the catalog and validate the resulting Intermediate Representation (IR) against a golden JSON baseline (`assets/golden_master/ir/{lang}.json`).
+    3. Render static HTML and validate the entire output directory structure and file contents against a standalone HTML baseline (`assets/golden_master/html/{lang}`).
+    4. Render Hugo Markdown and validate the output directory structure and file contents against a Hugo Markdown baseline (`assets/golden_master/markdown/{lang}`).
+    5. Support an option to automatically update all baselines by running with the environment variable `UPDATE_BASELINES=1`.
+  * *Traces to*: `REQ-BUS-08`
+
+* **`REQ-FUN-49` (Docomatic Semantic Alignment & Difference Tracking)**:
+  * *Version 1 (Baseline / MVP)*: The test suite must implement a Docomatic semantic alignment validation pipeline (`test_docomatic_alignment.py`) to verify structural and semantic identity between UDE compiled outputs and legacy Docomatic reference documentation. The test pipeline must:
+    1. Parse legacy Docomatic `contents.html` files to extract the navigation sidebar/TOC tree structure and verify link-level navigation alignment.
+    2. Extract and normalize semantic text blocks (paragraphs, tables, lists, preformatted code) from both legacy HTML pages and UDE compiled HTML/Markdown outputs, filtering out layout differences (e.g., delimiters, headers, info panels).
+    3. Utilize a robust allowances engine (`AlignmentAllowances`) to load, match, and skip known structural, sidebar, or content-level deviations defined in version-controlled allowance files (`mock_sdk_{lang}.json`).
+    4. Automatically record any newly detected content or sidebar deviations into git-ignored difference-tracking files (`difference_mock_sdk_{lang}.json`).
+    5. Run in two enforcement modes controlled via environment variables: **Strict Mode** (fails the test suite using `pytest.fail` if any unallowed deviations are found when `STRICT_ALIGNMENT=1` is set, intended for CI quality gates) and **Soft Mode** (emits a standard `UserWarning` warning developers of deviations without halting the build, intended for local development and refactoring).
+  * *Traces to*: `REQ-BUS-08`, `REQ-BUS-10`
+

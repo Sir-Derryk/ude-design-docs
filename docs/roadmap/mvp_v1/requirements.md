@@ -27,6 +27,10 @@ This document specifies the exact scope of requirements included in the **MVP (v
 *   **IR Database Compression**: Store and read all Intermediate Representation (IR) files using transparent, on-the-fly Gzip compression (`.json.gz` format) (`REQ-FUN-11`).
 *   **Zero-Check-In Policy**: Ensure zero compiled output files are checked into the code repository by running the compiler dynamically on server-side environments.
 
+### 4. Automated Quality & Alignment Testing
+*   **Golden Master Regression Testing**: Implement automated tests that compile sample projects for all supported languages (C++, C#, Java, Python) and compare the generated Intermediate Representation (IR), HTML pages, and Hugo Markdown outputs against established, pre-compiled static baseline files (`REQ-FUN-48`).
+*   **Docomatic Semantic Alignment & Difference Tracking**: Assert structural and semantic identity between the UDE output and the legacy Docomatic reference documentation by running structural sidebar hierarchy and text-block extraction tests. To maintain flexible development workflows, deviations are logged into git-ignored `difference_mock_sdk_*.json` files; tests fail in strict mode (`STRICT_ALIGNMENT=1` in CI gates) but generate soft warnings in dev setups (`REQ-FUN-49`).
+
 ---
 
 ## 📊 Requirements Matrix
@@ -57,6 +61,8 @@ The MVP baseline includes the following subset of requirements from the SRS and 
 | **`REQ-FUN-27`** | Functional | Level-2 incremental rendering cache | `REQ-BUS-03`, `REQ-BUS-09` |
 | **`REQ-FUN-28`** | Functional | Target folder metadata and cache isolation | `REQ-BUS-03` |
 | **`REQ-FUN-29`** | Functional | Portable configuration relative path resolution | `REQ-BUS-09` |
+| **`REQ-FUN-48`** | Functional | Golden Master Regression Testing | `REQ-BUS-08` |
+| **`REQ-FUN-49`** | Functional | Docomatic Semantic Alignment & Difference Tracking | `REQ-BUS-08`, `REQ-BUS-10` |
 | **`REQ-NFN-01`** | Non-Functional | Execution performance (< 5s for 1000 classes) | - |
 | **`REQ-NFN-02`** | Non-Functional | Modularity via abstract base classes (`BaseParser`, `BaseRenderer`) | - |
 | **`REQ-NFN-03`** | Non-Functional | Maintain at least 98% unit test coverage | - |
