@@ -31,6 +31,8 @@ The registry contains aggregated results of the audits conducted on each develop
 | **`TSK-CLI-02`** | `REQ-NFN-03` (Coverage >= 98%), `REQ-FUN-33` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-RND-03`** | `REQ-FUN-32`, `REQ-FUN-35` | 🟢 Passed | `100%` | 🟢 Completed | 🟢 Not Required | 🟢 Verified |
 | **`TSK-RND-06`** | `REQ-FUN-35` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Pending |
+| **`TSK-RND-07`** | `REQ-FUN-50` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Pending |
+| **`TSK-RND-08`** | `REQ-FUN-50` | 🟡 Queued | `0%` | 🟡 Pending | 🟢 Not Required | 🟡 Pending |
 
 *Status Legend:*
 *   🟢 **Passed (OK)**: Full compliance with the quality criterion, all tests are green, and requirements are covered.
@@ -42,6 +44,6 @@ The registry contains aggregated results of the audits conducted on each develop
 ## 📈 Code Quality Summary Metrics (Quality Gates)
 
 *   **Current Overall Test Coverage (pytest-cov)**: `99.8%` (Target Threshold: `>= 98%`).
-*   **Number of Fully Verified Tasks**: `16 / 17` (Target Threshold: `17 / 17`).
+*   **Number of Fully Verified Tasks**: `16 / 19` (Target Threshold: `19 / 19`).
 *   **Security Incidents (Path Violation/Guard Rails)**: `0` detected.
 
