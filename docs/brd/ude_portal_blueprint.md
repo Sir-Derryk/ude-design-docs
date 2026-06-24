@@ -68,14 +68,14 @@ A highly polished, conversion-oriented developer portal landing page:
 
 #### 📂 Chapter 1: Quick Start
 *   **`getting-started.md`**: Environment prerequisites (Python 3.11, Doxygen in PATH), quick installation via `pip`, and running a test compilation in under 10 seconds.
-*   **`first-config.md`**: Writing your first target `ude_config.json` to link source collectors to output directories.
+*   **`first-config.md`**: Writing your first target `ude_doc_config.json` to link source collectors to output directories.
 
 #### 📂 Chapter 2: Coding & Commenting Standards
 *   **`commenting-rules.md`**: How to document source code. Explains support for Javadoc (`@param`), Doxygen (`\return`), and Google-style docstrings, and how UDE normalizes them to CommonMark.
 *   **`exclusion-gates.md`**: Using exclusion filters to keep internal API clutter clean. Demonstrates `@internal`, `@cond / @endcond`, and `DOM-IGNORE-BEGIN / DOM-IGNORE-END` blocks.
 
 #### 📂 Chapter 3: Configurations Reference
-*   **`global-settings.md`**: Exhaustive schema reference for `ude_global.json` (logging thresholds, caching strategies, and safe folder-cleanup patterns).
+*   **`global-settings.md`**: Exhaustive schema reference for `ude_global_config.json` (logging thresholds, caching strategies, and safe folder-cleanup patterns).
 *   **`target-settings.md`**: Detailed options for custom collectors, parsers, and renderer engines.
 
 #### 📂 Chapter 4: Live Case Study — How This Portal is Built
