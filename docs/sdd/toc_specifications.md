@@ -203,50 +203,103 @@ Python structures APIs through packages, sub-packages, and modules. The logical 
 
 ## 🗃️ 3. Declarative Sidebar JSON Structure
 
-At runtime, UDE organizes navigation and hierarchy conforming to declarative sidebar layouts. These definitions are stored in JSON schemas inside `SidebarStructures/default/` (e.g., `toc_cpp.json`, `toc_py.json`).
+At runtime, UDE organizes navigation and hierarchy conforming to declarative sidebar layouts. To support unique navigation hierarchies per target format, each of the 16 concrete subclass renderers loads its own dedicated sidebar structure configuration file named `toc_<RendererClassName>.json` from `SidebarStructures/default/` (e.g., `toc_CppHtmlRenderer.json`, `toc_CppHugoRenderer.json`, `toc_CppLegacyHtmlRenderer.json`, etc.).
 
-### 3.1 Layout JSON Schema Specification
+### 3.1 Option A Layout JSON Schema Specification
 
-Each sidebar structure defines a language's structural order, listing how namespaces, packages, classes, and members should be nested and visual icons mapped.
+Each configuration file defines a single top-level array under the `"sidebar"` key. This array lists all root-level navigation nodes in their precise order of rendering. The nodes can represent either the Doxygen-compiled API reference tree or custom, non-code pages.
 
+#### Supported Sidebar Node Types
+1. **`api_reference`**: Represents the root node of the Doxygen-compiled API reference tree (compiled from source code/XML metadata). The compiled API Reference must be a single tree with a single root node.
+2. **`static`**: A page compiled from an external HTML or Markdown file. For HTML source files, only the content inside the `<body>` tag is extracted; for Markdown files, all content except front-matter/SSG headers is used.
+3. **`inline`**: A page where the text content is embedded directly inside the JSON configuration (written in the target output format of the renderer, but without page headers or other layout elements).
+4. **`redirect`**: A navigation node that redirects the user to a target relative internal URL or absolute external website URL upon access.
+
+Any static, inline, or redirect nodes declared at the root level of the `"sidebar"` array are treated as siblings (neighbors) to the `api_reference` root node, and they can nest descendant nodes under their own sub-hierarchies.
+
+#### Schema Example (`toc_CppHtmlRenderer.json`)
 ```json
 {
   "language": "cpp",
-  "root_label": "C++ API Reference",
-  "hierarchy": {
-    "namespace": {
-      "nesting": "recursive",
-      "icon": "fas fa-code",
-      "groups": {
-        "classes": {
-          "label": "Classes",
-          "icon": "fas fa-cube",
-          "prefix": "class_"
+  "sidebar": [
+    {
+      "type": "static",
+      "label": "API Reference Welcome",
+      "source_path": "manuals/welcome.html",
+      "output_name": "welcome.html",
+      "icon": "fas fa-home"
+    },
+    {
+      "type": "inline",
+      "label": "Release Notes",
+      "content": "<h1>Release Notes</h1><p>UDE Version 1.0 has been successfully compiled.</p>",
+      "output_name": "release_notes.html",
+      "icon": "fas fa-info-circle"
+    },
+    {
+      "type": "api_reference",
+      "label": "API Reference (C++)",
+      "recovered_toc_algorithm": {
+        "file_naming_rules": {
+          "namespace_separator": "__",
+          "class_member_separator": "__",
+          "method_overload_marker": "@",
+          "special_characters_translation": {
+            "*": "_ptr",
+            "&": "_ref",
+            " ": "_",
+            "<": "_lt_",
+            ">": "_gt_"
+          }
         },
-        "structs": {
-          "label": "Structures",
-          "icon": "fas fa-th-large",
-          "prefix": "struct_"
+        "logical_toc_hierarchy": {
+          "root_node_title": "API Reference (C++)",
+          "virtual_group_folders": {
+            "namespace_level": [
+              "Classes",
+              "Fields,_Structures_and_Enums",
+              "Functions",
+              "Types"
+            ],
+            "class_level": [
+              "Data",
+              "Nested",
+              "Enumerations",
+              "Unions",
+              "Structures",
+              "Classes",
+              "Operators",
+              "Methods"
+            ]
+          },
+          "entity_placement_rules": {
+            "constructors": "Placed at the top of the class node, before any virtual folders",
+            "destructors": "Placed immediately after constructors",
+            "methods": "Grouped inside 'Methods' virtual folder",
+            "operators": "Grouped inside 'Operators' virtual folder"
+          }
         },
-        "interfaces": {
-          "label": "Interfaces",
-          "icon": "fas fa-shield-alt",
-          "prefix": "interface_"
-        },
-        "enums": {
-          "label": "Enumerations",
-          "icon": "fas fa-list",
-          "prefix": "enum_"
-        },
-        "functions": {
-          "label": "Functions",
-          "icon": "fas fa-cogs",
-          "prefix": "func_"
+        "aggregating_file_patterns": {
+          "global_symbol_index": "^!!SYMREF\\.html$",
+          "classes_index": "^!!CLASSES_(?P<scope>.+)\\.html$",
+          "records_index": "^!!RECORDS_(?P<scope>.+)\\.html$",
+          "functions_index": "^!!FUNCTIONS_(?P<scope>.+)\\.html$",
+          "types_index": "^!!TYPES_(?P<scope>.+)\\.html$",
+          "variables_index": "^!!VARIABLES_(?P<scope>.+)\\.html$",
+          "class_members_index": "^!!MEMBERTYPE_(?P<member_type>[A-Za-z_]+)_(?P<class_scope>.+)\\.html$",
+          "constructor_overloads_dispatcher": "^!!OVERLOADED_(?P<class_name>[A-Za-z0-9_]+)_(?P<class_scope>.+)\\.html$",
+          "method_overloads_dispatcher": "^!!OVERLOADED_Methods_(?P<method_name>[A-Za-z0-9_]+)_(?P<class_scope>.+)\\.html$"
         }
       }
+    },
+    {
+      "type": "redirect",
+      "label": "External ODA Developer Portal",
+      "target_url": "https://www.opendesign.com",
+      "icon": "fas fa-external-link-alt"
     }
-  }
+  ]
 }
 ```
 
-This layout schema guarantees that UDE compiles identical navigation bars in MVP v1.0, and establishes a extensible base for dynamic parsing in v2.0+.
+This layout schema guarantees that UDE compiles format-specific, flexible sidebars in MVP v1.0, and establishes an extensible base for dynamic parsing in v2.0+.

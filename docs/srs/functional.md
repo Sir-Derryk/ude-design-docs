@@ -289,6 +289,16 @@ sidebar_position: 2
     4. Maintain backward compatibility by exposing public entry points under the standard `ude.parsers.doxygen` module namespace, shielding external orchestrators from internal class refactoring.
   * *Traces to*: `REQ-BUS-01`, `REQ-BUS-09`
 
+* **`REQ-FUN-50` (Dedicated Renderer-Specific TOC JSON Configs)**:
+  * *Version 1 (Baseline / MVP)*: The documentation engine must support defining, tracking, and rendering the sidebar structure using dedicated JSON configuration files for each of the 16 concrete renderer subclass implementations. The files must be named strictly in the format `toc_<RendererClassName>.json` (e.g., `toc_CppHtmlRenderer.json`, `toc_CppHugoRenderer.json`, etc.).
+  * *TOC Hierarchy Rules (Option A)*: The TOC JSON must define a single top-level array (`"sidebar"`) containing all root navigation items in their precise order of appearance in the sidebar. This array must support the following node types:
+    1. **`api_reference`**: Represents the root node of the Doxygen-compiled API reference tree (compiled from source code/XML metadata). The compiled API Reference must be a single tree with a single root node.
+    2. **`static`**: A page compiled from an external HTML or Markdown file. For HTML source files, only the content inside the `<body>` tag is extracted; for Markdown files, all content except front-matter/SSG headers is used.
+    3. **`inline`**: A page where the text content is embedded directly inside the JSON configuration (written in the target output format of the renderer, but without page headers or other layout elements).
+    4. **`redirect`**: A navigation node that redirects the user to a target internal relative URL or external website URL upon access.
+    Any static, inline, or redirect nodes declared at the root level of the `"sidebar"` array are treated as siblings (neighbors) to the `api_reference` root node, and they can nest descendant nodes under their own sub-hierarchies.
+  * *Traces to*: `REQ-BUS-10`
+
 ## Hierarchical Configuration & Multi-Level Merging Module
 
 * **`REQ-FUN-45` (Config Inheritance and Flat-Merging)**:
