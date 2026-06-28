@@ -1,4 +1,4 @@
-import {themes as prismThemes} from 'prism-react-renderer';
+﻿import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
@@ -57,8 +57,13 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: '0.6 (Testing and bug fixing)',
+              label: '0.7 (Requirements audit & v2.0 roadmap)',
               path: '',
+            },
+            '1.0.0': {
+              label: '1.0.0 MVP',
+              path: '1.0.0',
+              banner: 'none',
             },
             '0.5': {
               label: '0.5 (Testing documentation)',
